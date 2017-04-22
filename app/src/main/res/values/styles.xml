@@ -1,0 +1,57 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimaryBlueMidnight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkBlueMidnight</item>
+        <item name="colorAccent">@color/colorAccentGreen</item>
+    </style>
+
+    <!-- AppTheme NoActionBar -->
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- AppTheme Background & Button Style -->
+    <style name="AppTheme.NoActionBar.BGStyle">
+        <item name="android:windowBackground">@color/window_bg</item>
+        <item name="colorButtonNormal">@color/colorAccentGreen</item>
+    </style>
+
+    <!--Material Design Theme-->
+    <style name="MDTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
+
+    <!--Material Theme BlueMidnight + Blue-->
+    <style name="MDTheme.BlueMdnghtBlue">
+        <item name="colorPrimary">@color/colorPrimaryBlueMidnight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkBlueMidnight</item>
+        <item name="colorAccent">@color/colorPrimaryBlue</item>
+        <item name="colorButtonNormal">@color/colorPrimaryBlue</item>
+    </style>
+
+    <!--Material Theme Blue-->
+    <style name="MDTheme.Blue">
+        <item name="colorPrimary">@color/colorPrimaryBlue</item>
+        <item name="colorPrimaryDark">@color/splash_grdntstartend</item>
+        <item name="colorAccent">@color/colorPrimaryOrange</item>
+        <item name="colorButtonNormal">@color/colorPrimaryOrange</item>
+    </style>
+
+    <!-- AppTheme NoActionBar -->
+    <style name="MDTheme.Blue.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--ColorAccent Amber style-->
+    <style name="ColorAccentAmber">
+        <item name="colorAccent">@color/colorPrimaryAmber</item>
+    </style>
+
+    <!--Material Style Button Theme - AMBER -->
+    <style name="MaterialButton.Amber" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:theme">@style/ColorAccentAmber</item>
+    </style>
+
+</resources>

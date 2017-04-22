@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">Jamnadas Connect</string>
+    <string name="imgcd_imges">Images</string>
+    <string name="no_intrnt_cnctn">No internet connection</string>
+    <string name="server_problem_sml">There are some server problem.</string>
+
+    <!--Sign In-->
+    <string name="mobileno_sml">Mobile Number</string>
+    <string name="cntrycode_india">+91</string>
+    <string name="entr_mobile_sml">Enter mobile</string>
+    <string name="invalid_mobile">Invalid mobile number</string>
+    <string name="password_sml">Password</string>
+    <string name="entr_password_sml">Enter password</string>
+    <string name="password_6chars_long">Password must be 6 Characters long</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="signin_sml">Signin</string>
+    <string name="forgot_password_sml">Forgot password?</string>
+    <string name="notmember_registernow">Not member? Get registered now!</string>
+    <string name="signup_sml">Signup</string>
+
+    <!--Sign Up-->
+    <string name="firstname_sml">First name</string>
+    <string name="entr_firstname_sml">Enter first name</string>
+    <string name="lastname_sml">Last name</string>
+    <string name="entr_lastname_sml">Enter last name</string>
+    <string name="schoolname_sml">School/Institute name</string>
+    <string name="entr_schoolname_sml">Enter School/Institute name</string>
+    <string name="stream_sml">Stream</string>
+    <string name="entr_stream_sml">Enter Stream</string>
+    <string name="standr_sml">Standard</string>
+    <string name="entr_standr_sml">Enter Standard</string>
+    <string name="invalid_standr">Invalid standard</string>
+    <string name="subject_sml">Subjects</string>
+    <string name="entr_subject_sml">Enter Subject</string>
+    <string name="email_sml">Email</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="mobileno_verfd_sucsfly">Mobile number verified successfully</string>
+    <string name="mobileno_not_verfd">Mobile number not verified</string>
+    <string name="sucsfly_regstr_sml">Successfully registration.</string>
+
+    <!-- Mobile Verification -->
+    <string name="verify_mobile_sml">Verify Mobile</string>
+    <string name="carrier_charges_apply">Jamnadas Connect will send a one time password to verify mobile number. Carrier SMS charges may apply.</string>
+    <string name="waiting_auto_detect_sms">Waiting for automatically detect an SMS sent</string>
+    <string name="resend_sml">Resend</string>
+    <string name="verfctn_code">Verification Code</string>
+    <string name="sending_sms_fail">Sending SMS failed, please try again.</string>
+    <string name="auto_detect_sms_fail">Auto detect SMS failed, please try again.</string>
+    <string name="entr_verfctn_code_if_fail_toautodetect">Enter the verification code below in case if we fail to detect the SMS automatically.</string>
+    <string name="entr_verfctn_code">Enter verification code</string>
+    <string name="invalid_verfctn_code">Invalid verification code</string>
+    <string name="submit_sml">Submit</string>
+    <string name="working_sms_plan">Please make sure you have a working SMS plan.\nSit back and relax. We\'ll notify you when we\'re done verifying.</string>
+    <string name="no_detect_any_mobileno">Not detected any mobile number</string>
+    <string name="allow_permtn_sms">To verify mobile number, you must have to allow SMS permission</string>
+    <string name="vrfymobile_sms_msg">One Time Password for your %1$s registration  is %2$d. Please use this password to complete your Registration.</string>
+    <string name="vrfymobile_sms_startformt_msg">One Time Password for your %1$s</string>
+
+    <!--Menu Action-->
+    <string name="save_sml">Save</string>
+    <string name="indevlpmnt_sml">In Development</string>
+</resources>
