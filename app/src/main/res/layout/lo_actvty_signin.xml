@@ -137,7 +137,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5jdp"
-            android:text="@string/signup_sml"
+            android:text="@string/create_an_account_sml"
             android:textColor="@color/colorPrimaryBlueMidnight" />
     </LinearLayout>
 

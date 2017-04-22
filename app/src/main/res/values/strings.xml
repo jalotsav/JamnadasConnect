@@ -13,10 +13,11 @@
     <string name="entr_password_sml">Enter password</string>
     <string name="password_6chars_long">Password must be 6 Characters long</string>
     <string name="invalid_credentials">Invalid credentials</string>
-    <string name="signin_sml">Signin</string>
+    <string name="signin_sml">Login</string>
     <string name="forgot_password_sml">Forgot password?</string>
-    <string name="notmember_registernow">Not member? Get registered now!</string>
+    <string name="notmember_registernow">Not yet member? Create free account!</string>
     <string name="signup_sml">Signup</string>
+    <string name="create_an_account_sml">Create an account</string>
 
     <!--Sign Up-->
     <string name="firstname_sml">First name</string>

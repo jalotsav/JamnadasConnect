@@ -166,7 +166,7 @@ public class VerifyMobileNo extends AppCompatActivity {
             String smsMessage = getString(R.string.vrfymobile_sms_msg, mAppName, OTP_CODE_GENRTD);
 
             SmsManager smsManager = SmsManager.getDefault();
-//            smsManager.sendTextMessage(MOBILE_NO, null, smsMessage, null, null);
+            smsManager.sendTextMessage(MOBILE_NO, null, smsMessage, null, null);
 
             Handler mHndlr = new Handler();
             mHndlr.postDelayed(new Runnable() {
