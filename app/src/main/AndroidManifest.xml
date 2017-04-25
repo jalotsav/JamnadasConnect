@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActvtyMain"
+        <activity
+            android:name=".ActvtyMain"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
@@ -39,9 +40,14 @@
             android:label="@string/verify_mobile_sml"
             android:screenOrientation="portrait"
             android:theme="@style/MDTheme.Blue.NoActionBar" />
-        <activity android:name=".ActvtyInDevlpmnt"
+        <activity
+            android:name=".navgtndrawer.NavgtnDrwrMain"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.BGStyle"/>
+            android:theme="@style/MDTheme.Blue.NoActionBar" />
+        <activity
+            android:name=".ActvtyInDevlpmnt"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.BGStyle" />
     </application>
 
 </manifest>

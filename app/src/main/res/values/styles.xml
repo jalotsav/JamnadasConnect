@@ -38,7 +38,7 @@
         <item name="colorButtonNormal">@color/colorPrimaryOrange</item>
     </style>
 
-    <!-- AppTheme NoActionBar -->
+    <!-- MDTheme NoActionBar -->
     <style name="MDTheme.Blue.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -53,5 +53,9 @@
     <style name="MaterialButton.Amber" parent="Widget.AppCompat.Button.Colored">
         <item name="android:theme">@style/ColorAccentAmber</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

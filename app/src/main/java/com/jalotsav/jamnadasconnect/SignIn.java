@@ -30,7 +30,9 @@ import android.widget.Toast;
 
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
+import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 import com.jalotsav.jamnadasconnect.models.login.MdlLoginRes;
+import com.jalotsav.jamnadasconnect.navgtndrawer.NavgtnDrwrMain;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIGeneral;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIRetroBuilder;
 import com.jalotsav.jamnadasconnect.utils.ValidationUtils;
@@ -61,12 +63,15 @@ public class SignIn extends AppCompatActivity {
 
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
+    UserSessionManager session;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lo_actvty_signin);
         ButterKnife.bind(this);
+
+        session = new UserSessionManager(this);
     }
 
     @OnClick({R.id.appcmptbtn_signin, R.id.appcmptbtn_signin_signup})
@@ -115,7 +120,9 @@ public class SignIn extends AppCompatActivity {
                 if(response.body().getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
                     Toast.makeText(SignIn.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(SignIn.this, ActvtyInDevlpmnt.class));
+                    session.setUserId(Integer.parseInt(response.body().getUser_id()));
+                    finish();
+                    startActivity(new Intent(SignIn.this, NavgtnDrwrMain.class));
                 } else
                     Snackbar.make(mCrdntrlyot, response.body().getMessage(), Snackbar.LENGTH_LONG).show();
             }

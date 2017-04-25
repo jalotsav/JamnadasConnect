@@ -35,7 +35,7 @@
             android:layout_width="@dimen/_120jdp"
             android:layout_height="@dimen/_120jdp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/imgcd_imges"
+            android:contentDescription="@string/imgcd_image"
             android:src="@drawable/img_jamnadas_edumedia_logo" />
 
         <!--Mobile No.-->

@@ -40,6 +40,7 @@ import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 import com.jalotsav.jamnadasconnect.models.registration.MdlRegistrationRes;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherEditRes;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherWork;
+import com.jalotsav.jamnadasconnect.navgtndrawer.NavgtnDrwrMain;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIGeneral;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIRetroBuilder;
 import com.jalotsav.jamnadasconnect.retrofitapi.APITeacher;
@@ -268,7 +269,7 @@ public class SignUp extends AppCompatActivity {
 
                     Toast.makeText(SignUp.this, mSucsflyRegstrnMsg, Toast.LENGTH_SHORT).show();
                     finish();
-                    startActivity(new Intent(SignUp.this, ActvtyInDevlpmnt.class));
+                    startActivity(new Intent(SignUp.this, NavgtnDrwrMain.class));
                 } else
                     Snackbar.make(mCrdntrlyot, objMdlRegstrRes.getMessage(), Snackbar.LENGTH_LONG).show();
             }

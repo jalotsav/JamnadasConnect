@@ -24,6 +24,7 @@ import android.os.Bundle;
 
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.LogHelper;
+import com.jalotsav.jamnadasconnect.navgtndrawer.NavgtnDrwrMain;
 
 public class ActvtyMain extends Activity {
 
@@ -41,7 +42,7 @@ public class ActvtyMain extends Activity {
             public void run() {
 
                 finish();
-                startActivity(new Intent(ActvtyMain.this, SignIn.class));
+                startActivity(new Intent(ActvtyMain.this, NavgtnDrwrMain.class));
             }
         }, 3000);
     }

@@ -26,7 +26,7 @@
     <ImageView
         android:layout_width="@dimen/_180jdp"
         android:layout_height="@dimen/_180jdp"
-        android:contentDescription="@string/imgcd_imges"
+        android:contentDescription="@string/imgcd_image"
         android:src="@drawable/img_jamnadas_edumedia_logo" />
 
     <TextView
