@@ -39,8 +39,8 @@
                 android:layout_marginRight="@dimen/_16jdp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/_10jdp"
-                android:paddingTop="@dimen/_10jdp">
+                android:paddingBottom="@dimen/_5jdp"
+                android:paddingTop="@dimen/_5jdp">
 
                 <ImageView
                     android:layout_width="@dimen/_80jdp"
@@ -70,8 +70,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtinputlyot_signup_lastname"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5jdp">
+                    android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/txtinptet_signup_lastname"
@@ -87,8 +86,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtinputlyot_signup_schoolname"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5jdp">
+                    android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/txtinptet_signup_schoolname"
@@ -101,7 +99,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <!--Stream-->
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:id="@+id/txtinputlyot_signup_stream"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,10 +113,10 @@
                         android:inputType="text"
                         android:textColorHint="@color/grayA8"
                         android:textSize="@dimen/_14jdp" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
 
                 <!--Standard-->
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:id="@+id/txtinputlyot_signup_standr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -133,10 +131,10 @@
                         android:maxLength="2"
                         android:textColorHint="@color/grayA8"
                         android:textSize="@dimen/_14jdp" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
 
                 <!--Subject-->
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:id="@+id/txtinputlyot_signup_subject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -150,13 +148,28 @@
                         android:inputType="text"
                         android:textColorHint="@color/grayA8"
                         android:textSize="@dimen/_14jdp" />
+                </android.support.design.widget.TextInputLayout>-->
+
+                <!--City-->
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/txtinputlyot_signup_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/txtinptet_signup_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/city_sml"
+                        android:inputType="text"
+                        android:textColorHint="@color/grayA8"
+                        android:textSize="@dimen/_14jdp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <!--Mobile No.-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5jdp"
                     android:orientation="horizontal">
 
                     <android.support.design.widget.TextInputLayout
@@ -195,7 +208,7 @@
                 </LinearLayout>
 
                 <!--Email-->
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:id="@+id/txtinputlyot_signup_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -209,14 +222,13 @@
                         android:inputType="textEmailAddress"
                         android:textColorHint="@color/grayA8"
                         android:textSize="@dimen/_14jdp" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
 
                 <!--Password-->
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtinputlyot_signup_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5jdp"
                     app:passwordToggleEnabled="true">
                     <!--app:passwordToggleTint="@color/white"-->
 
@@ -241,7 +253,7 @@
 
                 <View
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_16jdp" />
+                    android:layout_height="@dimen/_10jdp" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </ScrollView>

@@ -43,5 +43,6 @@ public interface APIGeneral {
                                               @Field(AppConstants.KEY_LAST_NAME) String lastName,
                                               @Field(AppConstants.KEY_MOBILE) String mobile,
                                               @Field(AppConstants.KEY_EMAIL) String email,
-                                              @Field(AppConstants.KEY_PASSWORD) String password);
+                                              @Field(AppConstants.KEY_PASSWORD) String password,
+                                              @Field(AppConstants.KEY_DEVICE_INFO) String deviceInfo);
 }

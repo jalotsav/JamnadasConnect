@@ -46,6 +46,8 @@ import com.jalotsav.jamnadasconnect.retrofitapi.APIRetroBuilder;
 import com.jalotsav.jamnadasconnect.retrofitapi.APITeacher;
 import com.jalotsav.jamnadasconnect.utils.ValidationUtils;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import butterknife.BindString;
@@ -65,26 +67,26 @@ public class SignUp extends AppCompatActivity {
     @BindView(R.id.cordntrlyot_signup)
     CoordinatorLayout mCrdntrlyot;
 
-    @BindView(R.id.txtinputlyot_signup_firstname)
-    TextInputLayout mTxtinptlyotFirstName;
+    @BindView(R.id.txtinputlyot_signup_firstname) TextInputLayout mTxtinptlyotFirstName;
     @BindView(R.id.txtinputlyot_signup_lastname) TextInputLayout mTxtinptlyotLastName;
     @BindView(R.id.txtinputlyot_signup_schoolname) TextInputLayout mTxtinptlyotSchoolName;
-    @BindView(R.id.txtinputlyot_signup_stream) TextInputLayout mTxtinptlyotStream;
+    /*@BindView(R.id.txtinputlyot_signup_stream) TextInputLayout mTxtinptlyotStream;
     @BindView(R.id.txtinputlyot_signup_standr) TextInputLayout mTxtinptlyotStandr;
-    @BindView(R.id.txtinputlyot_signup_subject) TextInputLayout mTxtinptlyotSubject;
+    @BindView(R.id.txtinputlyot_signup_subject) TextInputLayout mTxtinptlyotSubject;*/
+    @BindView(R.id.txtinputlyot_signup_city) TextInputLayout mTxtinptlyotCity;
     @BindView(R.id.txtinputlyot_signup_mobileno) TextInputLayout mTxtinptlyotMobile;
-    @BindView(R.id.txtinputlyot_signup_email) TextInputLayout mTxtinptlyotEmail;
+//    @BindView(R.id.txtinputlyot_signup_email) TextInputLayout mTxtinptlyotEmail;
     @BindView(R.id.txtinputlyot_signup_password) TextInputLayout mTxtinptlyotPaswrd;
 
-    @BindView(R.id.txtinptet_signup_firstname)
-    TextInputEditText mTxtinptEtFirstName;
+    @BindView(R.id.txtinptet_signup_firstname) TextInputEditText mTxtinptEtFirstName;
     @BindView(R.id.txtinptet_signup_lastname) TextInputEditText mTxtinptEtLastName;
     @BindView(R.id.txtinptet_signup_schoolname) TextInputEditText mTxtinptEtSchoolName;
-    @BindView(R.id.txtinptet_signup_stream) TextInputEditText mTxtinptEtStream;
+    /*@BindView(R.id.txtinptet_signup_stream) TextInputEditText mTxtinptEtStream;
     @BindView(R.id.txtinptet_signup_standr) TextInputEditText mTxtinptEtStandr;
-    @BindView(R.id.txtinptet_signup_subject) TextInputEditText mTxtinptEtSubject;
+    @BindView(R.id.txtinptet_signup_subject) TextInputEditText mTxtinptEtSubject;*/
+    @BindView(R.id.txtinptet_signup_city) TextInputEditText mTxtinptEtCity;
     @BindView(R.id.txtinptet_signup_mobileno) TextInputEditText mTxtinptEtMobile;
-    @BindView(R.id.txtinptet_signup_email) TextInputEditText mTxtinptEtEmail;
+//    @BindView(R.id.txtinptet_signup_email) TextInputEditText mTxtinptEtEmail;
     @BindView(R.id.txtinptet_signup_password) TextInputEditText mTxtinptEtPaswrd;
 
     @BindView(R.id.prgrsbr_signup)
@@ -95,14 +97,15 @@ public class SignUp extends AppCompatActivity {
     @BindString(R.string.entr_firstname_sml) String mEntrFirstName;
     @BindString(R.string.entr_lastname_sml) String mEntrLastName;
     @BindString(R.string.entr_schoolname_sml) String mEntrSchoolName;
-    @BindString(R.string.entr_stream_sml) String mEntrStream;
+    /*@BindString(R.string.entr_stream_sml) String mEntrStream;
     @BindString(R.string.entr_standr_sml) String mEntrStandr;
-    @BindString(R.string.entr_subject_sml) String mEntrSubject;
+    @BindString(R.string.entr_subject_sml) String mEntrSubject;*/
+    @BindString(R.string.entr_city_sml) String mEntrCity;
     @BindString(R.string.mobileno_verfd_sucsfly) String mMobileVerifedMsg;
     @BindString(R.string.mobileno_not_verfd) String mMobileNotVerifedMsg;
     @BindString(R.string.sucsfly_regstr_sml) String mSucsflyRegstrnMsg;
 
-    String mFirstNameVal, mLastNameVal, mEmailVal, mMobileVal, mSchoolNameVal, mStreamVal, mStandrVal, mSubjectVal;
+    String mFirstNameVal, mLastNameVal, mEmailVal = "", mMobileVal, mSchoolNameVal, mStreamVal = "", mStandrVal = "", mSubjectVal = "", mCityVal;
     UserSessionManager session;
     boolean isVerifyMobileCall = false;
 
@@ -117,6 +120,8 @@ public class SignUp extends AppCompatActivity {
             mActionBar.setDisplayHomeAsUpEnabled(true);
 
         session = new UserSessionManager(this);
+
+        isVerifyMobileCall = true;
     }
 
     @OnClick({R.id.appcmptbtn_signup})
@@ -144,7 +149,7 @@ public class SignUp extends AppCompatActivity {
         if (!ValidationUtils.validateEmpty(this, mTxtinptlyotSchoolName, mTxtinptEtSchoolName, mEntrSchoolName)) // SchoolName
             return;
 
-        if (!ValidationUtils.validateEmpty(this, mTxtinptlyotStream, mTxtinptEtStream, mEntrStream)) // Stream
+        /*if (!ValidationUtils.validateEmpty(this, mTxtinptlyotStream, mTxtinptEtStream, mEntrStream)) // Stream
             return;
 
         if (!ValidationUtils.validateEmpty(this, mTxtinptlyotStandr, mTxtinptEtStandr, mEntrStandr)) // Standard
@@ -154,16 +159,20 @@ public class SignUp extends AppCompatActivity {
             return;
 
         if (!ValidationUtils.validateEmpty(this, mTxtinptlyotSubject, mTxtinptEtSubject, mEntrSubject)) // Subject
+            return;*/
+
+        if (!ValidationUtils.validateEmpty(this, mTxtinptlyotCity, mTxtinptEtCity, mEntrCity)) // City
             return;
 
         if (!ValidationUtils.validateMobile(this, mTxtinptlyotMobile, mTxtinptEtMobile)) // Mobile
             return;
 
-        if(!TextUtils.isEmpty(mTxtinptEtEmail.getText().toString().trim())) { // Email
+        /*if(!TextUtils.isEmpty(mTxtinptEtEmail.getText().toString().trim())) { // Email
             if (!ValidationUtils.validateEmailFormat(this, mTxtinptlyotEmail, mTxtinptEtEmail)) {
                 return;
             }
-        }
+        }*/
+
         if (!ValidationUtils.validatePassword(this, mTxtinptlyotPaswrd, mTxtinptEtPaswrd)) // Password
             return;
 
@@ -178,7 +187,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     // Check Standard input digits validation for field
-    private boolean validateStandard() {
+    /*private boolean validateStandard() {
 
         int standrVal = Integer.parseInt(mTxtinptEtStandr.getText().toString().trim());
         if (standrVal >0 && standrVal <=12) {
@@ -191,25 +200,29 @@ public class SignUp extends AppCompatActivity {
             ValidationUtils.requestFocus(this, mTxtinptEtStandr);
             return false;
         }
-    }
+    }*/
 
     // Call Retrofit API
     private void callSignupAPI() {
 
         mPrgrsbrMain.setVisibility(View.VISIBLE);
-        mFirstNameVal = mTxtinptEtFirstName.getText().toString().trim();
+        mFirstNameVal =  mTxtinptEtFirstName.getText().toString().trim();
+        mFirstNameVal = Character.toUpperCase(mFirstNameVal.charAt(0))+mFirstNameVal.substring(1); // First Character Uppercase
         mLastNameVal = mTxtinptEtLastName.getText().toString().trim();
+        mLastNameVal = Character.toUpperCase(mLastNameVal.charAt(0)) + mLastNameVal.substring(1); // First Character Uppercase
         mSchoolNameVal = mTxtinptEtSchoolName.getText().toString().trim();
-        mStreamVal = mTxtinptEtStream.getText().toString().trim();
+        /*mStreamVal = mTxtinptEtStream.getText().toString().trim();
         mStandrVal = mTxtinptEtStandr.getText().toString().trim();
-        mSubjectVal = mTxtinptEtSubject.getText().toString().trim();
+        mSubjectVal = mTxtinptEtSubject.getText().toString().trim();*/
+        mCityVal = mTxtinptEtCity.getText().toString().trim();
+        mCityVal = Character.toUpperCase(mCityVal.charAt(0)) + mCityVal.substring(1); // First Character Uppercase
         mMobileVal = mTxtinptEtMobile.getText().toString().trim();
-        mEmailVal = mTxtinptEtEmail.getText().toString().trim();
+//        mEmailVal = mTxtinptEtEmail.getText().toString().trim();
         String passwordVal = mTxtinptEtPaswrd.getText().toString().trim();
 
         APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder().create(APIGeneral.class);
         Call<MdlRegistrationRes> callMdlRegstrtnRes = objApiGeneral.callRegistration(
-                mFirstNameVal, mLastNameVal, mMobileVal, mEmailVal, passwordVal);
+                mFirstNameVal, mLastNameVal, mMobileVal, mEmailVal, passwordVal, GeneralFunctions.getDeviceInfo(this));
         callMdlRegstrtnRes.enqueue(new Callback<MdlRegistrationRes>() {
             @Override
             public void onResponse(Call<MdlRegistrationRes> call, Response<MdlRegistrationRes> response) {
@@ -258,7 +271,7 @@ public class SignUp extends AppCompatActivity {
 
         APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder().create(APITeacher.class);
         Call<MdlTeacherEditRes> callMdlLoginRes = objApiTeacher.callTeacherEdit(GeneralFunctions.getDeviceInfo(this),
-                session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, "", "", "", "", "", "", "", "", "", "", "", "", workJSONData);
+                session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, "", "", "", "", "", "", "", mCityVal, "", "", "", "", workJSONData);
         callMdlLoginRes.enqueue(new Callback<MdlTeacherEditRes>() {
             @Override
             public void onResponse(Call<MdlTeacherEditRes> call, Response<MdlTeacherEditRes> response) {

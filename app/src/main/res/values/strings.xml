@@ -34,6 +34,8 @@
     <string name="invalid_standr">Invalid standard</string>
     <string name="subject_sml">Subjects</string>
     <string name="entr_subject_sml">Enter Subject</string>
+    <string name="city_sml">City</string>
+    <string name="entr_city_sml">Enter city</string>
     <string name="email_sml">Email</string>
     <string name="invalid_email">Invalid email</string>
     <string name="mobileno_verfd_sucsfly">Mobile number verified successfully</string>
@@ -43,7 +45,7 @@
     <!-- Mobile Verification -->
     <string name="verify_mobile_sml">Verify Mobile</string>
     <string name="carrier_charges_apply">Jamnadas Connect will send a one time password to verify mobile number. Carrier SMS charges may apply.</string>
-    <string name="waiting_auto_detect_sms">Waiting for automatically detect an SMS sent</string>
+    <string name="waiting_auto_detect_sms">Waiting to automatically detect an SMS sent</string>
     <string name="resend_sml">Resend</string>
     <string name="verfctn_code">Verification Code</string>
     <string name="sending_sms_fail">Sending SMS failed, please try again.</string>
