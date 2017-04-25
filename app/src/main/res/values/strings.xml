@@ -66,7 +66,7 @@
     <!--Navigation Drawer Menu-->
     <string name="dashboard_sml">Dashboard</string>
     <string name="book_sml">Book</string>
-    <string name="book_request_sml">Book Request</string>
+    <string name="specimen_copy_sml">Specimen Copy</string>
     <string name="book_order_sml">Book Order</string>
     <string name="book_correction_sml">Book Correction</string>
     <string name="teacher_sml">Teacher</string>

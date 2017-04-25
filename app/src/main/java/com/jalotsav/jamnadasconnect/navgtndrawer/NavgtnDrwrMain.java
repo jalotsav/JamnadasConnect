@@ -29,6 +29,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jalotsav.jamnadasconnect.R;
@@ -46,6 +47,8 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
     @BindView(R.id.toolbar_drwrlyot_appbar_main) Toolbar mToolbar;
     @BindView(R.id.drwrlyot_nvgtndrwr_main) DrawerLayout mDrwrlyot;
     @BindView(R.id.navgtnvw_nvgtndrwr_main) NavigationView mNavgtnVw;
+
+    MenuItem mMenuItemDashboard, mMenuItemSpecmnCopy, mMenuItemBookOrder, mMenuItemBookCorctn, mMenuItemSugstn, mMenuItemMyProfile;
 
     UserSessionManager session;
 
@@ -68,11 +71,9 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
             mNavgtnVw.setNavigationItemSelectedListener(this);
 
             // Select First option on Launch
-            mNavgtnVw.getMenu().getItem(0).setChecked(true);
-            /*mNavgtnVw.getMenu().getItem(0).setChecked(true);
-            onNavigationItemSelected(mNavgtnVw.getMenu().getItem(0));*/
-
-//            setTitle(getResources().getString(R.string.dashboard_sml));
+//            mNavgtnVw.getMenu().getItem(0).setChecked(true);
+//            onNavigationItemSelected(mNavgtnVw.getMenu().getItem(0));
+            onNavigationItemSelected(mNavgtnVw.getMenu().getItem(0));
         }
     }
 
@@ -88,29 +89,29 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
                 fragment = new FrgmntDashboard();
                 toolbarTitle = getString(R.string.dashboard_sml);
                 break;
-            case R.id.action_nvgtndrwr_book_reqst:
+            case R.id.action_nvgtndrwr_specimen_copy:
 
-                fragment = new FrgmntDashboard();
-                toolbarTitle = getString(R.string.book_request_sml);
+                fragment = new FrgmntInDevlpmnt();
+                toolbarTitle = getString(R.string.specimen_copy_sml);
                 break;
             case R.id.action_nvgtndrwr_book_order:
 
-                fragment = new FrgmntDashboard();
+                fragment = new FrgmntInDevlpmnt();
                 toolbarTitle = getString(R.string.book_order_sml);
                 break;
             case R.id.action_nvgtndrwr_book_corectn:
 
-                fragment = new FrgmntDashboard();
+                fragment = new FrgmntInDevlpmnt();
                 toolbarTitle = getString(R.string.book_correction_sml);
                 break;
             case R.id.action_nvgtndrwr_teacher_sugstn:
 
-                fragment = new FrgmntDashboard();
+                fragment = new FrgmntInDevlpmnt();
                 toolbarTitle = getString(R.string.suggestions_sml);
                 break;
             case R.id.action_nvgtndrwr_teacher_profile:
 
-                fragment = new FrgmntDashboard();
+                fragment = new FrgmntInDevlpmnt();
                 toolbarTitle = getString(R.string.myprofile_sml);
                 break;
             case R.id.action_nvgtndrwr_teacher_logout:
@@ -123,12 +124,45 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
         mDrwrlyot.closeDrawer(GravityCompat.START);
 
         if (fragment != null) {
+
+            getCurrentCheckedMenuItem().setChecked(false);
+            item.setChecked(true);
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.framlyot_drwrlyot_contnt_container, fragment).commit();
 
             setTitle(toolbarTitle);
         }
         return true;
+    }
+
+    // Get Current checked MenuItem of NavigationView
+    public MenuItem getCurrentCheckedMenuItem() {
+
+        mMenuItemDashboard = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_dashboard);
+        mMenuItemSpecmnCopy = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_specimen_copy);
+        mMenuItemBookOrder = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_book_order);
+        mMenuItemBookCorctn = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_book_corectn);
+        mMenuItemSugstn = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_teacher_sugstn);
+        mMenuItemMyProfile = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_teacher_profile);
+
+        MenuItem currntSelctdMenuItem;
+        if (mMenuItemDashboard.isChecked())
+            currntSelctdMenuItem = mMenuItemDashboard;
+        else if (mMenuItemSpecmnCopy.isChecked())
+            currntSelctdMenuItem = mMenuItemSpecmnCopy;
+        else if (mMenuItemBookOrder.isChecked())
+            currntSelctdMenuItem = mMenuItemBookOrder;
+        else if (mMenuItemBookCorctn.isChecked())
+            currntSelctdMenuItem = mMenuItemBookCorctn;
+        else if (mMenuItemSugstn.isChecked())
+            currntSelctdMenuItem = mMenuItemSugstn;
+        else if (mMenuItemMyProfile.isChecked())
+            currntSelctdMenuItem = mMenuItemMyProfile;
+        else
+            currntSelctdMenuItem = mMenuItemDashboard;
+
+        return currntSelctdMenuItem;
     }
 
     // Show AlertDialog for confirm to Logout

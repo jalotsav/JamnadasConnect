@@ -44,7 +44,7 @@
             android:layout_height="@dimen/_50jdp"
             android:contentDescription="@string/imgcd_image"
             android:tint="@color/white"
-            app:srcCompat="@drawable/ic_account_circle_black_24dp" />
+            app:srcCompat="@drawable/ic_account_circle_black_56dp" />
 
         <TextView
             android:id="@+id/imgvw_drwrlyot_header_username"

@@ -26,16 +26,16 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/action_nvgtndrwr_book_reqst"
-                    android:icon="@drawable/ic_folder_open_black_24dp"
-                    android:title="@string/book_request_sml" />
+                    android:id="@+id/action_nvgtndrwr_specimen_copy"
+                    android:icon="@drawable/ic_folder_open_black_56dp"
+                    android:title="@string/specimen_copy_sml" />
                 <item
                     android:id="@+id/action_nvgtndrwr_book_order"
-                    android:icon="@drawable/ic_folder_shared_black_24dp"
+                    android:icon="@drawable/ic_folder_shared_black_56dp"
                     android:title="@string/book_order_sml" />
                 <item
                     android:id="@+id/action_nvgtndrwr_book_corectn"
-                    android:icon="@drawable/ic_playlist_add_check_black_24dp"
+                    android:icon="@drawable/ic_playlist_add_check_black_56dp"
                     android:title="@string/book_correction_sml" />
             </group>
         </menu>
@@ -46,11 +46,11 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/action_nvgtndrwr_teacher_sugstn"
-                    android:icon="@drawable/ic_school_black_24dp"
+                    android:icon="@drawable/ic_school_black_56dp"
                     android:title="@string/suggestions_sml" />
                 <item
                     android:id="@+id/action_nvgtndrwr_teacher_profile"
-                    android:icon="@drawable/ic_account_circle_black_24dp"
+                    android:icon="@drawable/ic_account_circle_black_56dp"
                     android:title="@string/myprofile_sml" />
                 <item
                     android:id="@+id/action_nvgtndrwr_teacher_logout"
