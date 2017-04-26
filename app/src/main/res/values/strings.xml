@@ -74,6 +74,32 @@
     <string name="myprofile_sml">My Profile</string>
     <string name="logout_sml">Logout</string>
 
+    <!--My Profile-->
+    <string name="education_dtls_sml">Education Details</string>
+    <string name="birthdate_sml">Birthdate</string>
+    <string name="select_birthdate_sml">Select birthdate</string>
+    <string name="invalid_date">Invalid date</string>
+    <string name="experience_sml">Experience</string>
+    <string name="entr_experience_sml">Enter experience</string>
+    <string name="area_of_Interest">Area Of Interest</string>
+    <string name="entr_area_of_interest">Enter area of interest</string>
+    <string name="eductn_qualfctn_sml">Educational Qualification</string>
+    <string name="entr_eductn_qualfctn_sml">Enter educational qualification</string>
+    <string name="achievmnts_sml">Achievements</string>
+    <string name="entr_achievmnts_sml">Enter achievements</string>
+    <string name="contact_dtls_sml">Contact Details</string>
+    <string name="adrs_line_1_sml">Address Line 1</string>
+    <string name="entr_adrs_line_1_sml">Enter Address Line 1</string>
+    <string name="adrs_line_2_sml">Address Line 2</string>
+    <string name="state_sml">State</string>
+    <string name="entr_state_sml">Enter state</string>
+    <string name="country_sml">Country</string>
+    <string name="entr_country_sml">Enter country</string>
+    <string name="pincode_sml">Pincode</string>
+    <string name="entr_pincode_sml">Enter pincode</string>
+    <string name="invalid_pincode">Invalid pincode</string>
+    <string name="work_dtls_sml">Work Details</string>
+
     <!--Logout-->
     <string name="logout_alrtdlg_msg">Do you want to logout?</string>
     <string name="no_sml">No</string>

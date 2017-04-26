@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2017 Jalotsav
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cordntrlyot_frgmnt_myprofile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbarlyot_frgmnt_myprofile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlayActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_250jdp"
+                android:contentDescription="@string/imgcd_image"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_bg_navgndrwr_header"
+                android:tint="#11000000"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.9" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100jdp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@color/colorPrimaryBlue"
+                android:orientation="vertical"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.3">
+
+                <LinearLayout
+                    android:id="@+id/lnrlyot_frgmnt_myprofile_framelyot_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_frgmnt_myprofile_framelyot_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="bottom|center"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/_22jdp"
+                        tools:text="Jaldeep Asodariya" />
+
+                    <TextView
+                        android:id="@+id/tv_frgmnt_myprofile_framelyot_mobileno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="@dimen/_5jdp"
+                        android:textColor="@android:color/white"
+                        tools:text="9662675372" />
+                </LinearLayout>
+            </FrameLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:behavior_overlapTop="@dimen/_30jdp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--Education Details-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5jdp"
+                android:layout_marginLeft="@dimen/_16jdp"
+                android:layout_marginRight="@dimen/_16jdp"
+                android:layout_marginTop="@dimen/_5jdp"
+                app:cardCornerRadius="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_16jdp"
+                    android:layout_marginRight="@dimen/_16jdp"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/_5jdp"
+                    android:paddingTop="@dimen/_5jdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/education_dtls_sml"
+                        android:textColor="@color/colorPrimaryOrange"
+                        android:textSize="@dimen/_16jdp" />
+
+                    <!--Experience-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_exprnc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5jdp">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_exprnc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/experience_sml"
+                            android:inputType="text"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!--Area Of Interest-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_areaofintrst"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_areaofintrst"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/area_of_Interest"
+                            android:inputType="text"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!--Educational Qualification-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_eductnlqualfctn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_eductnlqualfctn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/eductn_qualfctn_sml"
+                            android:inputType="text"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!--Achievements-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_achievmnts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_achievmnts"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/achievmnts_sml"
+                            android:inputType="text"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <!--END Education Details-->
+
+            <!--Contact Details-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5jdp"
+                android:layout_marginLeft="@dimen/_16jdp"
+                android:layout_marginRight="@dimen/_16jdp"
+                android:layout_marginTop="@dimen/_5jdp"
+                app:cardCornerRadius="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_16jdp"
+                    android:layout_marginRight="@dimen/_16jdp"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/_5jdp"
+                    android:paddingTop="@dimen/_5jdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/contact_dtls_sml"
+                        android:textColor="@color/colorPrimaryOrange"
+                        android:textSize="@dimen/_16jdp" />
+
+                    <!--Address Line 1-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_adrsline1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5jdp">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_adrsline1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/adrs_line_1_sml"
+                            android:inputType="text"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!--Address Line 2-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_adrsline2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_adrsline2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/adrs_line_2_sml"
+                            android:inputType="text"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!--City-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_city"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/city_sml"
+                            android:inputType="text"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!--State-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_state"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/state_sml"
+                            android:inputType="text"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <!--Country-->
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/txtinputlyot_frgmnt_myprofile_country"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_2jdp"
+                            android:layout_marginRight="@dimen/_2jdp"
+                            android:layout_weight="1">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/txtinptet_frgmnt_myprofile_country"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/country_sml"
+                                android:imeOptions="actionNext"
+                                android:nextFocusRight="@+id/txtinputlyot_frgmnt_myprofile_pincode"
+                                android:inputType="text"
+                                android:textColorHint="@color/grayA8"
+                                android:textSize="@dimen/_14jdp" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <!--PinCode-->
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/txtinputlyot_frgmnt_myprofile_pincode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_2jdp"
+                            android:layout_marginStart="@dimen/_2jdp"
+                            android:layout_weight="1">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/txtinptet_frgmnt_myprofile_pincode"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/pincode_sml"
+                                android:inputType="numberSigned"
+                                android:maxLength="6"
+                                android:textColorHint="@color/grayA8"
+                                android:textSize="@dimen/_14jdp" />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <!--END Contact Details-->
+
+            <!--Work Details-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5jdp"
+                android:layout_marginLeft="@dimen/_16jdp"
+                android:layout_marginRight="@dimen/_16jdp"
+                android:layout_marginTop="@dimen/_5jdp"
+                app:cardCornerRadius="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_16jdp"
+                    android:layout_marginRight="@dimen/_16jdp"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/_5jdp"
+                    android:paddingTop="@dimen/_5jdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/work_dtls_sml"
+                        android:textColor="@color/colorPrimaryOrange"
+                        android:textSize="@dimen/_16jdp" />
+
+                    <!--School Name-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_schoolname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5jdp">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_schoolname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/schoolname_sml"
+                            android:inputType="text"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!--Stream-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_stream"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_stream"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/stream_sml"
+                            android:inputType="text"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!--Standard-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_standr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_standr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/standr_sml"
+                            android:inputType="numberSigned"
+                            android:maxLength="2"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!--Subject-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_subject"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/subject_sml"
+                            android:inputType="text"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <!--END Work Details-->
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_frgmnt_myprofile"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryBlue"
+        app:layout_anchor="@id/tv_frgmnt_myprofile_framelyot_title"
+        app:theme="@style/AppTheme.AppBarOverlay"
+        app:title="">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="@dimen/_32jdp"
+                android:layout_height="@dimen/_32jdp" />
+
+            <TextView
+                android:id="@+id/tv_frgmnt_myprofile_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_8jdp"
+                android:layout_marginStart="@dimen/_8jdp"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_18jdp"
+                tools:text="Jaldeep Asodariya" />
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="@dimen/_90jdp"
+        android:layout_height="@dimen/_90jdp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/img_teacher_profile_flat"
+        app:border_color="@android:color/white"
+        app:border_width="@dimen/_2jdp"
+        app:finalHeight="@dimen/_32jdp"
+        app:finalYPosition="@dimen/_2jdp"
+        app:layout_behavior="com.jalotsav.jamnadasconnect.AvatarImageBehavior"
+        app:startHeight="@dimen/_2jdp"
+        app:startToolbarPosition="@dimen/_2jdp"
+        app:startXPosition="@dimen/_2jdp" />
+
+    <ProgressBar
+        android:id="@+id/prgrsbr_frgmnt_myprofile"
+        android:layout_width="@dimen/_30jdp"
+        android:layout_height="@dimen/_30jdp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/_20jdp"
+        android:visibility="gone" />
+</android.support.design.widget.CoordinatorLayout>

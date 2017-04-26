@@ -30,8 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
+            app:popupTheme="@style/AppTheme.AppBarOverlayLight" />
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/lo_drwrlyot_content_main" />

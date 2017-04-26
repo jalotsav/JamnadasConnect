@@ -19,6 +19,11 @@
         <item name="colorButtonNormal">@color/colorAccentGreen</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark" />
+    <style name="AppTheme.AppBarOverlayLight" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.AppBarOverlayActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <!--Material Design Theme-->
     <style name="MDTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
 
@@ -53,9 +58,5 @@
     <style name="MaterialButton.Amber" parent="Widget.AppCompat.Button.Colored">
         <item name="android:theme">@style/ColorAccentAmber</item>
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

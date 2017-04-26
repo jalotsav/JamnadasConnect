@@ -64,8 +64,7 @@ import retrofit2.Response;
 
 public class SignUp extends AppCompatActivity {
 
-    @BindView(R.id.cordntrlyot_signup)
-    CoordinatorLayout mCrdntrlyot;
+    @BindView(R.id.cordntrlyot_signup) CoordinatorLayout mCrdntrlyot;
 
     @BindView(R.id.txtinputlyot_signup_firstname) TextInputLayout mTxtinptlyotFirstName;
     @BindView(R.id.txtinputlyot_signup_lastname) TextInputLayout mTxtinptlyotLastName;
@@ -89,8 +88,7 @@ public class SignUp extends AppCompatActivity {
 //    @BindView(R.id.txtinptet_signup_email) TextInputEditText mTxtinptEtEmail;
     @BindView(R.id.txtinptet_signup_password) TextInputEditText mTxtinptEtPaswrd;
 
-    @BindView(R.id.prgrsbr_signup)
-    ProgressBar mPrgrsbrMain;
+    @BindView(R.id.prgrsbr_signup) ProgressBar mPrgrsbrMain;
 
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
