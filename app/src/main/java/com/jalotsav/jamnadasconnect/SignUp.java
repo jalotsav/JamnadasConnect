@@ -269,9 +269,9 @@ public class SignUp extends AppCompatActivity {
         String workJSONData = gson.toJson(arrylstTeacherWork);
 
         APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder().create(APITeacher.class);
-        Call<MdlTeacherEditRes> callMdlLoginRes = objApiTeacher.callTeacherEdit(GeneralFunctions.getDeviceInfo(this),
+        Call<MdlTeacherEditRes> callMdlTeacherEditRes = objApiTeacher.callTeacherEdit(GeneralFunctions.getDeviceInfo(this),
                 session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, "", "", "", "", "", "", "", mCityVal, "", "", "", "", workJSONData);
-        callMdlLoginRes.enqueue(new Callback<MdlTeacherEditRes>() {
+        callMdlTeacherEditRes.enqueue(new Callback<MdlTeacherEditRes>() {
             @Override
             public void onResponse(Call<MdlTeacherEditRes> call, Response<MdlTeacherEditRes> response) {
 

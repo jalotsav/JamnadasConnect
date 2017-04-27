@@ -43,6 +43,7 @@
                 app:layout_collapseParallaxMultiplier="0.9" />
 
             <FrameLayout
+                android:id="@+id/framelyot_frgmnt_myprofile_title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_100jdp"
                 android:layout_gravity="bottom|center_horizontal"
@@ -65,7 +66,7 @@
                         android:layout_gravity="center_horizontal"
                         android:gravity="bottom|center"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/_22jdp"
+                        android:textSize="@dimen/_20jdp"
                         tools:text="Jaldeep Asodariya" />
 
                     <TextView
@@ -432,7 +433,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimaryBlue"
-        app:layout_anchor="@id/tv_frgmnt_myprofile_framelyot_title"
+        app:layout_anchor="@id/framelyot_frgmnt_myprofile_title"
         app:theme="@style/AppTheme.AppBarOverlay"
         app:title="">
 

@@ -16,6 +16,7 @@
 
 package com.jalotsav.jamnadasconnect.navgtndrawer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -36,17 +37,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jalotsav.jamnadasconnect.R;
+import com.jalotsav.jamnadasconnect.SignUp;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherBasic;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherContactEductn;
+import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherEditRes;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherViewRes;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherWork;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIRetroBuilder;
 import com.jalotsav.jamnadasconnect.retrofitapi.APITeacher;
 import com.jalotsav.jamnadasconnect.utils.ValidationUtils;
+
+import java.util.ArrayList;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -115,6 +122,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindString(R.string.entr_stream_sml) String mEntrStream;
     @BindString(R.string.entr_standr_sml) String mEntrStandr;
     @BindString(R.string.entr_subject_sml) String mEntrSubject;
+    @BindString(R.string.profile_updated_sml) String mProfileUpdatedMsg;
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
@@ -124,6 +132,11 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     private boolean mIsTheTitleContainerVisible = true;
 
     UserSessionManager session;
+    String mFirstNameVal, mLastNameVal, mEmailVal = "", mMobileVal,
+            mExprncVal, mAreaOfIntrstVal, mEductnlQualfctnVal, mAchievmntsVal = "",
+            mAdrsLine1Val, mAdrsLine2Val = "", mCityVal, mStateVal, mCountryVal, mPincodeVal,
+            mSchoolNameVal, mStreamVal, mStandrVal, mSubjectVal;
+    int workJsonTIId;
 
     @Nullable
     @Override
@@ -222,6 +235,9 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                         mTvFramelyotTitle.setText(objMdlTeacherBasic.getFirstName().concat(" ").concat(objMdlTeacherBasic.getLastName()));
                         mtvToolbarTitle.setText(objMdlTeacherBasic.getFirstName().concat(" ").concat(objMdlTeacherBasic.getLastName()));
                         mTvFramelyotMobileno.setText(objMdlTeacherBasic.getMobile());
+                        mFirstNameVal = objMdlTeacherBasic.getFirstName();
+                        mLastNameVal = objMdlTeacherBasic.getLastName();
+                        mMobileVal = objMdlTeacherBasic.getMobile();
                     }
 
                     // Education & Contact Details
@@ -242,6 +258,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                     // Work Details
                     for(MdlTeacherWork objMdlTeacherWork : objMdlTeacherViewRes.getObjMdlTeacherWork()) {
 
+                        workJsonTIId = objMdlTeacherWork.getTiId();
                         mTxtinptEtSchoolName.setText(objMdlTeacherWork.getTiInstituteTitle());
                         mTxtinptEtStream.setText(objMdlTeacherWork.getTicStream());
                         mTxtinptEtStandr.setText(objMdlTeacherWork.getTicStd());
@@ -306,7 +323,9 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotSubject, mTxtinptEtSubject, mEntrSubject)) // Subject
             return;
 
-        Snackbar.make(mCrdntrlyot, "Network Call for Edit", Snackbar.LENGTH_LONG).show();
+        if (GeneralFunctions.isNetConnected(getActivity()))
+            callTeacherEditAPI();
+        else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
     }
 
     // Check PinCode length validation for field
@@ -338,6 +357,67 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
             ValidationUtils.requestFocus(getActivity(), mTxtinptEtStandr);
             return false;
         }
+    }
+
+    private void callTeacherEditAPI() {
+
+        mPrgrsbrMain.setVisibility(View.VISIBLE);
+//        mFirstNameVal =  mTxtinptEtFirstName.getText().toString().trim();
+//        mFirstNameVal = Character.toUpperCase(mFirstNameVal.charAt(0))+mFirstNameVal.substring(1); // First Character Uppercase
+//        mLastNameVal = mTxtinptEtLastName.getText().toString().trim();
+//        mLastNameVal = Character.toUpperCase(mLastNameVal.charAt(0)) + mLastNameVal.substring(1); // First Character Uppercase
+//        mEmailVal = mTxtinptEtEmail.getText().toString().trim();
+        mExprncVal = mTxtinptEtExprnc.getText().toString().trim();
+        mAreaOfIntrstVal = mTxtinptEtAreaOfIntrst.getText().toString().trim();
+        mEductnlQualfctnVal = mTxtinptEtEductnlQualfctn.getText().toString().trim();
+        mAchievmntsVal = mTxtinptEtAchievmnts.getText().toString().trim();
+        mAdrsLine1Val = mTxtinptEtAdrsLine1.getText().toString().trim();
+        mAdrsLine2Val = mTxtinptEtAdrsLine2.getText().toString().trim();
+        mCityVal = mTxtinptEtCity.getText().toString().trim();
+        mCityVal = Character.toUpperCase(mCityVal.charAt(0)) + mCityVal.substring(1); // First Character Uppercase
+        mStateVal = mTxtinptEtState.getText().toString().trim();
+        mCountryVal = mTxtinptEtCountry.getText().toString().trim();
+        mPincodeVal = mTxtinptEtPincode.getText().toString().trim();
+        mSchoolNameVal = mTxtinptEtSchoolName.getText().toString().trim();
+        mStreamVal = mTxtinptEtStream.getText().toString().trim();
+        mStandrVal = mTxtinptEtStandr.getText().toString().trim();
+        mSubjectVal = mTxtinptEtSubject.getText().toString().trim();
+        ArrayList<MdlTeacherWork> arrylstTeacherWork = new ArrayList<>();
+        MdlTeacherWork objMdlTeacherWork = new MdlTeacherWork();
+        objMdlTeacherWork.setTiId(workJsonTIId);
+        objMdlTeacherWork.setTiInstituteTitle(mSchoolNameVal);
+        objMdlTeacherWork.setTicStream(mStreamVal);
+        objMdlTeacherWork.setTicStd(mStandrVal);
+        objMdlTeacherWork.setTicSubject(mSubjectVal);
+        arrylstTeacherWork.add(objMdlTeacherWork);
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        String workJSONData = gson.toJson(arrylstTeacherWork);
+
+        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder().create(APITeacher.class);
+        Call<MdlTeacherEditRes> callMdlTeacherEditRes = objApiTeacher.callTeacherEdit(GeneralFunctions.getDeviceInfo(getActivity()),
+                session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, "",
+                mExprncVal, mAreaOfIntrstVal, mEductnlQualfctnVal, mAchievmntsVal,
+                mAdrsLine1Val, mAdrsLine2Val, mCityVal, mStateVal, mCountryVal, mPincodeVal, "", workJSONData);
+        callMdlTeacherEditRes.enqueue(new Callback<MdlTeacherEditRes>() {
+            @Override
+            public void onResponse(Call<MdlTeacherEditRes> call, Response<MdlTeacherEditRes> response) {
+
+                mPrgrsbrMain.setVisibility(View.GONE);
+                MdlTeacherEditRes objMdlRegstrRes = response.body();
+                if(objMdlRegstrRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
+
+                    Snackbar.make(mCrdntrlyot, mProfileUpdatedMsg, Snackbar.LENGTH_SHORT).show();
+                } else
+                    Snackbar.make(mCrdntrlyot, objMdlRegstrRes.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<MdlTeacherEditRes> call, Throwable t) {
+
+                mPrgrsbrMain.setVisibility(View.GONE);
+                Snackbar.make(mCrdntrlyot, mServerPrblmMsg, Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
