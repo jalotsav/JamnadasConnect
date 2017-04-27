@@ -34,14 +34,26 @@ import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jalotsav.jamnadasconnect.R;
+import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
+import com.jalotsav.jamnadasconnect.common.UserSessionManager;
+import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherBasic;
+import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherContactEductn;
+import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherViewRes;
+import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherWork;
+import com.jalotsav.jamnadasconnect.retrofitapi.APIRetroBuilder;
+import com.jalotsav.jamnadasconnect.retrofitapi.APITeacher;
 import com.jalotsav.jamnadasconnect.utils.ValidationUtils;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Jalotsav on 4/26/2017.
@@ -52,7 +64,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindView(R.id.cordntrlyot_frgmnt_myprofile) CoordinatorLayout mCrdntrlyot;
 
     @BindView(R.id.lnrlyot_frgmnt_myprofile_framelyot_title) LinearLayout mTitleContainer;
-    @BindView(R.id.tv_frgmnt_myprofile_toolbar_title) TextView mTitle;
+    @BindView(R.id.tv_frgmnt_myprofile_toolbar_title) TextView mtvToolbarTitle;
     @BindView(R.id.appbarlyot_frgmnt_myprofile) AppBarLayout mAppBarLayout;
 //    @BindView(R.id.toolbar_frgmnt_myprofile) Toolbar mToolbar;
 
@@ -62,7 +74,6 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_exprnc) TextInputLayout mTxtinptlyotExprnc;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_areaofintrst) TextInputLayout mTxtinptlyotAreaOfIntrst;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_eductnlqualfctn) TextInputLayout mTxtinptlyotEductnlQualfctn;
-    @BindView(R.id.txtinputlyot_frgmnt_myprofile_achievmnts) TextInputLayout mTxtinptlyotAchievmnts;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_adrsline1) TextInputLayout mTxtinptlyotAdrsLine1;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_city) TextInputLayout mTxtinptlyotCity;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_state) TextInputLayout mTxtinptlyotState;
@@ -95,7 +106,6 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindString(R.string.entr_experience_sml) String mEntrExprnc;
     @BindString(R.string.entr_area_of_interest) String mEntrAreaOfIntrst;
     @BindString(R.string.entr_eductn_qualfctn_sml) String mEntrEductnlQualfctn;
-    @BindString(R.string.entr_achievmnts_sml) String mEntrAchievmnts;
     @BindString(R.string.entr_adrs_line_1_sml) String mEntrAdrsLine1;
     @BindString(R.string.entr_city_sml) String mEntrCity;
     @BindString(R.string.entr_state_sml) String mEntrState;
@@ -113,6 +123,8 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     private boolean mIsTheTitleVisible = false;
     private boolean mIsTheTitleContainerVisible = true;
 
+    UserSessionManager session;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -122,12 +134,16 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
         setHasOptionsMenu(true);
 
+        session = new UserSessionManager(getActivity());
+
         mAppBarLayout.addOnOffsetChangedListener(this);
 
 //        mToolbar.inflateMenu(R.menu.menu_main);
-        startAlphaAnimation(mTitle, 0, View.INVISIBLE);
+        startAlphaAnimation(mtvToolbarTitle, 0, View.INVISIBLE);
 
-        checkAllValidation();
+        if (GeneralFunctions.isNetConnected(getActivity()))
+            getTeacherDetails();
+        else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
 
         return rootView;
     }
@@ -145,13 +161,13 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
 
             if (!mIsTheTitleVisible) {
-                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                startAlphaAnimation(mtvToolbarTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
                 mIsTheTitleVisible = true;
             }
         } else {
 
             if (mIsTheTitleVisible) {
-                startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                startAlphaAnimation(mtvToolbarTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 mIsTheTitleVisible = false;
             }
         }
@@ -184,6 +200,67 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         v.startAnimation(alphaAnimation);
     }
 
+    // Call Retrofit API
+    private void getTeacherDetails() {
+
+        mPrgrsbrMain.setVisibility(View.VISIBLE);
+        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder().create(APITeacher.class);
+        Call<MdlTeacherViewRes> callMdlTeacherViewRes = objApiTeacher.callTeacherView(
+                GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId());
+        callMdlTeacherViewRes.enqueue(new Callback<MdlTeacherViewRes>() {
+            @Override
+            public void onResponse(Call<MdlTeacherViewRes> call, Response<MdlTeacherViewRes> response) {
+
+                mPrgrsbrMain.setVisibility(View.GONE);
+                MdlTeacherViewRes objMdlTeacherViewRes = response.body();
+
+                if(objMdlTeacherViewRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
+
+                    // Basic Details
+                    for(MdlTeacherBasic objMdlTeacherBasic : objMdlTeacherViewRes.getObjMdlTeacherBasic()) {
+
+                        mTvFramelyotTitle.setText(objMdlTeacherBasic.getFirstName().concat(" ").concat(objMdlTeacherBasic.getLastName()));
+                        mtvToolbarTitle.setText(objMdlTeacherBasic.getFirstName().concat(" ").concat(objMdlTeacherBasic.getLastName()));
+                        mTvFramelyotMobileno.setText(objMdlTeacherBasic.getMobile());
+                    }
+
+                    // Education & Contact Details
+                    for(MdlTeacherContactEductn objMdlTeacherContactEductn : objMdlTeacherViewRes.getObjMdlTeacherContactEductn()) {
+
+                        mTxtinptEtExprnc.setText(objMdlTeacherContactEductn.getExperience());
+                        mTxtinptEtAreaOfIntrst.setText(objMdlTeacherContactEductn.getAreaOfInterest());
+                        mTxtinptEtEductnlQualfctn.setText(objMdlTeacherContactEductn.getEducationalQualification());
+                        mTxtinptEtAchievmnts.setText(objMdlTeacherContactEductn.getAchievements());
+                        mTxtinptEtAdrsLine1.setText(objMdlTeacherContactEductn.getAddressLine1());
+                        mTxtinptEtAdrsLine2.setText(objMdlTeacherContactEductn.getAddressLine2());
+                        mTxtinptEtCity.setText(objMdlTeacherContactEductn.getCity());
+                        mTxtinptEtState.setText(objMdlTeacherContactEductn.getState());
+                        mTxtinptEtCountry.setText(objMdlTeacherContactEductn.getCountry());
+                        mTxtinptEtPincode.setText(objMdlTeacherContactEductn.getPincode());
+                    }
+
+                    // Work Details
+                    for(MdlTeacherWork objMdlTeacherWork : objMdlTeacherViewRes.getObjMdlTeacherWork()) {
+
+                        mTxtinptEtSchoolName.setText(objMdlTeacherWork.getTiInstituteTitle());
+                        mTxtinptEtStream.setText(objMdlTeacherWork.getTicStream());
+                        mTxtinptEtStandr.setText(objMdlTeacherWork.getTicStd());
+                        mTxtinptEtSubject.setText(objMdlTeacherWork.getTicSubject());
+                    }
+                } else
+                    Snackbar.make(mCrdntrlyot, objMdlTeacherViewRes.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<MdlTeacherViewRes> call, Throwable t) {
+
+                mPrgrsbrMain.setVisibility(View.GONE);
+                Snackbar.make(mCrdntrlyot, mServerPrblmMsg, Snackbar.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
     // Check all validation of fields and call API
     private void checkAllValidation() {
 
@@ -194,9 +271,6 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
             return;
 
         if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotEductnlQualfctn, mTxtinptEtEductnlQualfctn, mEntrEductnlQualfctn)) // Education Qualification
-            return;
-
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotAchievmnts, mTxtinptEtAchievmnts, mEntrAchievmnts)) // Achievements
             return;
 
         if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotAdrsLine1, mTxtinptEtAdrsLine1, mEntrAdrsLine1)) // Address Line 1
@@ -232,7 +306,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotSubject, mTxtinptEtSubject, mEntrSubject)) // Subject
             return;
 
-        Snackbar.make(mCrdntrlyot, "Network Call for Save", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mCrdntrlyot, "Network Call for Edit", Snackbar.LENGTH_LONG).show();
     }
 
     // Check PinCode length validation for field

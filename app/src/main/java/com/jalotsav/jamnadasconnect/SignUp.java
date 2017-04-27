@@ -254,6 +254,7 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
+    // Call Retrofit API
     private void callTeacherEditAPI() {
 
         mPrgrsbrMain.setVisibility(View.VISIBLE);

@@ -18,6 +18,7 @@ package com.jalotsav.jamnadasconnect.retrofitapi;
 
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherEditRes;
+import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherViewRes;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -52,4 +53,9 @@ public interface APITeacher {
                                             @Field(AppConstants.KEY_PINCODE) String pincode,
                                             @Field(AppConstants.KEY_WORK_DELETE_ID) String workDeleteId,
                                             @Field(AppConstants.KEY_WORK_JSON_DATA) String workJsonData);
+
+    @FormUrlEncoded
+    @POST(AppConstants.API_TCHR_TEACHER_VIEW)
+    Call<MdlTeacherViewRes> callTeacherView(@Field(AppConstants.KEY_DEVICE_INFO) String deviceInfo,
+                                            @Field(AppConstants.KEY_USER_ID) int userId);
 }

@@ -36,7 +36,8 @@ public interface AppConstants {
     String API_ROOT_URL = "http://www.jamnadas.com/c-jamnadas-admin/api/";
     String API_GNRL_LOGIN = "general/login";
     String API_GNRL_REGISTRATION = "general/registration";
-    String API_TCHR_TEACHER_EDIT= "teacher/api_teacher_edit";
+    String API_TCHR_TEACHER_EDIT = "teacher/api_teacher_edit";
+    String API_TCHR_TEACHER_VIEW = "teacher/api_teacher_view";
 
     // Web-Service Keys
     String KEY_EMAIL_MOB = "email_mob";
@@ -73,6 +74,21 @@ public interface AppConstants {
     String KEY_TIC_STREAM = "tic_stream";
     String KEY_TIC_STD = "tic_std";
     String KEY_TIC_SUBJECT = "tic_subject";
+    String KEY_TEACHER_OTHER_DATA = "teacher_other_data";
+    String KEY_INSTITUTE_DETAILS = "institute_details";
+    String KEY_TEACHER_BASIC_DATA = "teacher_basic_data";
+    String KEY_TD_EXPERIENCE = "td_experience";
+    String KEY_TD_AREA_OF_INTEREST = "td_area_of_interest";
+    String KEY_TD_EDUCATIONAL_QUALIFICATION = "td_educational_qualification";
+    String KEY_TD_ACHIEVEMENTS = "td_achievements";
+    String KEY_TD_BIRTH_DATE = "td_birth_date";
+    String KEY_TD_ADDRESS_LINE_1 = "td_address_line_1";
+    String KEY_TD_ADDRESS_LINE_2 = "td_address_line_2";
+    String KEY_TD_CITY = "td_city";
+    String KEY_TD_STATE = "td_state";
+    String KEY_TD_COUNTRY = "td_country";
+    String KEY_TD_PINCODE = "td_pincode";
+
 
     // Web-Service Values
     String VALUES_TRUE = "TRUE";
