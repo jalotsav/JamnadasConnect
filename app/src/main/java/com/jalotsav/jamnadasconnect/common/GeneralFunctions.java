@@ -25,6 +25,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jalotsav.jamnadasconnect.models.MdlDeviceInfo;
@@ -107,12 +108,13 @@ public class GeneralFunctions {
 
     public static String getDeviceInfo(Context context) {
 
+        String pushNotfctnToken = FirebaseInstanceId.getInstance().getToken();
         String deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         String deviceOSVersion = Build.VERSION.RELEASE;
         String deviceType = "Android";
 //        String deviceModel = Build.BRAND + Build.MODEL;
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-        return gson.toJson(new MdlDeviceInfo(deviceId, "", deviceOSVersion, deviceType));
+        return gson.toJson(new MdlDeviceInfo(deviceId, pushNotfctnToken, deviceOSVersion, deviceType));
     }
 
     /**

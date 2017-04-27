@@ -28,7 +28,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_120jdp"
+            android:layout_height="@dimen/_150jdp"
             android:background="@color/colorPrimaryBlue">
 
             <LinearLayout
@@ -85,7 +85,8 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtinputlyot_frgmnt_specimncopy_stream"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5jdp">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/txtinptet_frgmnt_specimncopy_stream"
@@ -101,7 +102,8 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtinputlyot_frgmnt_specimncopy_standr"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5jdp">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/txtinptet_frgmnt_specimncopy_standr"
@@ -118,7 +120,8 @@
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtinputlyot_frgmnt_specimncopy_comnts"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5jdp">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/txtinptet_frgmnt_specimncopy_comnts"
@@ -126,8 +129,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/comnts_sml"
                         android:inputType="textMultiLine"
-                        android:minLines="3"
                         android:maxLines="5"
+                        android:minLines="3"
                         android:textColorHint="@color/grayA8"
                         android:textSize="@dimen/_14jdp" />
                 </android.support.design.widget.TextInputLayout>
@@ -142,12 +145,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_32jdp"
         android:layout_marginRight="@dimen/_32jdp"
-        app:srcCompat="@drawable/ic_done_black_24dp"
-        android:tint="@color/white"
         android:clickable="true"
+        android:tint="@color/white"
         app:fabSize="normal"
         app:layout_anchor="@id/lnrlyot_frgmnt_specimncopy_bookname"
-        app:layout_anchorGravity="right|end|bottom" />
+        app:layout_anchorGravity="right|end|bottom"
+        app:srcCompat="@drawable/ic_done_black_24dp" />
 
     <ProgressBar
         android:id="@+id/prgrsbr_frgmnt_specimncopy"

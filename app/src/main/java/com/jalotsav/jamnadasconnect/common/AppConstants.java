@@ -100,4 +100,8 @@ public interface AppConstants {
     // Request Keys
     int REQUEST_VERFCTN_MOBILENO = 101;
     int REQUEST_APP_PERMISSION = 102;
+    int REQUESTCODE_SPLASHACTIVITY = 103;
+
+    // Push Notification
+    int NOTIFICATION_BUILDER_ID_SINGLE = 1;
 }

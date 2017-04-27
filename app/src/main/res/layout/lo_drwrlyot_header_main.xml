@@ -46,7 +46,7 @@
             app:srcCompat="@drawable/ic_account_circle_black_56dp" />
 
         <TextView
-            android:id="@+id/imgvw_drwrlyot_header_username"
+            android:id="@+id/tv_drwrlyot_header_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10jdp"
@@ -55,7 +55,7 @@
             android:textSize="@dimen/_14jdp" />
 
         <TextView
-            android:id="@+id/imgvw_drwrlyot_header_mobileno"
+            android:id="@+id/tv_drwrlyot_header_mobileno"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1234567890"
