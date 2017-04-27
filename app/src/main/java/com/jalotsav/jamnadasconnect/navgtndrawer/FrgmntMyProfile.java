@@ -121,6 +121,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindString(R.string.entr_schoolname_sml) String mEntrSchoolName;
     @BindString(R.string.entr_stream_sml) String mEntrStream;
     @BindString(R.string.entr_standr_sml) String mEntrStandr;
+    @BindString(R.string.invalid_standr) String mInvalidStandr;
     @BindString(R.string.entr_subject_sml) String mEntrSubject;
     @BindString(R.string.profile_updated_sml) String mProfileUpdatedMsg;
 
@@ -353,7 +354,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
             return true;
         } else {
             mTxtinptlyotStandr.setErrorEnabled(true);
-            mTxtinptlyotStandr.setError(getString(R.string.invalid_standr));
+            mTxtinptlyotStandr.setError(mInvalidStandr);
             ValidationUtils.requestFocus(getActivity(), mTxtinptEtStandr);
             return false;
         }

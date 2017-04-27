@@ -38,6 +38,7 @@ public interface AppConstants {
     String API_GNRL_REGISTRATION = "general/registration";
     String API_TCHR_TEACHER_EDIT = "teacher/api_teacher_edit";
     String API_TCHR_TEACHER_VIEW = "teacher/api_teacher_view";
+    String API_BOOKREQST_BOOKREQST_ADD = "book_request/api_book_request_add";
 
     // Web-Service Keys
     String KEY_EMAIL_MOB = "email_mob";
@@ -88,7 +89,9 @@ public interface AppConstants {
     String KEY_TD_STATE = "td_state";
     String KEY_TD_COUNTRY = "td_country";
     String KEY_TD_PINCODE = "td_pincode";
-
+    String KEY_BOOK_NAME = "book_name";
+    String KEY_STREAM = "stream";
+    String KEY_CLASS = "class";
 
     // Web-Service Values
     String VALUES_TRUE = "TRUE";

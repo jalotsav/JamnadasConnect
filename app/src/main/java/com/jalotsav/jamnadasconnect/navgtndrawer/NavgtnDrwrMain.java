@@ -91,7 +91,7 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
                 break;
             case R.id.action_nvgtndrwr_specimen_copy:
 
-                fragment = new FrgmntInDevlpmnt();
+                fragment = new FrgmntSpecimenCopy();
                 toolbarTitle = getString(R.string.specimen_copy_sml);
                 break;
             case R.id.action_nvgtndrwr_book_order:

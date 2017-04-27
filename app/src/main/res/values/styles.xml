@@ -59,4 +59,10 @@
         <item name="android:theme">@style/ColorAccentAmber</item>
     </style>
 
+    <!--Material Style EditText Theme - AMBER -->
+    <style name="MaterialText.Amber" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorPrimaryAmber</item>
+        <item name="android:textSize">@dimen/_14jdp</item>
+    </style>
+
 </resources>

@@ -74,6 +74,11 @@
     <string name="myprofile_sml">My Profile</string>
     <string name="logout_sml">Logout</string>
 
+    <!--Specimen Copy-->
+    <string name="book_name_sml">Book name</string>
+    <string name="entr_book_name_sml">Enter book name</string>
+    <string name="comnts_sml">Comments</string>
+
     <!--My Profile-->
     <string name="education_dtls_sml">Education Details</string>
     <string name="birthdate_sml">Birthdate</string>
