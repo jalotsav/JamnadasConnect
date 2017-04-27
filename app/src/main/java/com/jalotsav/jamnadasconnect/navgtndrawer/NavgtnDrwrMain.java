@@ -219,10 +219,11 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
     @Override
     public void onBackPressed() {
 
-        if (mDrwrlyot.isDrawerOpen(GravityCompat.START)) {
+        if (mDrwrlyot.isDrawerOpen(GravityCompat.START))
             mDrwrlyot.closeDrawer(GravityCompat.START);
-        } else {
+        else if (getCurrentCheckedMenuItem() != mMenuItemDashboard)
+            onNavigationItemSelected(mNavgtnVw.getMenu().getItem(0));
+        else
             super.onBackPressed();
-        }
     }
 }

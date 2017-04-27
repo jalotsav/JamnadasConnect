@@ -49,8 +49,8 @@
             android:id="@+id/imgvw_drwrlyot_header_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/_10jdp"
-            android:text="Jagdish Patel"
+            android:layout_marginTop="@dimen/_10jdp"
+            android:text="Teacher name"
             android:textColor="@color/white"
             android:textSize="@dimen/_14jdp" />
 
