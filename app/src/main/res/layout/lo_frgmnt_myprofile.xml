@@ -94,6 +94,114 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!--Basic Details-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5jdp"
+                android:layout_marginLeft="@dimen/_16jdp"
+                android:layout_marginRight="@dimen/_16jdp"
+                android:layout_marginTop="@dimen/_5jdp"
+                app:cardCornerRadius="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_16jdp"
+                    android:layout_marginRight="@dimen/_16jdp"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/_5jdp"
+                    android:paddingTop="@dimen/_5jdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/basic_dtls_sml"
+                        android:textColor="@color/colorPrimaryOrange"
+                        android:textSize="@dimen/_16jdp" />
+
+                    <!--BirthDay-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5jdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_frgmnt_myprofile_birthdaylbl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/birthday_sml"
+                            android:textColor="@color/colorPrimaryOrange"
+                            android:textSize="@dimen/_10jdp"
+                            android:visibility="invisible"/>
+
+                        <RelativeLayout
+                            android:id="@+id/rltvlyot_frgmnt_myprofile_birthday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_3jdp">
+
+                            <ImageView
+                                android:id="@+id/imgvw_frgmnt_myprofile_birthdayarrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentEnd="true"
+                                android:tint="@color/grayA8"
+                                android:contentDescription="@string/imgcd_image"
+                                app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
+
+                            <TextView
+                                android:id="@+id/tv_frgmnt_myprofile_birthday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_toLeftOf="@id/imgvw_frgmnt_myprofile_birthdayarrow"
+                                android:layout_toStartOf="@id/imgvw_frgmnt_myprofile_birthdayarrow"
+                                android:textSize="@dimen/_14jdp"
+                                android:textColor="@color/grayA8"
+                                android:text="@string/birthday_sml"/>
+                        </RelativeLayout>
+
+                        <View
+                            android:id="@+id/view_frgmnt_myprofile_birthdayunderline"
+                            android:layout_width="match_parent"
+                            android:layout_height="1.5dp"
+                            android:background="@color/grayA8"/>
+
+                        <TextView
+                            android:id="@+id/tv_frgmnt_myprofile_birthdayerror"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5jdp"
+                            android:text="@string/select_birthday_sml"
+                            android:textSize="@dimen/_10jdp"
+                            android:textColor="@color/red"
+                            android:visibility="gone"/>
+                    </LinearLayout>
+
+                    <!--Email-->
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtinputlyot_frgmnt_myprofile_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5jdp">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/txtinptet_frgmnt_myprofile_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/email_sml"
+                            android:inputType="textEmailAddress"
+                            android:textColorHint="@color/grayA8"
+                            android:textSize="@dimen/_14jdp" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <!--END Basic Details-->
+
             <!--Education Details-->
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -301,8 +409,8 @@
                                 android:layout_height="wrap_content"
                                 android:hint="@string/country_sml"
                                 android:imeOptions="actionNext"
-                                android:nextFocusRight="@+id/txtinputlyot_frgmnt_myprofile_pincode"
                                 android:inputType="text"
+                                android:nextFocusRight="@+id/txtinputlyot_frgmnt_myprofile_pincode"
                                 android:textColorHint="@color/grayA8"
                                 android:textSize="@dimen/_14jdp" />
                         </android.support.design.widget.TextInputLayout>

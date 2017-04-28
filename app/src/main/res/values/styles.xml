@@ -49,6 +49,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- MDTheme Navigation NoActionBar -->
+    <style name="MDTheme.Blue.NavigationNoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <!--ColorAccent Amber style-->
     <style name="ColorAccentAmber">
         <item name="colorAccent">@color/colorPrimaryAmber</item>

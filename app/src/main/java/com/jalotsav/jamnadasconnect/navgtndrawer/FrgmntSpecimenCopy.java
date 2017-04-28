@@ -31,6 +31,7 @@ import android.widget.ProgressBar;
 import com.jalotsav.jamnadasconnect.R;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
+import com.jalotsav.jamnadasconnect.common.LogHelper;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 import com.jalotsav.jamnadasconnect.models.bookrequest.MdlBookReqstAddRes;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIBookRequest;
@@ -51,6 +52,8 @@ import retrofit2.Response;
 
 public class FrgmntSpecimenCopy extends Fragment {
 
+    private static final String TAG = FrgmntSpecimenCopy.class.getSimpleName();
+
     @BindView(R.id.cordntrlyot_frgmnt_specimncopy) CoordinatorLayout mCrdntrlyot;
 
     @BindView(R.id.txtinputlyot_frgmnt_specimncopy_bookname) TextInputLayout mTxtinptlyotBookName;
@@ -66,6 +69,7 @@ public class FrgmntSpecimenCopy extends Fragment {
 
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
+    @BindString(R.string.internal_problem_sml) String mInternalPrblmMsg;
     @BindString(R.string.entr_book_name_sml) String mEntrBookName;
     @BindString(R.string.entr_stream_sml) String mEntrStream;
     @BindString(R.string.entr_standr_sml) String mEntrStandr;
@@ -129,7 +133,7 @@ public class FrgmntSpecimenCopy extends Fragment {
         mStandrVal = mTxtinptEtStandr.getText().toString().trim();
         mComntsVal = mTxtinptEtComnts.getText().toString().trim();
 
-        APIBookRequest objApiBookReqst = APIRetroBuilder.getRetroBuilder().create(APIBookRequest.class);
+        APIBookRequest objApiBookReqst = APIRetroBuilder.getRetroBuilder(false).create(APIBookRequest.class);
         Call<MdlBookReqstAddRes> callMdlBookReqstAddRes = objApiBookReqst.callBookReqstAdd(GeneralFunctions.getDeviceInfo(getActivity()),
                 session.getUserId(), mBookNameVal, mStreamVal, mStandrVal);
         callMdlBookReqstAddRes.enqueue(new Callback<MdlBookReqstAddRes>() {
@@ -137,15 +141,22 @@ public class FrgmntSpecimenCopy extends Fragment {
             public void onResponse(Call<MdlBookReqstAddRes> call, Response<MdlBookReqstAddRes> response) {
 
                 mPrgrsbrMain.setVisibility(View.GONE);
-                MdlBookReqstAddRes objMdlBookReqstAddRes = response.body();
-                if(objMdlBookReqstAddRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
+                try {
+                    MdlBookReqstAddRes objMdlBookReqstAddRes = response.body();
+                    if(objMdlBookReqstAddRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-                    Snackbar.make(mCrdntrlyot, objMdlBookReqstAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    mTxtinptEtBookName.setText("");
-                    mTxtinptEtStream.setText("");
-                    mTxtinptEtStandr.setText("");
-                } else
-                    Snackbar.make(mCrdntrlyot, objMdlBookReqstAddRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(mCrdntrlyot, objMdlBookReqstAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
+                        mTxtinptEtBookName.setText("");
+                        mTxtinptEtStream.setText("");
+                        mTxtinptEtStandr.setText("");
+                    } else
+                        Snackbar.make(mCrdntrlyot, objMdlBookReqstAddRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
+                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
+                }
             }
 
             @Override

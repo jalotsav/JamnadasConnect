@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
+import com.jalotsav.jamnadasconnect.common.LogHelper;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 import com.jalotsav.jamnadasconnect.models.registration.MdlRegistrationRes;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherEditRes;
@@ -63,6 +64,8 @@ import retrofit2.Response;
  */
 
 public class SignUp extends AppCompatActivity {
+
+    private static final String TAG = SignUp.class.getSimpleName();
 
     @BindView(R.id.cordntrlyot_signup) CoordinatorLayout mCrdntrlyot;
 
@@ -92,6 +95,7 @@ public class SignUp extends AppCompatActivity {
 
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
+    @BindString(R.string.internal_problem_sml) String mInternalPrblmMsg;
     @BindString(R.string.entr_firstname_sml) String mEntrFirstName;
     @BindString(R.string.entr_lastname_sml) String mEntrLastName;
     @BindString(R.string.entr_schoolname_sml) String mEntrSchoolName;
@@ -118,8 +122,6 @@ public class SignUp extends AppCompatActivity {
             mActionBar.setDisplayHomeAsUpEnabled(true);
 
         session = new UserSessionManager(this);
-
-        isVerifyMobileCall = true;
     }
 
     @OnClick({R.id.appcmptbtn_signup})
@@ -180,8 +182,19 @@ public class SignUp extends AppCompatActivity {
             Intent intntVerifyMobileNo = new Intent(this, VerifyMobileNo.class);
             intntVerifyMobileNo.putExtra(AppConstants.KEY_MOBILE, mTxtinptEtMobile.getText().toString().trim());
             startActivityForResult(intntVerifyMobileNo, AppConstants.REQUEST_VERFCTN_MOBILENO);
-        } else
-            callSignupAPI();
+        } else {
+
+            /*
+            * For resolve below issue
+              * Due to some server reason after sucess of callSignupAPI(), next API callTeacherEditAPI()
+              * not properly call, When user try to SignUp again it's give "Mobile no Exit" error message.
+              *
+            * */
+            if(session.getUserId() > 0)
+                callTeacherEditAPI();
+            else
+                callSignupAPI();
+        }
     }
 
     // Check Standard input digits validation for field
@@ -218,7 +231,7 @@ public class SignUp extends AppCompatActivity {
 //        mEmailVal = mTxtinptEtEmail.getText().toString().trim();
         String passwordVal = mTxtinptEtPaswrd.getText().toString().trim();
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder().create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(true).create(APIGeneral.class);
         Call<MdlRegistrationRes> callMdlRegstrtnRes = objApiGeneral.callRegistration(
                 mFirstNameVal, mLastNameVal, mMobileVal, mEmailVal, passwordVal, GeneralFunctions.getDeviceInfo(this));
         callMdlRegstrtnRes.enqueue(new Callback<MdlRegistrationRes>() {
@@ -226,22 +239,30 @@ public class SignUp extends AppCompatActivity {
             public void onResponse(Call<MdlRegistrationRes> call, Response<MdlRegistrationRes> response) {
 
 //                mPrgrsbrMain.setVisibility(View.GONE);
-                MdlRegistrationRes objMdlRegstrRes = response.body();
-                if(objMdlRegstrRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
+                try {
+                    MdlRegistrationRes objMdlRegstrRes = response.body();
+                    if(objMdlRegstrRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-//                    Toast.makeText(SignUp.this, objMdlRegstrRes.getMessage(), Toast.LENGTH_SHORT).show();
+    //                    Toast.makeText(SignUp.this, objMdlRegstrRes.getMessage(), Toast.LENGTH_SHORT).show();
 
-                    session.setUserId(objMdlRegstrRes.getUser_id());
-                    session.setFirstName(mFirstNameVal);
-                    session.setLastName(mLastNameVal);
-                    session.setMobile(mMobileVal);
-                    session.setEmail(mEmailVal);
+                        session.setUserId(objMdlRegstrRes.getUser_id());
+                        session.setFirstName(mFirstNameVal);
+                        session.setLastName(mLastNameVal);
+                        session.setMobile(mMobileVal);
+                        session.setEmail(mEmailVal);
 
-                    callTeacherEditAPI();
-                } else {
+                        callTeacherEditAPI();
+                    } else {
 
+                        mPrgrsbrMain.setVisibility(View.GONE);
+                        Snackbar.make(mCrdntrlyot, objMdlRegstrRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
                     mPrgrsbrMain.setVisibility(View.GONE);
-                    Snackbar.make(mCrdntrlyot, objMdlRegstrRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
                 }
             }
 
@@ -268,7 +289,7 @@ public class SignUp extends AppCompatActivity {
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         String workJSONData = gson.toJson(arrylstTeacherWork);
 
-        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder().create(APITeacher.class);
+        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(true).create(APITeacher.class);
         Call<MdlTeacherEditRes> callMdlTeacherEditRes = objApiTeacher.callTeacherEdit(GeneralFunctions.getDeviceInfo(this),
                 session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, "", "", "", "", "", "", "", mCityVal, "", "", "", "", workJSONData);
         callMdlTeacherEditRes.enqueue(new Callback<MdlTeacherEditRes>() {
@@ -276,14 +297,21 @@ public class SignUp extends AppCompatActivity {
             public void onResponse(Call<MdlTeacherEditRes> call, Response<MdlTeacherEditRes> response) {
 
                 mPrgrsbrMain.setVisibility(View.GONE);
-                MdlTeacherEditRes objMdlRegstrRes = response.body();
-                if(objMdlRegstrRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
+                try {
+                    MdlTeacherEditRes objMdlRegstrRes = response.body();
+                    if(objMdlRegstrRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-                    Toast.makeText(SignUp.this, mSucsflyRegstrnMsg, Toast.LENGTH_SHORT).show();
-                    finish();
-                    startActivity(new Intent(SignUp.this, NavgtnDrwrMain.class));
-                } else
-                    Snackbar.make(mCrdntrlyot, objMdlRegstrRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(SignUp.this, mSucsflyRegstrnMsg, Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(new Intent(SignUp.this, NavgtnDrwrMain.class));
+                    } else
+                        Snackbar.make(mCrdntrlyot, objMdlRegstrRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
+                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
+                }
             }
 
             @Override

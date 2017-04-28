@@ -24,12 +24,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jalotsav.jamnadasconnect.models.MdlDeviceInfo;
 
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -126,5 +129,15 @@ public class GeneralFunctions {
 
         Random rndmGnrtr = new Random();
         return rndmGnrtr.nextInt(maxNumber - minNumber + 1) + minNumber; // minNumber +  for avoid 0
+    }
+
+    /***
+     * Convert Timestamp to dd-MMM-yyyy Date format
+     * ***/
+    public static String getDateFromTimestamp(long timestamp) {
+
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(timestamp * 1000);
+        return DateFormat.format("dd-MMM-yyyy", cal).toString();
     }
 }

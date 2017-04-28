@@ -161,6 +161,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/city_sml"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/txtinputlyot_signup_mobileno"
                         android:inputType="text"
                         android:textColorHint="@color/grayA8"
                         android:textSize="@dimen/_14jdp" />

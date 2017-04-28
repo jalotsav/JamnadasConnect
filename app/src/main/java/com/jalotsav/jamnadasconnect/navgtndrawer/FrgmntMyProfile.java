@@ -16,7 +16,8 @@
 
 package com.jalotsav.jamnadasconnect.navgtndrawer;
 
-import android.content.Intent;
+import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -25,6 +26,8 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,17 +35,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jalotsav.jamnadasconnect.R;
-import com.jalotsav.jamnadasconnect.SignUp;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
+import com.jalotsav.jamnadasconnect.common.LogHelper;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherBasic;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherContactEductn;
@@ -54,10 +57,14 @@ import com.jalotsav.jamnadasconnect.retrofitapi.APITeacher;
 import com.jalotsav.jamnadasconnect.utils.ValidationUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,6 +75,8 @@ import retrofit2.Response;
 
 public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetChangedListener {
 
+    private static final String TAG = FrgmntMyProfile.class.getSimpleName();
+
     @BindView(R.id.cordntrlyot_frgmnt_myprofile) CoordinatorLayout mCrdntrlyot;
 
     @BindView(R.id.lnrlyot_frgmnt_myprofile_framelyot_title) LinearLayout mTitleContainer;
@@ -77,7 +86,13 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
     @BindView(R.id.tv_frgmnt_myprofile_framelyot_title) TextView mTvFramelyotTitle;
     @BindView(R.id.tv_frgmnt_myprofile_framelyot_mobileno) TextView mTvFramelyotMobileno;
+    @BindView(R.id.tv_frgmnt_myprofile_birthdaylbl) TextView mTvBirthdayLbl;
+    @BindView(R.id.tv_frgmnt_myprofile_birthday) TextView mTvBirthday;
+    @BindView(R.id.tv_frgmnt_myprofile_birthdayerror) TextView mTvBirthdayError;
 
+    @BindView(R.id.view_frgmnt_myprofile_birthdayunderline) View mVwBirthdayUnderLine;
+
+    @BindView(R.id.txtinputlyot_frgmnt_myprofile_email) TextInputLayout mTxtinptlyotEmail;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_exprnc) TextInputLayout mTxtinptlyotExprnc;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_areaofintrst) TextInputLayout mTxtinptlyotAreaOfIntrst;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_eductnlqualfctn) TextInputLayout mTxtinptlyotEductnlQualfctn;
@@ -91,6 +106,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_standr) TextInputLayout mTxtinptlyotStandr;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_subject) TextInputLayout mTxtinptlyotSubject;
 
+    @BindView(R.id.txtinptet_frgmnt_myprofile_email) TextInputEditText mTxtinptEtEmail;
     @BindView(R.id.txtinptet_frgmnt_myprofile_exprnc) TextInputEditText mTxtinptEtExprnc;
     @BindView(R.id.txtinptet_frgmnt_myprofile_areaofintrst) TextInputEditText mTxtinptEtAreaOfIntrst;
     @BindView(R.id.txtinptet_frgmnt_myprofile_eductnlqualfctn) TextInputEditText mTxtinptEtEductnlQualfctn;
@@ -110,6 +126,10 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
+    @BindString(R.string.internal_problem_sml) String mInternalPrblmMsg;
+    @BindString(R.string.birthday_sml) String mBirthdayStr;
+    @BindString(R.string.select_birthday_sml) String mSelctBirthday;
+    @BindString(R.string.invalid_birthday_sml) String mInvalidBirthday;
     @BindString(R.string.entr_experience_sml) String mEntrExprnc;
     @BindString(R.string.entr_area_of_interest) String mEntrAreaOfIntrst;
     @BindString(R.string.entr_eductn_qualfctn_sml) String mEntrEductnlQualfctn;
@@ -133,11 +153,13 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     private boolean mIsTheTitleContainerVisible = true;
 
     UserSessionManager session;
-    String mFirstNameVal, mLastNameVal, mEmailVal = "", mMobileVal,
+    String mFirstNameVal, mLastNameVal, mEmailVal = "", mMobileVal, mBirthDayVal,
             mExprncVal, mAreaOfIntrstVal, mEductnlQualfctnVal, mAchievmntsVal = "",
             mAdrsLine1Val, mAdrsLine2Val = "", mCityVal, mStateVal, mCountryVal, mPincodeVal,
             mSchoolNameVal, mStreamVal, mStandrVal, mSubjectVal;
-    int workJsonTIId;
+    int workJsonTIId, birthdayAgeCount;
+    Calendar mCalendar;
+    boolean isBirthDateSelected = false;
 
     @Nullable
     @Override
@@ -218,7 +240,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     private void getTeacherDetails() {
 
         mPrgrsbrMain.setVisibility(View.VISIBLE);
-        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder().create(APITeacher.class);
+        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(false).create(APITeacher.class);
         Call<MdlTeacherViewRes> callMdlTeacherViewRes = objApiTeacher.callTeacherView(
                 GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId());
         callMdlTeacherViewRes.enqueue(new Callback<MdlTeacherViewRes>() {
@@ -226,47 +248,71 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
             public void onResponse(Call<MdlTeacherViewRes> call, Response<MdlTeacherViewRes> response) {
 
                 mPrgrsbrMain.setVisibility(View.GONE);
-                MdlTeacherViewRes objMdlTeacherViewRes = response.body();
+                try {
+                    MdlTeacherViewRes objMdlTeacherViewRes = response.body();
 
-                if(objMdlTeacherViewRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
+                    if(objMdlTeacherViewRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-                    // Basic Details
-                    for(MdlTeacherBasic objMdlTeacherBasic : objMdlTeacherViewRes.getObjMdlTeacherBasic()) {
+                        // Basic Details
+                        for(MdlTeacherBasic objMdlTeacherBasic : objMdlTeacherViewRes.getObjMdlTeacherBasic()) {
 
-                        mTvFramelyotTitle.setText(objMdlTeacherBasic.getFirstName().concat(" ").concat(objMdlTeacherBasic.getLastName()));
-                        mtvToolbarTitle.setText(objMdlTeacherBasic.getFirstName().concat(" ").concat(objMdlTeacherBasic.getLastName()));
-                        mTvFramelyotMobileno.setText(objMdlTeacherBasic.getMobile());
-                        mFirstNameVal = objMdlTeacherBasic.getFirstName();
-                        mLastNameVal = objMdlTeacherBasic.getLastName();
-                        mMobileVal = objMdlTeacherBasic.getMobile();
-                    }
+                            mTvFramelyotTitle.setText(objMdlTeacherBasic.getFirstName().concat(" ").concat(objMdlTeacherBasic.getLastName()));
+                            mtvToolbarTitle.setText(objMdlTeacherBasic.getFirstName().concat(" ").concat(objMdlTeacherBasic.getLastName()));
+                            mTvFramelyotMobileno.setText(objMdlTeacherBasic.getMobile());
+                            mFirstNameVal = objMdlTeacherBasic.getFirstName();
+                            mLastNameVal = objMdlTeacherBasic.getLastName();
+                            mMobileVal = objMdlTeacherBasic.getMobile();
+                            mEmailVal = objMdlTeacherBasic.getEmail();
+                        }
 
-                    // Education & Contact Details
-                    for(MdlTeacherContactEductn objMdlTeacherContactEductn : objMdlTeacherViewRes.getObjMdlTeacherContactEductn()) {
+                        // Education & Contact Details
+                        for(MdlTeacherContactEductn objMdlTeacherContactEductn : objMdlTeacherViewRes.getObjMdlTeacherContactEductn()) {
 
-                        mTxtinptEtExprnc.setText(objMdlTeacherContactEductn.getExperience());
-                        mTxtinptEtAreaOfIntrst.setText(objMdlTeacherContactEductn.getAreaOfInterest());
-                        mTxtinptEtEductnlQualfctn.setText(objMdlTeacherContactEductn.getEducationalQualification());
-                        mTxtinptEtAchievmnts.setText(objMdlTeacherContactEductn.getAchievements());
-                        mTxtinptEtAdrsLine1.setText(objMdlTeacherContactEductn.getAddressLine1());
-                        mTxtinptEtAdrsLine2.setText(objMdlTeacherContactEductn.getAddressLine2());
-                        mTxtinptEtCity.setText(objMdlTeacherContactEductn.getCity());
-                        mTxtinptEtState.setText(objMdlTeacherContactEductn.getState());
-                        mTxtinptEtCountry.setText(objMdlTeacherContactEductn.getCountry());
-                        mTxtinptEtPincode.setText(objMdlTeacherContactEductn.getPincode());
-                    }
+                            if(!TextUtils.isEmpty(objMdlTeacherContactEductn.getBirthdate())) {
 
-                    // Work Details
-                    for(MdlTeacherWork objMdlTeacherWork : objMdlTeacherViewRes.getObjMdlTeacherWork()) {
+                                Date dateOfBirth = new Date(Long.parseLong(objMdlTeacherContactEductn.getBirthdate()) * 1000);
+                                mCalendar = Calendar.getInstance();
+                                mCalendar.setTime(dateOfBirth);
+                                isBirthDateSelected = true;
+                                calculateAge();
 
-                        workJsonTIId = objMdlTeacherWork.getTiId();
-                        mTxtinptEtSchoolName.setText(objMdlTeacherWork.getTiInstituteTitle());
-                        mTxtinptEtStream.setText(objMdlTeacherWork.getTicStream());
-                        mTxtinptEtStandr.setText(objMdlTeacherWork.getTicStd());
-                        mTxtinptEtSubject.setText(objMdlTeacherWork.getTicSubject());
-                    }
-                } else
-                    Snackbar.make(mCrdntrlyot, objMdlTeacherViewRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                                mTvBirthdayError.setVisibility(View.GONE);
+                                mTvBirthdayLbl.setTextColor(ContextCompat.getColor(getActivity(), R.color.grayA8));
+
+                                /*mTvBirthday.setText(GeneralFunctions.getDateFromTimestamp(Long.parseLong(objMdlTeacherContactEductn.getBirthdate())));
+                                mTvBirthday.setTextColor(Color.BLACK);
+
+                                isBirthDateSelected = true;*/
+                            }
+                            mTxtinptEtExprnc.setText(objMdlTeacherContactEductn.getExperience());
+                            mTxtinptEtAreaOfIntrst.setText(objMdlTeacherContactEductn.getAreaOfInterest());
+                            mTxtinptEtEductnlQualfctn.setText(objMdlTeacherContactEductn.getEducationalQualification());
+                            mTxtinptEtAchievmnts.setText(objMdlTeacherContactEductn.getAchievements());
+                            mTxtinptEtAdrsLine1.setText(objMdlTeacherContactEductn.getAddressLine1());
+                            mTxtinptEtAdrsLine2.setText(objMdlTeacherContactEductn.getAddressLine2());
+                            mTxtinptEtCity.setText(objMdlTeacherContactEductn.getCity());
+                            mTxtinptEtState.setText(objMdlTeacherContactEductn.getState());
+                            mTxtinptEtCountry.setText(objMdlTeacherContactEductn.getCountry());
+                            mTxtinptEtPincode.setText(objMdlTeacherContactEductn.getPincode());
+                        }
+
+                        // Work Details
+                        for(MdlTeacherWork objMdlTeacherWork : objMdlTeacherViewRes.getObjMdlTeacherWork()) {
+
+                            workJsonTIId = objMdlTeacherWork.getTiId();
+                            mTxtinptEtSchoolName.setText(objMdlTeacherWork.getTiInstituteTitle());
+                            mTxtinptEtStream.setText(objMdlTeacherWork.getTicStream());
+                            mTxtinptEtStandr.setText(objMdlTeacherWork.getTicStd());
+                            mTxtinptEtSubject.setText(objMdlTeacherWork.getTicSubject());
+                        }
+                    } else
+                        Snackbar.make(mCrdntrlyot, objMdlTeacherViewRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
+                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -279,8 +325,61 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
     }
 
+    @OnClick({R.id.rltvlyot_frgmnt_myprofile_birthday})
+    public void onClickView(View view) {
+
+        switch (view.getId()) {
+            case R.id.rltvlyot_frgmnt_myprofile_birthday:
+
+                if(mPrgrsbrMain.getVisibility() != View.VISIBLE)
+                    showDOBCalender();
+                break;
+        }
+    }
+
+    // Show DatePicker for select BirthDate
+    private void showDOBCalender() {
+
+        mCalendar = Calendar.getInstance();
+        DatePickerDialog fromDatePickerDialog = new DatePickerDialog(getActivity(),
+                new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                        /*monthOfYear = monthOfYear + 1;
+                        String slctdPreviousDate = monthOfYear + "/" + dayOfMonth + "/" + year;*/
+
+                        // Convert selected Date to Timestamp
+                        mCalendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+                        isBirthDateSelected = true;
+                        calculateAge();
+                    }
+                }, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+
+        fromDatePickerDialog.show();
+    }
+
+    // Calculate Age from selected Date
+    private void calculateAge() {
+
+        Date dateOfBirth = new Date(mCalendar.getTimeInMillis());
+        Calendar dob = Calendar.getInstance();
+        dob.setTime(dateOfBirth);
+        Calendar today = Calendar.getInstance();
+        birthdayAgeCount = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.MONTH) < dob.get(Calendar.MONTH))
+            birthdayAgeCount--;
+        else if (today.get(Calendar.MONTH) == dob.get(Calendar.MONTH)
+                && today.get(Calendar.DAY_OF_MONTH) < dob.get(Calendar.DAY_OF_MONTH))
+            birthdayAgeCount--;
+
+        validateBirthday();
+    }
+
     // Check all validation of fields and call API
     private void checkAllValidation() {
+
+        if(!validateBirthday())
+            return;
 
         if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotExprnc, mTxtinptEtExprnc, mEntrExprnc)) // Experience
             return;
@@ -329,6 +428,49 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
     }
 
+    private boolean validateBirthday() {
+
+        if(!isBirthDateSelected){
+
+            if(mTvBirthday.getText().toString().equalsIgnoreCase(mBirthdayStr)) {
+
+                mTvBirthdayLbl.setVisibility(View.VISIBLE);
+                mTvBirthdayLbl.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryOrange));
+
+                mTvBirthdayError.setVisibility(View.VISIBLE);
+                mTvBirthdayError.setText(mSelctBirthday);
+
+                isBirthDateSelected = false;
+                return false;
+            }
+        } else if (birthdayAgeCount < 18) {
+
+            mTvBirthdayLbl.setVisibility(View.VISIBLE);
+            mTvBirthdayLbl.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryOrange));
+
+            mTvBirthday.setText(mBirthdayStr);
+            mTvBirthday.setTextColor(ContextCompat.getColor(getActivity(), R.color.grayA8));
+
+            mTvBirthdayError.setVisibility(View.VISIBLE);
+            mTvBirthdayError.setText(mInvalidBirthday);
+
+            isBirthDateSelected = false;
+            return false;
+        } else {
+
+            mTvBirthdayError.setVisibility(View.GONE);
+            mTvBirthdayLbl.setTextColor(ContextCompat.getColor(getActivity(), R.color.grayA8));
+
+            long slctdDateTimestamp = mCalendar.getTimeInMillis()/1000;
+            mTvBirthday.setText(GeneralFunctions.getDateFromTimestamp(slctdDateTimestamp));
+            mTvBirthday.setTextColor(Color.BLACK);
+
+            isBirthDateSelected = true;
+            return true;
+        }
+        return false;
+    }
+
     // Check PinCode length validation for field
     private boolean validatePincode() {
 
@@ -367,7 +509,8 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 //        mFirstNameVal = Character.toUpperCase(mFirstNameVal.charAt(0))+mFirstNameVal.substring(1); // First Character Uppercase
 //        mLastNameVal = mTxtinptEtLastName.getText().toString().trim();
 //        mLastNameVal = Character.toUpperCase(mLastNameVal.charAt(0)) + mLastNameVal.substring(1); // First Character Uppercase
-//        mEmailVal = mTxtinptEtEmail.getText().toString().trim();
+        mEmailVal = mTxtinptEtEmail.getText().toString().trim();
+        mBirthDayVal = mTvBirthday.getText().toString().trim();
         mExprncVal = mTxtinptEtExprnc.getText().toString().trim();
         mAreaOfIntrstVal = mTxtinptEtAreaOfIntrst.getText().toString().trim();
         mEductnlQualfctnVal = mTxtinptEtEductnlQualfctn.getText().toString().trim();
@@ -394,9 +537,9 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         String workJSONData = gson.toJson(arrylstTeacherWork);
 
-        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder().create(APITeacher.class);
+        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(false).create(APITeacher.class);
         Call<MdlTeacherEditRes> callMdlTeacherEditRes = objApiTeacher.callTeacherEdit(GeneralFunctions.getDeviceInfo(getActivity()),
-                session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, "",
+                session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, mBirthDayVal,
                 mExprncVal, mAreaOfIntrstVal, mEductnlQualfctnVal, mAchievmntsVal,
                 mAdrsLine1Val, mAdrsLine2Val, mCityVal, mStateVal, mCountryVal, mPincodeVal, "", workJSONData);
         callMdlTeacherEditRes.enqueue(new Callback<MdlTeacherEditRes>() {
@@ -404,12 +547,19 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
             public void onResponse(Call<MdlTeacherEditRes> call, Response<MdlTeacherEditRes> response) {
 
                 mPrgrsbrMain.setVisibility(View.GONE);
-                MdlTeacherEditRes objMdlRegstrRes = response.body();
-                if(objMdlRegstrRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
+                try {
+                    MdlTeacherEditRes objMdlRegstrRes = response.body();
+                    if(objMdlRegstrRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-                    Snackbar.make(mCrdntrlyot, mProfileUpdatedMsg, Snackbar.LENGTH_SHORT).show();
-                } else
-                    Snackbar.make(mCrdntrlyot, objMdlRegstrRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(mCrdntrlyot, mProfileUpdatedMsg, Snackbar.LENGTH_SHORT).show();
+                    } else
+                        Snackbar.make(mCrdntrlyot, objMdlRegstrRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
+                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
+                }
             }
 
             @Override

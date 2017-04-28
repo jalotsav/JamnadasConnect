@@ -181,6 +181,7 @@ public class VerifyMobileNo extends AppCompatActivity {
 
             e.printStackTrace();
             Snackbar.make(mCrdntrlyot, mSendngSmsFailMsg, Snackbar.LENGTH_LONG).show();
+            mPrgrsbrAutoDetect.setVisibility(View.GONE);
             mAppcmptbtnResend.setVisibility(View.VISIBLE);
         }
     }
@@ -226,6 +227,7 @@ public class VerifyMobileNo extends AppCompatActivity {
                 mTxtinptlyotVrfctnCode.setError(mInvalidVrfctnCodeMsg);
                 ValidationUtils.requestFocus(this, mTxtinptEtVrfctnCode);
 
+                mPrgrsbrAutoDetect.setVisibility(View.GONE);
                 mAppcmptbtnResend.setVisibility(View.VISIBLE);
             }
         }
@@ -245,6 +247,7 @@ public class VerifyMobileNo extends AppCompatActivity {
                     sendSMS();
                 } else {
                     Snackbar.make(mCrdntrlyot, mAllowSMSPermsnMsg, Snackbar.LENGTH_LONG).show();
+                    mPrgrsbrAutoDetect.setVisibility(View.GONE);
                     mAppcmptbtnResend.setVisibility(View.VISIBLE);
                 }
             }

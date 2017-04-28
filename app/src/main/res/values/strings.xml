@@ -3,6 +3,7 @@
     <string name="imgcd_image">Content description of images</string>
     <string name="no_intrnt_cnctn">No internet connection</string>
     <string name="server_problem_sml">There are some server problem.</string>
+    <string name="internal_problem_sml">There are some internal problem.</string>
     <string name="indevlpmnt_sml">In Development</string>
 
     <!--Sign In-->
@@ -80,9 +81,11 @@
     <string name="comnts_sml">Comments</string>
 
     <!--My Profile-->
+    <string name="basic_dtls_sml">Basic Details</string>
+    <string name="birthday_sml">Birthday</string>
+    <string name="invalid_birthday_sml">Age must be greater than 18 years.</string>
+    <string name="select_birthday_sml">Select birthday</string>
     <string name="education_dtls_sml">Education Details</string>
-    <string name="birthdate_sml">Birthdate</string>
-    <string name="select_birthdate_sml">Select birthdate</string>
     <string name="invalid_date">Invalid date</string>
     <string name="experience_sml">Experience</string>
     <string name="entr_experience_sml">Enter experience</string>

@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
+import com.jalotsav.jamnadasconnect.common.LogHelper;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 import com.jalotsav.jamnadasconnect.models.login.MdlLoginRes;
 import com.jalotsav.jamnadasconnect.navgtndrawer.NavgtnDrwrMain;
@@ -51,6 +52,8 @@ import retrofit2.Response;
 
 public class SignIn extends AppCompatActivity {
 
+    private static final String TAG = SignIn.class.getSimpleName();
+
     @BindView(R.id.cordntrlyot_signin) CoordinatorLayout mCrdntrlyot;
 
     @BindView(R.id.txtinputlyot_signin_mobileno) TextInputLayout mTxtinptlyotMobile;
@@ -63,6 +66,7 @@ public class SignIn extends AppCompatActivity {
 
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
+    @BindString(R.string.internal_problem_sml) String mInternalPrblmMsg;
     UserSessionManager session;
 
     @Override
@@ -110,21 +114,28 @@ public class SignIn extends AppCompatActivity {
         String mobileVal = mTxtinptEtMobile.getText().toString().trim();
         String passwordVal = mTxtinptEtPaswrd.getText().toString().trim();
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder().create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
         Call<MdlLoginRes> callMdlLoginRes = objApiGeneral.callLogin(mobileVal, passwordVal, GeneralFunctions.getDeviceInfo(this));
         callMdlLoginRes.enqueue(new Callback<MdlLoginRes>() {
             @Override
             public void onResponse(Call<MdlLoginRes> call, Response<MdlLoginRes> response) {
 
                 mPrgrsbrMain.setVisibility(View.GONE);
-                if(response.body().getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
+                try {
+                    if(response.body().getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-                    Toast.makeText(SignIn.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    session.setUserId(Integer.parseInt(response.body().getUser_id()));
-                    finish();
-                    startActivity(new Intent(SignIn.this, NavgtnDrwrMain.class));
-                } else
-                    Snackbar.make(mCrdntrlyot, response.body().getMessage(), Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(SignIn.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        session.setUserId(Integer.parseInt(response.body().getUser_id()));
+                        finish();
+                        startActivity(new Intent(SignIn.this, NavgtnDrwrMain.class));
+                    } else
+                        Snackbar.make(mCrdntrlyot, response.body().getMessage(), Snackbar.LENGTH_LONG).show();
+                } catch (NumberFormatException e) {
+
+                    e.printStackTrace();
+                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
+                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
+                }
             }
 
             @Override

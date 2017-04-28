@@ -19,6 +19,8 @@ package com.jalotsav.jamnadasconnect.retrofitapi;
 import com.jalotsav.jamnadasconnect.BuildConfig;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -32,7 +34,7 @@ public class APIRetroBuilder {
 
     private static Retrofit OBJ_RETROFIT = null;
 
-    public static Retrofit getRetroBuilder() {
+    public static Retrofit getRetroBuilder(boolean enableConnectTimeout) {
 
         if (OBJ_RETROFIT == null) {
 
@@ -42,8 +44,10 @@ public class APIRetroBuilder {
                 loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                 OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
                 clientBuilder.addInterceptor(loggingInterceptor); // print OkHTTP log
-//                clientBuilder.connectTimeout(2, TimeUnit.MINUTES);
-//                clientBuilder.readTimeout(2, TimeUnit.MINUTES);
+                if(enableConnectTimeout) {
+                    clientBuilder.connectTimeout(2, TimeUnit.MINUTES);
+                    clientBuilder.readTimeout(2, TimeUnit.MINUTES);
+                }
 
                 OBJ_RETROFIT = new Retrofit.Builder()
                         .baseUrl(AppConstants.API_ROOT_URL)
