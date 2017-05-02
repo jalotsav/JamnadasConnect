@@ -39,6 +39,7 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -157,7 +158,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
             mExprncVal, mAreaOfIntrstVal, mEductnlQualfctnVal, mAchievmntsVal = "",
             mAdrsLine1Val, mAdrsLine2Val = "", mCityVal, mStateVal, mCountryVal, mPincodeVal,
             mSchoolNameVal, mStreamVal, mStandrVal, mSubjectVal;
-    int workJsonTIId, birthdayAgeCount;
+    int mComeFrom, workJsonTIId, birthdayAgeCount;
     Calendar mCalendar;
     boolean isBirthDateSelected = false;
 
@@ -176,6 +177,8 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
 //        mToolbar.inflateMenu(R.menu.menu_main);
         startAlphaAnimation(mtvToolbarTitle, 0, View.INVISIBLE);
+
+        mComeFrom = getArguments().getInt(AppConstants.PUT_EXTRA_COME_FROM, 0);
 
         if (GeneralFunctions.isNetConnected(getActivity()))
             getTeacherDetails();
@@ -322,7 +325,6 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                 Snackbar.make(mCrdntrlyot, mServerPrblmMsg, Snackbar.LENGTH_LONG).show();
             }
         });
-
     }
 
     @OnClick({R.id.rltvlyot_frgmnt_myprofile_birthday})
@@ -552,6 +554,11 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                     if(objMdlRegstrRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
                         Snackbar.make(mCrdntrlyot, mProfileUpdatedMsg, Snackbar.LENGTH_SHORT).show();
+                        if(mComeFrom == AppConstants.COME_FROM_SPECIMEN_COPY) {
+
+                            MenuItem mMenuItem = ((NavgtnDrwrMain) getActivity()).mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_specimen_copy);
+                            ((NavgtnDrwrMain) getActivity()).onNavigationItemSelected(mMenuItem);
+                        }
                     } else
                         Snackbar.make(mCrdntrlyot, objMdlRegstrRes.getMessage(), Snackbar.LENGTH_LONG).show();
                 } catch (Exception e) {

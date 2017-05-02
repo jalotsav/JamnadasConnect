@@ -17,6 +17,7 @@
 package com.jalotsav.jamnadasconnect.retrofitapi;
 
 import com.jalotsav.jamnadasconnect.common.AppConstants;
+import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherDataAvialbltyRes;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherEditRes;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherViewRes;
 
@@ -58,4 +59,9 @@ public interface APITeacher {
     @POST(AppConstants.API_TCHR_TEACHER_VIEW)
     Call<MdlTeacherViewRes> callTeacherView(@Field(AppConstants.KEY_DEVICE_INFO) String deviceInfo,
                                             @Field(AppConstants.KEY_USER_ID) int userId);
+
+    @FormUrlEncoded
+    @POST(AppConstants.API_TCHR_CHECK_TEACHER_DATA_AVALBLTY)
+    Call<MdlTeacherDataAvialbltyRes> callTeacherDataAvailability(@Field(AppConstants.KEY_DEVICE_INFO) String deviceInfo,
+                                                                 @Field(AppConstants.KEY_USER_ID) int userId);
 }

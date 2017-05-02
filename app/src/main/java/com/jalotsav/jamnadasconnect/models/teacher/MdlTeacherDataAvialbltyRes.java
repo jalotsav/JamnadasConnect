@@ -14,30 +14,23 @@
  * limitations under the License.
  */
 
-package com.jalotsav.jamnadasconnect.models.login;
+package com.jalotsav.jamnadasconnect.models.teacher;
 
 import com.google.gson.annotations.SerializedName;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
-import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherBasic;
-
-import java.util.ArrayList;
 
 /**
- * Created by Jalotsav on 4/12/2017.
+ * Created by Jalotsav on 5/2/2017.
  */
 
-public class MdlLoginRes implements AppConstants {
+public class MdlTeacherDataAvialbltyRes implements AppConstants {
 
     @SerializedName(KEY_SUCCESS_CAPS)
     String success;
     @SerializedName(KEY_MESSAGE_CAPS)
     String message;
-    @SerializedName(KEY_TDK_ID)
-    String tdk_id;
-    @SerializedName(KEY_USER_ID)
-    String user_id;
-    @SerializedName(KEY_USER_DETAILS)
-    ArrayList<MdlTeacherBasic> objMdlTeacherBasic;
+    @SerializedName(KEY_MISSING_PARAM)
+    String missingParam;
 
     public String getSuccess() {
         return success;
@@ -55,27 +48,11 @@ public class MdlLoginRes implements AppConstants {
         this.message = message;
     }
 
-    public String getTdk_id() {
-        return tdk_id;
+    public String getMissingParam() {
+        return missingParam;
     }
 
-    public void setTdk_id(String tdk_id) {
-        this.tdk_id = tdk_id;
-    }
-
-    public String getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
-
-    public ArrayList<MdlTeacherBasic> getObjMdlTeacherBasic() {
-        return objMdlTeacherBasic;
-    }
-
-    public void setObjMdlTeacherBasic(ArrayList<MdlTeacherBasic> objMdlTeacherBasic) {
-        this.objMdlTeacherBasic = objMdlTeacherBasic;
+    public void setMissingParam(String missingParam) {
+        this.missingParam = missingParam;
     }
 }

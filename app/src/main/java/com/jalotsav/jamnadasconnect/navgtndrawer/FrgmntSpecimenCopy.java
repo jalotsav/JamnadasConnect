@@ -16,6 +16,8 @@
 
 package com.jalotsav.jamnadasconnect.navgtndrawer;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -23,10 +25,13 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.jalotsav.jamnadasconnect.R;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
@@ -34,8 +39,10 @@ import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
 import com.jalotsav.jamnadasconnect.common.LogHelper;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 import com.jalotsav.jamnadasconnect.models.bookrequest.MdlBookReqstAddRes;
+import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherDataAvialbltyRes;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIBookRequest;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIRetroBuilder;
+import com.jalotsav.jamnadasconnect.retrofitapi.APITeacher;
 import com.jalotsav.jamnadasconnect.utils.ValidationUtils;
 
 import butterknife.BindString;
@@ -67,6 +74,7 @@ public class FrgmntSpecimenCopy extends Fragment {
 
     @BindView(R.id.prgrsbr_frgmnt_specimncopy) ProgressBar mPrgrsbrMain;
 
+    @BindString(R.string.please_wait_3dots) String mPleaseWait;
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
     @BindString(R.string.internal_problem_sml) String mInternalPrblmMsg;
@@ -76,6 +84,8 @@ public class FrgmntSpecimenCopy extends Fragment {
     @BindString(R.string.invalid_standr) String mInvalidStandr;
 
     UserSessionManager session;
+    ProgressDialog mPrgrsDialog;
+    boolean mTeacherDataAvaibltyStatus;
     String mBookNameVal, mStreamVal, mStandrVal, mComntsVal = "";
 
     @Nullable
@@ -87,7 +97,84 @@ public class FrgmntSpecimenCopy extends Fragment {
 
         session = new UserSessionManager(getActivity());
 
+        if (GeneralFunctions.isNetConnected(getActivity()))
+            getTeacherProfileDetails();
+        else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
+
         return rootView;
+    }
+
+    // Call Retrofit API
+    private void getTeacherProfileDetails() {
+
+        mPrgrsDialog = new ProgressDialog(getActivity());
+        mPrgrsDialog.setMessage(mPleaseWait);
+        mPrgrsDialog.setCancelable(false);
+        mPrgrsDialog.show();
+
+        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(false).create(APITeacher.class);
+        Call<MdlTeacherDataAvialbltyRes> callMdlTeacherDataAvailbltyRes = objApiTeacher.callTeacherDataAvailability(
+                GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId());
+        callMdlTeacherDataAvailbltyRes.enqueue(new Callback<MdlTeacherDataAvialbltyRes>() {
+            @Override
+            public void onResponse(Call<MdlTeacherDataAvialbltyRes> call, Response<MdlTeacherDataAvialbltyRes> response) {
+
+                mPrgrsDialog.dismiss();
+                try {
+
+                    MdlTeacherDataAvialbltyRes objMdlTeacherDataAvailbltyRes = response.body();
+
+                    if(objMdlTeacherDataAvailbltyRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_FALSE)) {
+                        mTeacherDataAvaibltyStatus = false;
+                        showAlertDialogEditProfile();
+                    } else mTeacherDataAvaibltyStatus = true;
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
+                    Toast.makeText(getActivity(), mInternalPrblmMsg, Toast.LENGTH_SHORT).show();
+                    getActivity().onBackPressed();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MdlTeacherDataAvialbltyRes> call, Throwable t) {
+
+                mPrgrsDialog.dismiss();
+                Toast.makeText(getActivity(), mServerPrblmMsg, Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
+            }
+        });
+    }
+
+    // Show AlertDialog for "Go To Profile"
+    private void showAlertDialogEditProfile() {
+
+        AlertDialog.Builder alrtDlg = new AlertDialog.Builder(getActivity());
+        alrtDlg.setTitle(getString(R.string.edit_profile_sml));
+        alrtDlg.setMessage(getString(R.string.edit_profile_miss_data_msg));
+        alrtDlg.setCancelable(false);
+        alrtDlg.setNegativeButton(getString(R.string.cancel_sml).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                dialogInterface.dismiss();
+                getActivity().onBackPressed();
+            }
+        });
+        alrtDlg.setPositiveButton(getString(R.string.goto_profile_sml).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                dialogInterface.dismiss();
+
+                ((NavgtnDrwrMain) getActivity()).mBundle.putInt(AppConstants.PUT_EXTRA_COME_FROM, AppConstants.COME_FROM_SPECIMEN_COPY);
+                MenuItem mMenuItem = ((NavgtnDrwrMain) getActivity()).mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_teacher_profile);
+                ((NavgtnDrwrMain) getActivity()).onNavigationItemSelected(mMenuItem);
+            }
+        });
+
+        alrtDlg.show();
     }
 
     @OnClick({R.id.fab_frgmnt_specimncopy_done})
@@ -96,9 +183,12 @@ public class FrgmntSpecimenCopy extends Fragment {
         switch (view.getId()) {
             case R.id.fab_frgmnt_specimncopy_done:
 
-                if(GeneralFunctions.isNetConnected(getActivity()))
-                    checkAllValidation();
-                else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
+                if(mPrgrsbrMain.getVisibility() != View.VISIBLE && mTeacherDataAvaibltyStatus) {
+                    if (GeneralFunctions.isNetConnected(getActivity()))
+                        checkAllValidation();
+                    else
+                        Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
+                }
                 break;
         }
     }

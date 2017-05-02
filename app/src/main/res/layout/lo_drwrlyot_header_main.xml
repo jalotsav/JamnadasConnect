@@ -16,6 +16,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_150jdp"
     android:background="@drawable/img_bg_navgndrwr_header"
@@ -46,20 +47,20 @@
             app:srcCompat="@drawable/ic_account_circle_black_56dp" />
 
         <TextView
-            android:id="@+id/tv_drwrlyot_header_username"
+            android:id="@+id/tv_drwrlyot_header_fullname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10jdp"
-            android:text="Teacher name"
+            android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="@dimen/_14jdp" />
 
         <TextView
-            android:id="@+id/tv_drwrlyot_header_mobileno"
+            android:id="@+id/tv_drwrlyot_header_emailmobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1234567890"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12jdp" />
+            android:textSize="@dimen/_12jdp"
+            tools:text="1234567890" />
     </LinearLayout>
 </RelativeLayout>

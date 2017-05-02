@@ -5,6 +5,7 @@
     <string name="server_problem_sml">There are some server problem.</string>
     <string name="internal_problem_sml">There are some internal problem.</string>
     <string name="indevlpmnt_sml">In Development</string>
+    <string name="please_wait_3dots">Please wait&#8230;</string>
 
     <!--Sign In-->
     <string name="mobileno_sml">Mobile Number</string>
@@ -79,6 +80,10 @@
     <string name="book_name_sml">Book name</string>
     <string name="entr_book_name_sml">Enter book name</string>
     <string name="comnts_sml">Comments</string>
+    <string name="edit_profile_sml">Edit Profile</string>
+    <string name="edit_profile_miss_data_msg">We need some information to confirm and send specimen copy to you. Please provide us remaining details.</string>
+    <string name="goto_profile_sml">Go to profile</string>
+    <string name="cancel_sml">Cancel</string>
 
     <!--My Profile-->
     <string name="basic_dtls_sml">Basic Details</string>

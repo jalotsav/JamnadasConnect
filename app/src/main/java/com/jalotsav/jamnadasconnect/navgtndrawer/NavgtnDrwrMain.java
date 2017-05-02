@@ -29,10 +29,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.jalotsav.jamnadasconnect.R;
+import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 
 import butterknife.BindView;
@@ -48,9 +52,11 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
     @BindView(R.id.drwrlyot_nvgtndrwr_main) DrawerLayout mDrwrlyot;
     @BindView(R.id.navgtnvw_nvgtndrwr_main) NavigationView mNavgtnVw;
 
+    TextView mTvFullName, mTvEmailMobile;
     MenuItem mMenuItemDashboard, mMenuItemSpecmnCopy, mMenuItemBookOrder, mMenuItemBookCorctn, mMenuItemSugstn, mMenuItemMyProfile;
 
     UserSessionManager session;
+    Bundle mBundle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +76,16 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
 
             mNavgtnVw.setNavigationItemSelectedListener(this);
 
+            View mVwHeaderlyot = mNavgtnVw.getHeaderView(0);
+            mTvFullName = (TextView) mVwHeaderlyot.findViewById(R.id.tv_drwrlyot_header_fullname);
+            mTvEmailMobile = (TextView) mVwHeaderlyot.findViewById(R.id.tv_drwrlyot_header_emailmobile);
+
+            mTvFullName.setText(session.getFirstName().concat(" ").concat(session.getLastName()));
+            if(!TextUtils.isEmpty(session.getMobile()))
+                mTvEmailMobile.setText(session.getMobile());
+            else
+                mTvEmailMobile.setText(session.getEmail());
+
             // Select First option on Launch
 //            mNavgtnVw.getMenu().getItem(0).setChecked(true);
 //            onNavigationItemSelected(mNavgtnVw.getMenu().getItem(0));
@@ -81,6 +97,11 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         Fragment fragment = null;
+        if(mBundle == null) {
+
+            mBundle = new Bundle();
+            mBundle.putInt(AppConstants.PUT_EXTRA_COME_FROM, 0);
+        }
         CharSequence toolbarTitle = getString(R.string.app_name);
 
         switch (item.getItemId()) {
@@ -128,6 +149,7 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
             getCurrentCheckedMenuItem().setChecked(false);
             item.setChecked(true);
 
+            fragment.setArguments(mBundle);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.framlyot_drwrlyot_contnt_container, fragment).commit();
 

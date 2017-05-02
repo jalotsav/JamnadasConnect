@@ -33,6 +33,7 @@ import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
 import com.jalotsav.jamnadasconnect.common.LogHelper;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 import com.jalotsav.jamnadasconnect.models.login.MdlLoginRes;
+import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherBasic;
 import com.jalotsav.jamnadasconnect.navgtndrawer.NavgtnDrwrMain;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIGeneral;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIRetroBuilder;
@@ -126,6 +127,13 @@ public class SignIn extends AppCompatActivity {
 
                         Toast.makeText(SignIn.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                         session.setUserId(Integer.parseInt(response.body().getUser_id()));
+                        for(MdlTeacherBasic objTeacherBasic : response.body().getObjMdlTeacherBasic()) {
+
+                            session.setFirstName(objTeacherBasic.getFirstName());
+//                            session.setLastName(objTeacherBasic.getLastName());
+                            session.setMobile(objTeacherBasic.getMobile());
+                            session.setEmail(objTeacherBasic.getEmail());
+                        }
                         finish();
                         startActivity(new Intent(SignIn.this, NavgtnDrwrMain.class));
                     } else

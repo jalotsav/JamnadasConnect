@@ -38,6 +38,7 @@ public interface AppConstants {
     String API_GNRL_REGISTRATION = "general/registration";
     String API_TCHR_TEACHER_EDIT = "teacher/api_teacher_edit";
     String API_TCHR_TEACHER_VIEW = "teacher/api_teacher_view";
+    String API_TCHR_CHECK_TEACHER_DATA_AVALBLTY = "teacher/api_check_teacher_data_availability";
     String API_BOOKREQST_BOOKREQST_ADD = "book_request/api_book_request_add";
 
     // Web-Service Keys
@@ -52,6 +53,7 @@ public interface AppConstants {
     String KEY_MESSAGE_CAPS = "MESSAGE";
     String KEY_TDK_ID = "tdk_id";
     String KEY_USER_ID = "user_id";
+    String KEY_USER_DETAILS = "user_details";
     String KEY_FIRST_NAME = "first_name";
     String KEY_MIDDLE_NAME = "middle_name";
     String KEY_LAST_NAME = "last_name";
@@ -92,10 +94,17 @@ public interface AppConstants {
     String KEY_BOOK_NAME = "book_name";
     String KEY_STREAM = "stream";
     String KEY_CLASS = "class";
+    String KEY_MISSING_PARAM = "missing_param";
 
     // Web-Service Values
     String VALUES_TRUE = "TRUE";
     String VALUES_FALSE = "FALSE";
+
+    // PutExtra Keys
+    String PUT_EXTRA_COME_FROM = "comeFrom";
+
+    // Come From Values
+    int COME_FROM_SPECIMEN_COPY = 21;
 
     // Request Keys
     int REQUEST_VERFCTN_MOBILENO = 101;
