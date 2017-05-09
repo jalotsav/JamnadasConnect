@@ -70,7 +70,6 @@ public class FrgmntSpecimenCopy extends Fragment {
     @BindView(R.id.txtinptet_frgmnt_specimncopy_bookname) TextInputEditText mTxtinptEtBookName;
     @BindView(R.id.txtinptet_frgmnt_specimncopy_stream) TextInputEditText mTxtinptEtStream;
     @BindView(R.id.txtinptet_frgmnt_specimncopy_standr) TextInputEditText mTxtinptEtStandr;
-    @BindView(R.id.txtinptet_frgmnt_specimncopy_comnts) TextInputEditText mTxtinptEtComnts;
 
     @BindView(R.id.prgrsbr_frgmnt_specimncopy) ProgressBar mPrgrsbrMain;
 
@@ -86,7 +85,7 @@ public class FrgmntSpecimenCopy extends Fragment {
     UserSessionManager session;
     ProgressDialog mPrgrsDialog;
     boolean mTeacherDataAvaibltyStatus;
-    String mBookNameVal, mStreamVal, mStandrVal, mComntsVal = "";
+    String mBookNameVal, mStreamVal, mStandrVal;
 
     @Nullable
     @Override
@@ -221,7 +220,6 @@ public class FrgmntSpecimenCopy extends Fragment {
         mBookNameVal = mTxtinptEtBookName.getText().toString().trim();
         mStreamVal = mTxtinptEtStream.getText().toString().trim();
         mStandrVal = mTxtinptEtStandr.getText().toString().trim();
-        mComntsVal = mTxtinptEtComnts.getText().toString().trim();
 
         APIBookRequest objApiBookReqst = APIRetroBuilder.getRetroBuilder(false).create(APIBookRequest.class);
         Call<MdlBookReqstAddRes> callMdlBookReqstAddRes = objApiBookReqst.callBookReqstAdd(GeneralFunctions.getDeviceInfo(getActivity()),

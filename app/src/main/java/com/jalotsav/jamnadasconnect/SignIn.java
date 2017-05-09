@@ -130,7 +130,7 @@ public class SignIn extends AppCompatActivity {
                         for(MdlTeacherBasic objTeacherBasic : response.body().getObjMdlTeacherBasic()) {
 
                             session.setFirstName(objTeacherBasic.getFirstName());
-//                            session.setLastName(objTeacherBasic.getLastName());
+                            session.setLastName(objTeacherBasic.getLastName());
                             session.setMobile(objTeacherBasic.getMobile());
                             session.setEmail(objTeacherBasic.getEmail());
                         }

@@ -102,7 +102,8 @@
                 android:layout_marginLeft="@dimen/_16jdp"
                 android:layout_marginRight="@dimen/_16jdp"
                 android:layout_marginTop="@dimen/_5jdp"
-                app:cardCornerRadius="3dp">
+                app:cardCornerRadius="3dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -210,6 +211,7 @@
                 android:layout_marginLeft="@dimen/_16jdp"
                 android:layout_marginRight="@dimen/_16jdp"
                 android:layout_marginTop="@dimen/_5jdp"
+                android:visibility="gone"
                 app:cardCornerRadius="3dp">
 
                 <LinearLayout
@@ -304,6 +306,7 @@
                 android:layout_marginLeft="@dimen/_16jdp"
                 android:layout_marginRight="@dimen/_16jdp"
                 android:layout_marginTop="@dimen/_5jdp"
+                android:visibility="gone"
                 app:cardCornerRadius="3dp">
 
                 <LinearLayout
@@ -451,7 +454,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_216jdp"
                     android:layout_marginLeft="@dimen/_16jdp"
                     android:layout_marginRight="@dimen/_16jdp"
                     android:orientation="vertical"
@@ -465,12 +468,25 @@
                         android:textColor="@color/colorPrimaryOrange"
                         android:textSize="@dimen/_16jdp" />
 
+                    <com.jalotsav.jamnadasconnect.common.RecyclerViewEmptySupport
+                        android:id="@+id/rcyclrvw_frgmnt_myprofile_workdtls"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_5jdp"
+                        tools:listitem="@layout/lo_recyclritem_workdtls" />
+
+                    <include
+                        layout="@layout/lo_recyclremptyvw_appearhere"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
                     <!--School Name-->
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/txtinputlyot_frgmnt_myprofile_schoolname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5jdp">
+                        android:layout_marginTop="@dimen/_5jdp"
+                        android:visibility="gone">
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/txtinptet_frgmnt_myprofile_schoolname"
@@ -486,7 +502,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/txtinputlyot_frgmnt_myprofile_stream"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/txtinptet_frgmnt_myprofile_stream"
@@ -502,7 +519,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/txtinputlyot_frgmnt_myprofile_standr"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/txtinptet_frgmnt_myprofile_standr"
@@ -519,7 +537,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/txtinputlyot_frgmnt_myprofile_subject"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
 
                         <android.support.design.widget.TextInputEditText
                             android:id="@+id/txtinptet_frgmnt_myprofile_subject"
