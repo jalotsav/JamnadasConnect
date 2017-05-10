@@ -27,6 +27,8 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -44,9 +46,11 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jalotsav.jamnadasconnect.R;
+import com.jalotsav.jamnadasconnect.adapters.RcyclrWorkDtlsAdapter;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
 import com.jalotsav.jamnadasconnect.common.LogHelper;
+import com.jalotsav.jamnadasconnect.common.RecyclerViewEmptySupport;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherBasic;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherContactEductn;
@@ -81,15 +85,18 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindView(R.id.cordntrlyot_frgmnt_myprofile) CoordinatorLayout mCrdntrlyot;
 
     @BindView(R.id.lnrlyot_frgmnt_myprofile_framelyot_title) LinearLayout mTitleContainer;
-    @BindView(R.id.tv_frgmnt_myprofile_toolbar_title) TextView mtvToolbarTitle;
+    @BindView(R.id.lnrlyot_recyclremptyvw_appearhere) LinearLayout mLnrlyotAppearHere;
+
     @BindView(R.id.appbarlyot_frgmnt_myprofile) AppBarLayout mAppBarLayout;
 //    @BindView(R.id.toolbar_frgmnt_myprofile) Toolbar mToolbar;
 
+    @BindView(R.id.tv_frgmnt_myprofile_toolbar_title) TextView mtvToolbarTitle;
     @BindView(R.id.tv_frgmnt_myprofile_framelyot_title) TextView mTvFramelyotTitle;
     @BindView(R.id.tv_frgmnt_myprofile_framelyot_mobileno) TextView mTvFramelyotMobileno;
     @BindView(R.id.tv_frgmnt_myprofile_birthdaylbl) TextView mTvBirthdayLbl;
     @BindView(R.id.tv_frgmnt_myprofile_birthday) TextView mTvBirthday;
     @BindView(R.id.tv_frgmnt_myprofile_birthdayerror) TextView mTvBirthdayError;
+    @BindView(R.id.tv_recyclremptyvw_appearhere) TextView mTvAppearHere;
 
     @BindView(R.id.view_frgmnt_myprofile_birthdayunderline) View mVwBirthdayUnderLine;
 
@@ -123,6 +130,8 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindView(R.id.txtinptet_frgmnt_myprofile_standr) TextInputEditText mTxtinptEtStandr;
     @BindView(R.id.txtinptet_frgmnt_myprofile_subject) TextInputEditText mTxtinptEtSubject;
 
+    @BindView(R.id.rcyclrvw_frgmnt_myprofile_workdtls) RecyclerViewEmptySupport mRecyclerView;
+
     @BindView(R.id.prgrsbr_frgmnt_myprofile) ProgressBar mPrgrsbrMain;
 
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
@@ -144,6 +153,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindString(R.string.entr_standr_sml) String mEntrStandr;
     @BindString(R.string.invalid_standr) String mInvalidStandr;
     @BindString(R.string.entr_subject_sml) String mEntrSubject;
+    @BindString(R.string.work_dtls_appear_here) String mWorkDtlsAppearHere;
     @BindString(R.string.profile_updated_sml) String mProfileUpdatedMsg;
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
@@ -161,6 +171,8 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     int mComeFrom, workJsonTIId, birthdayAgeCount;
     Calendar mCalendar;
     boolean isBirthDateSelected = false;
+    RecyclerView.LayoutManager mLayoutManager;
+    RcyclrWorkDtlsAdapter mAdapter;
 
     @Nullable
     @Override
@@ -179,6 +191,16 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         startAlphaAnimation(mtvToolbarTitle, 0, View.INVISIBLE);
 
         mComeFrom = getArguments().getInt(AppConstants.PUT_EXTRA_COME_FROM, 0);
+
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setEmptyView(mLnrlyotAppearHere);
+
+        mTvAppearHere.setText(mWorkDtlsAppearHere);
+
+        mAdapter = new RcyclrWorkDtlsAdapter(getActivity(), new ArrayList<MdlTeacherWork>());
+        mRecyclerView.setAdapter(mAdapter);
 
         if (GeneralFunctions.isNetConnected(getActivity()))
             getTeacherDetails();
@@ -300,14 +322,16 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                         }
 
                         // Work Details
-                        for(MdlTeacherWork objMdlTeacherWork : objMdlTeacherViewRes.getObjMdlTeacherWork()) {
+                        /*for(MdlTeacherWork objMdlTeacherWork : objMdlTeacherViewRes.getObjMdlTeacherWork()) {
 
                             workJsonTIId = objMdlTeacherWork.getTiId();
                             mTxtinptEtSchoolName.setText(objMdlTeacherWork.getTiInstituteTitle());
                             mTxtinptEtStream.setText(objMdlTeacherWork.getTicStream());
                             mTxtinptEtStandr.setText(objMdlTeacherWork.getTicStd());
                             mTxtinptEtSubject.setText(objMdlTeacherWork.getTicSubject());
-                        }
+                        }*/
+                        mAdapter = new RcyclrWorkDtlsAdapter(getActivity(), objMdlTeacherViewRes.getObjMdlTeacherWork());
+                        mRecyclerView.setAdapter(mAdapter);
                     } else
                         Snackbar.make(mCrdntrlyot, objMdlTeacherViewRes.getMessage(), Snackbar.LENGTH_LONG).show();
                 } catch (Exception e) {

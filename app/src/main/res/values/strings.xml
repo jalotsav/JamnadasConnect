@@ -111,6 +111,7 @@
     <string name="entr_pincode_sml">Enter pincode</string>
     <string name="invalid_pincode">Invalid pincode</string>
     <string name="work_dtls_sml">Work Details</string>
+    <string name="work_dtls_appear_here">Work details appear here</string>
     <string name="profile_updated_sml">Profile updated successfully.</string>
 
     <!--Logout-->

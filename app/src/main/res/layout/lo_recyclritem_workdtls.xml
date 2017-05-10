@@ -17,6 +17,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/_10jdp"
@@ -59,7 +60,7 @@
                 app:srcCompat="@drawable/ic_remove_circle_outline_black_24dp" />
 
             <TextView
-                android:id="@+id/imgvw_recylrvw_item_workdtls_schoolname"
+                android:id="@+id/tv_recylrvw_item_workdtls_schoolname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"

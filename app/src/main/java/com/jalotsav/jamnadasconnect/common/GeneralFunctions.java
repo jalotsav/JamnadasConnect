@@ -18,19 +18,23 @@ package com.jalotsav.jamnadasconnect.common;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jalotsav.jamnadasconnect.R;
 import com.jalotsav.jamnadasconnect.models.MdlDeviceInfo;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
@@ -139,5 +143,27 @@ public class GeneralFunctions {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(timestamp * 1000);
         return DateFormat.format("dd-MMM-yyyy", cal).toString();
+    }
+
+    /***
+     * Common Material Primary colors array
+     * ***/
+    public static ArrayList<Integer> getPrimaryColorArray(Context context) {
+
+        ArrayList<Integer> arrylst_prmrycolor = new ArrayList<Integer>();
+        try {
+            arrylst_prmrycolor.add(ContextCompat.getColor(context, R.color.colorPrimaryTeal));
+            arrylst_prmrycolor.add(ContextCompat.getColor(context, R.color.colorPrimaryBlue));
+            arrylst_prmrycolor.add(ContextCompat.getColor(context, R.color.colorPrimaryRed));
+            arrylst_prmrycolor.add(ContextCompat.getColor(context, R.color.colorPrimaryPink));
+            arrylst_prmrycolor.add(ContextCompat.getColor(context, R.color.colorPrimaryPurple));
+            arrylst_prmrycolor.add(ContextCompat.getColor(context, R.color.colorPrimaryIndigo));
+            arrylst_prmrycolor.add(ContextCompat.getColor(context, R.color.colorPrimaryDarkAmber));
+            arrylst_prmrycolor.add(ContextCompat.getColor(context, R.color.colorPrimaryBlueGrey));
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return arrylst_prmrycolor;
     }
 }
