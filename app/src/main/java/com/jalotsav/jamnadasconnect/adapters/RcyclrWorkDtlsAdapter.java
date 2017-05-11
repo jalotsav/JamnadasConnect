@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.jalotsav.jamnadasconnect.R;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherWork;
+import com.jalotsav.jamnadasconnect.navgtndrawer.FrgmntMyProfile;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -41,12 +42,14 @@ public class RcyclrWorkDtlsAdapter extends RecyclerView.Adapter<RcyclrWorkDtlsAd
     private Context mContext;
     private ArrayList<MdlTeacherWork> mArrylstMdlTeacherWork;
     private ArrayList<Integer> mArrylstPrmryclrs;
+    private FrgmntMyProfile mFrgmntMyProfile;
 
-    public RcyclrWorkDtlsAdapter(Context context, ArrayList<MdlTeacherWork> arrylstMdlMasterDtlsData) {
+    public RcyclrWorkDtlsAdapter(Context context, FrgmntMyProfile frgmntMyProfile, ArrayList<MdlTeacherWork> arrylstMdlMasterDtlsData) {
 
         mContext = context;
         mArrylstMdlTeacherWork = new ArrayList<>();
         mArrylstMdlTeacherWork.addAll(arrylstMdlMasterDtlsData);
+        mFrgmntMyProfile = frgmntMyProfile;
         mArrylstPrmryclrs = GeneralFunctions.getPrimaryColorArray(mContext);
     }
 
@@ -72,7 +75,7 @@ public class RcyclrWorkDtlsAdapter extends RecyclerView.Adapter<RcyclrWorkDtlsAd
         MdlTeacherWork objMdlTeacherWork = mArrylstMdlTeacherWork.get(position);
         holder.tvFirstChar.setText(objMdlTeacherWork.getTiInstituteTitle().substring(0,1));
         holder.tvSchoolName.setText(objMdlTeacherWork.getTiInstituteTitle());
-        holder.tvStandard.setText(objMdlTeacherWork.getTicStd());
+        holder.tvStandard.setText(objMdlTeacherWork.getTicStd().concat(", "));
         holder.tvSubject.setText(objMdlTeacherWork.getTicSubject());
         holder.tvStream.setText(objMdlTeacherWork.getTicStream());
         holder.imgvwRemove.setOnClickListener(new View.OnClickListener() {
@@ -105,17 +108,41 @@ public class RcyclrWorkDtlsAdapter extends RecyclerView.Adapter<RcyclrWorkDtlsAd
         }
     }
 
+    // Remove item at given position
     private void removeAt(int position) {
+
+        MdlTeacherWork objMdlTeacherWork = mArrylstMdlTeacherWork.get(position);
+        if(objMdlTeacherWork.getTiId() != 0)
+            mFrgmntMyProfile.mArrylstDeletedWorkDtlsIds.add(objMdlTeacherWork.getTiId());
 
         mArrylstMdlTeacherWork.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mArrylstMdlTeacherWork.size());
+        notifyDataSetChanged();
+
+        mFrgmntMyProfile.updateAddWorkDetailsButton();
     }
 
-    public void setFilter(ArrayList<MdlTeacherWork> arrylstMdlPendngSaudaData) {
+    // Add new Item at last position
+    public void addItem(MdlTeacherWork objMdlTeacherWork) {
+
+        mArrylstMdlTeacherWork.add(objMdlTeacherWork);
+        notifyItemInserted(mArrylstMdlTeacherWork.size() - 1);
+        notifyDataSetChanged();
+        mFrgmntMyProfile.updateAddWorkDetailsButton();
+        mFrgmntMyProfile.mRecyclerView.scrollToPosition(mArrylstMdlTeacherWork.size() - 1);
+    }
+
+    // Get All Items
+    public ArrayList<MdlTeacherWork> getAllItems() {
+        return this.mArrylstMdlTeacherWork;
+    }
+
+    // Set Filter and Notify
+    public void setFilter(ArrayList<MdlTeacherWork> arrylstMdlTeacherWork) {
 
         mArrylstMdlTeacherWork = new ArrayList<>();
-        mArrylstMdlTeacherWork.addAll(arrylstMdlPendngSaudaData);
+        mArrylstMdlTeacherWork.addAll(arrylstMdlTeacherWork);
         notifyDataSetChanged();
     }
 }

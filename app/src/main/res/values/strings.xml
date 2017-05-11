@@ -6,6 +6,8 @@
     <string name="internal_problem_sml">There are some internal problem.</string>
     <string name="indevlpmnt_sml">In Development</string>
     <string name="please_wait_3dots">Please wait&#8230;</string>
+    <string name="add_sml">Add</string>
+    <string name="cancel_sml">Cancel</string>
 
     <!--Sign In-->
     <string name="mobileno_sml">Mobile Number</string>
@@ -83,7 +85,6 @@
     <string name="edit_profile_sml">Edit Profile</string>
     <string name="edit_profile_miss_data_msg">We need some information to confirm and send specimen copy to you. Please provide us remaining details.</string>
     <string name="goto_profile_sml">Go to profile</string>
-    <string name="cancel_sml">Cancel</string>
 
     <!--My Profile-->
     <string name="basic_dtls_sml">Basic Details</string>
@@ -111,7 +112,9 @@
     <string name="entr_pincode_sml">Enter pincode</string>
     <string name="invalid_pincode">Invalid pincode</string>
     <string name="work_dtls_sml">Work Details</string>
+    <string name="add_more_sml">Add more</string>
     <string name="work_dtls_appear_here">Work details appear here</string>
+    <string name="add_atleast_one_work_dtls">Add at least one Work details</string>
     <string name="profile_updated_sml">Profile updated successfully.</string>
 
     <!--Logout-->

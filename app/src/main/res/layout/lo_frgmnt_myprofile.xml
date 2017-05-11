@@ -102,8 +102,7 @@
                 android:layout_marginLeft="@dimen/_16jdp"
                 android:layout_marginRight="@dimen/_16jdp"
                 android:layout_marginTop="@dimen/_5jdp"
-                app:cardCornerRadius="3dp"
-                android:visibility="gone">
+                app:cardCornerRadius="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -135,7 +134,7 @@
                             android:text="@string/birthday_sml"
                             android:textColor="@color/colorPrimaryOrange"
                             android:textSize="@dimen/_10jdp"
-                            android:visibility="invisible"/>
+                            android:visibility="invisible" />
 
                         <RelativeLayout
                             android:id="@+id/rltvlyot_frgmnt_myprofile_birthday"
@@ -147,10 +146,10 @@
                                 android:id="@+id/imgvw_frgmnt_myprofile_birthdayarrow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
                                 android:layout_alignParentEnd="true"
-                                android:tint="@color/grayA8"
+                                android:layout_alignParentRight="true"
                                 android:contentDescription="@string/imgcd_image"
+                                android:tint="@color/grayA8"
                                 app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
 
                             <TextView
@@ -161,16 +160,16 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_toLeftOf="@id/imgvw_frgmnt_myprofile_birthdayarrow"
                                 android:layout_toStartOf="@id/imgvw_frgmnt_myprofile_birthdayarrow"
-                                android:textSize="@dimen/_14jdp"
+                                android:text="@string/birthday_sml"
                                 android:textColor="@color/grayA8"
-                                android:text="@string/birthday_sml"/>
+                                android:textSize="@dimen/_14jdp" />
                         </RelativeLayout>
 
                         <View
                             android:id="@+id/view_frgmnt_myprofile_birthdayunderline"
                             android:layout_width="match_parent"
                             android:layout_height="1.5dp"
-                            android:background="@color/grayA8"/>
+                            android:background="@color/grayA8" />
 
                         <TextView
                             android:id="@+id/tv_frgmnt_myprofile_birthdayerror"
@@ -178,9 +177,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_5jdp"
                             android:text="@string/select_birthday_sml"
-                            android:textSize="@dimen/_10jdp"
                             android:textColor="@color/red"
-                            android:visibility="gone"/>
+                            android:textSize="@dimen/_10jdp"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <!--Email-->
@@ -211,7 +210,6 @@
                 android:layout_marginLeft="@dimen/_16jdp"
                 android:layout_marginRight="@dimen/_16jdp"
                 android:layout_marginTop="@dimen/_5jdp"
-                android:visibility="gone"
                 app:cardCornerRadius="3dp">
 
                 <LinearLayout
@@ -306,7 +304,6 @@
                 android:layout_marginLeft="@dimen/_16jdp"
                 android:layout_marginRight="@dimen/_16jdp"
                 android:layout_marginTop="@dimen/_5jdp"
-                android:visibility="gone"
                 app:cardCornerRadius="3dp">
 
                 <LinearLayout
@@ -461,12 +458,36 @@
                     android:paddingBottom="@dimen/_5jdp"
                     android:paddingTop="@dimen/_5jdp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/work_dtls_sml"
-                        android:textColor="@color/colorPrimaryOrange"
-                        android:textSize="@dimen/_16jdp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <!--Add-->
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/appcmptbtn_frgmnt_myprofile_workdtls_add"
+                            style="@style/MaterialButton.Amber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_40jdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:paddingLeft="@dimen/_20jdp"
+                            android:paddingRight="@dimen/_20jdp"
+                            android:text="@string/add_sml"
+                            android:textColor="@color/colorPrimaryBlueMidnight"
+                            android:textSize="@dimen/_12jdp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@id/appcmptbtn_frgmnt_myprofile_workdtls_add"
+                            android:layout_toStartOf="@id/appcmptbtn_frgmnt_myprofile_workdtls_add"
+                            android:text="@string/work_dtls_sml"
+                            android:textColor="@color/colorPrimaryOrange"
+                            android:textSize="@dimen/_16jdp" />
+                    </RelativeLayout>
 
                     <com.jalotsav.jamnadasconnect.common.RecyclerViewEmptySupport
                         android:id="@+id/rcyclrvw_frgmnt_myprofile_workdtls"
@@ -479,76 +500,6 @@
                         layout="@layout/lo_recyclremptyvw_appearhere"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
-
-                    <!--School Name-->
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/txtinputlyot_frgmnt_myprofile_schoolname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5jdp"
-                        android:visibility="gone">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/txtinptet_frgmnt_myprofile_schoolname"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/schoolname_sml"
-                            android:inputType="text"
-                            android:textColorHint="@color/grayA8"
-                            android:textSize="@dimen/_14jdp" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <!--Stream-->
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/txtinputlyot_frgmnt_myprofile_stream"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/txtinptet_frgmnt_myprofile_stream"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/stream_sml"
-                            android:inputType="text"
-                            android:textColorHint="@color/grayA8"
-                            android:textSize="@dimen/_14jdp" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <!--Standard-->
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/txtinputlyot_frgmnt_myprofile_standr"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/txtinptet_frgmnt_myprofile_standr"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/standr_sml"
-                            android:inputType="numberSigned"
-                            android:maxLength="2"
-                            android:textColorHint="@color/grayA8"
-                            android:textSize="@dimen/_14jdp" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <!--Subject-->
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/txtinputlyot_frgmnt_myprofile_subject"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone">
-
-                        <android.support.design.widget.TextInputEditText
-                            android:id="@+id/txtinptet_frgmnt_myprofile_subject"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/subject_sml"
-                            android:inputType="text"
-                            android:textColorHint="@color/grayA8"
-                            android:textSize="@dimen/_14jdp" />
-                    </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
             <!--END Work Details-->

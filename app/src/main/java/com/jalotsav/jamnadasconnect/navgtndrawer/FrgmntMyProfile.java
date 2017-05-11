@@ -17,6 +17,7 @@
 package com.jalotsav.jamnadasconnect.navgtndrawer;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -36,10 +38,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -109,10 +113,6 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_state) TextInputLayout mTxtinptlyotState;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_country) TextInputLayout mTxtinptlyotCountry;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_pincode) TextInputLayout mTxtinptlyotPincode;
-    @BindView(R.id.txtinputlyot_frgmnt_myprofile_schoolname) TextInputLayout mTxtinptlyotSchoolName;
-    @BindView(R.id.txtinputlyot_frgmnt_myprofile_stream) TextInputLayout mTxtinptlyotStream;
-    @BindView(R.id.txtinputlyot_frgmnt_myprofile_standr) TextInputLayout mTxtinptlyotStandr;
-    @BindView(R.id.txtinputlyot_frgmnt_myprofile_subject) TextInputLayout mTxtinptlyotSubject;
 
     @BindView(R.id.txtinptet_frgmnt_myprofile_email) TextInputEditText mTxtinptEtEmail;
     @BindView(R.id.txtinptet_frgmnt_myprofile_exprnc) TextInputEditText mTxtinptEtExprnc;
@@ -125,14 +125,12 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindView(R.id.txtinptet_frgmnt_myprofile_state) TextInputEditText mTxtinptEtState;
     @BindView(R.id.txtinptet_frgmnt_myprofile_country) TextInputEditText mTxtinptEtCountry;
     @BindView(R.id.txtinptet_frgmnt_myprofile_pincode) TextInputEditText mTxtinptEtPincode;
-    @BindView(R.id.txtinptet_frgmnt_myprofile_schoolname) TextInputEditText mTxtinptEtSchoolName;
-    @BindView(R.id.txtinptet_frgmnt_myprofile_stream) TextInputEditText mTxtinptEtStream;
-    @BindView(R.id.txtinptet_frgmnt_myprofile_standr) TextInputEditText mTxtinptEtStandr;
-    @BindView(R.id.txtinptet_frgmnt_myprofile_subject) TextInputEditText mTxtinptEtSubject;
 
-    @BindView(R.id.rcyclrvw_frgmnt_myprofile_workdtls) RecyclerViewEmptySupport mRecyclerView;
+    public @BindView(R.id.rcyclrvw_frgmnt_myprofile_workdtls) RecyclerViewEmptySupport mRecyclerView;
 
     @BindView(R.id.prgrsbr_frgmnt_myprofile) ProgressBar mPrgrsbrMain;
+
+    @BindView(R.id.appcmptbtn_frgmnt_myprofile_workdtls_add) AppCompatButton mAppcmptbtnAddWorkDtls;
 
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
@@ -154,7 +152,13 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindString(R.string.invalid_standr) String mInvalidStandr;
     @BindString(R.string.entr_subject_sml) String mEntrSubject;
     @BindString(R.string.work_dtls_appear_here) String mWorkDtlsAppearHere;
+    @BindString(R.string.add_sml) String mAdd;
+    @BindString(R.string.add_more_sml) String mAddMore;
+    @BindString(R.string.add_atleast_one_work_dtls) String mAddAtleastOneWorkDtls;
     @BindString(R.string.profile_updated_sml) String mProfileUpdatedMsg;
+
+    TextInputLayout mTxtinptlyotSchoolName, mTxtinptlyotStream, mTxtinptlyotStandr, mTxtinptlyotSubject;
+    TextInputEditText mTxtinptEtSchoolName, mTxtinptEtStream, mTxtinptEtStandr, mTxtinptEtSubject;
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
@@ -168,11 +172,13 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
             mExprncVal, mAreaOfIntrstVal, mEductnlQualfctnVal, mAchievmntsVal = "",
             mAdrsLine1Val, mAdrsLine2Val = "", mCityVal, mStateVal, mCountryVal, mPincodeVal,
             mSchoolNameVal, mStreamVal, mStandrVal, mSubjectVal;
-    int mComeFrom, workJsonTIId, birthdayAgeCount;
+    int mComeFrom, birthdayAgeCount;
     Calendar mCalendar;
     boolean isBirthDateSelected = false;
     RecyclerView.LayoutManager mLayoutManager;
     RcyclrWorkDtlsAdapter mAdapter;
+    ArrayList<MdlTeacherWork> mArrylstMdlTeacherWork;
+    public ArrayList<Integer> mArrylstDeletedWorkDtlsIds;
 
     @Nullable
     @Override
@@ -199,7 +205,9 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
         mTvAppearHere.setText(mWorkDtlsAppearHere);
 
-        mAdapter = new RcyclrWorkDtlsAdapter(getActivity(), new ArrayList<MdlTeacherWork>());
+        mArrylstMdlTeacherWork = new ArrayList<>();
+        mArrylstDeletedWorkDtlsIds = new ArrayList<>();
+        mAdapter = new RcyclrWorkDtlsAdapter(getActivity(), FrgmntMyProfile.this, mArrylstMdlTeacherWork);
         mRecyclerView.setAdapter(mAdapter);
 
         if (GeneralFunctions.isNetConnected(getActivity()))
@@ -322,16 +330,11 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                         }
 
                         // Work Details
-                        /*for(MdlTeacherWork objMdlTeacherWork : objMdlTeacherViewRes.getObjMdlTeacherWork()) {
-
-                            workJsonTIId = objMdlTeacherWork.getTiId();
-                            mTxtinptEtSchoolName.setText(objMdlTeacherWork.getTiInstituteTitle());
-                            mTxtinptEtStream.setText(objMdlTeacherWork.getTicStream());
-                            mTxtinptEtStandr.setText(objMdlTeacherWork.getTicStd());
-                            mTxtinptEtSubject.setText(objMdlTeacherWork.getTicSubject());
-                        }*/
-                        mAdapter = new RcyclrWorkDtlsAdapter(getActivity(), objMdlTeacherViewRes.getObjMdlTeacherWork());
+                        mArrylstMdlTeacherWork.addAll(objMdlTeacherViewRes.getObjMdlTeacherWork());
+                        mAdapter = new RcyclrWorkDtlsAdapter(getActivity(), FrgmntMyProfile.this, mArrylstMdlTeacherWork);
                         mRecyclerView.setAdapter(mAdapter);
+
+                        updateAddWorkDetailsButton();
                     } else
                         Snackbar.make(mCrdntrlyot, objMdlTeacherViewRes.getMessage(), Snackbar.LENGTH_LONG).show();
                 } catch (Exception e) {
@@ -351,7 +354,16 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         });
     }
 
-    @OnClick({R.id.rltvlyot_frgmnt_myprofile_birthday})
+    // Update Add WorkDetails button text as per ArrayList size (Add/Add more)
+    public void updateAddWorkDetailsButton() {
+
+        if(mAdapter.getItemCount() > 0)
+            mAppcmptbtnAddWorkDtls.setText(mAddMore);
+        else
+            mAppcmptbtnAddWorkDtls.setText(mAdd);
+    }
+
+    @OnClick({R.id.rltvlyot_frgmnt_myprofile_birthday, R.id.appcmptbtn_frgmnt_myprofile_workdtls_add})
     public void onClickView(View view) {
 
         switch (view.getId()) {
@@ -359,6 +371,11 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
                 if(mPrgrsbrMain.getVisibility() != View.VISIBLE)
                     showDOBCalender();
+                break;
+            case R.id.appcmptbtn_frgmnt_myprofile_workdtls_add:
+
+                if(mPrgrsbrMain.getVisibility() != View.VISIBLE)
+                    showAddWorkDetailsDialog();
                 break;
         }
     }
@@ -401,6 +418,98 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         validateBirthday();
     }
 
+    // Show Dialog for Add Work Details
+    private void showAddWorkDetailsDialog() {
+
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.lo_dialog_workdtls);
+        Window mWindow = dialog.getWindow();
+        if (mWindow != null)
+            mWindow.setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        mTxtinptlyotSchoolName = (TextInputLayout) dialog.findViewById(R.id.txtinputlyot_dialog_workdtls_schoolname);
+        mTxtinptlyotStream = (TextInputLayout) dialog.findViewById(R.id.txtinputlyot_dialog_workdtls_stream);
+        mTxtinptlyotStandr = (TextInputLayout) dialog.findViewById(R.id.txtinputlyot_dialog_workdtls_standr);
+        mTxtinptlyotSubject = (TextInputLayout) dialog.findViewById(R.id.txtinputlyot_dialog_workdtls_subject);
+        mTxtinptEtSchoolName = (TextInputEditText) dialog.findViewById(R.id.txtinptet_dialog_workdtls_schoolname);
+        mTxtinptEtStream = (TextInputEditText) dialog.findViewById(R.id.txtinptet_dialog_workdtls_stream);
+        mTxtinptEtStandr = (TextInputEditText) dialog.findViewById(R.id.txtinptet_dialog_workdtls_standr);
+        mTxtinptEtSubject = (TextInputEditText) dialog.findViewById(R.id.txtinptet_dialog_workdtls_subject);
+
+        dialog.findViewById(R.id.appcmptbtn_dialog_workdtls_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialog.dismiss();
+            }
+        });
+        dialog.findViewById(R.id.appcmptbtn_dialog_workdtls_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                checkAddWorkDetailsValidation();
+            }
+
+            private void checkAddWorkDetailsValidation() {
+
+                if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotSchoolName, mTxtinptEtSchoolName, mEntrSchoolName)) // SchoolName
+                    return;
+
+                if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotStream, mTxtinptEtStream, mEntrStream)) // Stream
+                    return;
+
+                if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotStandr, mTxtinptEtStandr, mEntrStandr)) // Standard
+                    return;
+
+                if(!validateStandard())
+                    return;
+
+                if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotSubject, mTxtinptEtSubject, mEntrSubject)) // Subject
+                    return;
+
+                addWorkDetails();
+            }
+
+            // Check Standard input digits validation for field
+            private boolean validateStandard() {
+
+                int standrVal = Integer.parseInt(mTxtinptEtStandr.getText().toString().trim());
+                if (standrVal >0 && standrVal <=12) {
+                    mTxtinptlyotStandr.setError(null);
+                    mTxtinptlyotStandr.setErrorEnabled(false);
+                    return true;
+                } else {
+                    mTxtinptlyotStandr.setErrorEnabled(true);
+                    mTxtinptlyotStandr.setError(mInvalidStandr);
+                    ValidationUtils.requestFocus(getActivity(), mTxtinptEtStandr);
+                    return false;
+                }
+            }
+
+            // Add user entered Work Details in to Array and Update RecyclerView
+            private void addWorkDetails() {
+
+                mSchoolNameVal = mTxtinptEtSchoolName.getText().toString().trim();
+                mStreamVal = mTxtinptEtStream.getText().toString().trim();
+                mStandrVal = mTxtinptEtStandr.getText().toString().trim();
+                mSubjectVal = mTxtinptEtSubject.getText().toString().trim();
+
+                MdlTeacherWork objMdlTeacherWork = new MdlTeacherWork();
+                objMdlTeacherWork.setTiInstituteTitle(mSchoolNameVal);
+                objMdlTeacherWork.setTicStream(mStreamVal);
+                objMdlTeacherWork.setTicStd(mStandrVal);
+                objMdlTeacherWork.setTicSubject(mSubjectVal);
+                mAdapter.addItem(objMdlTeacherWork);
+
+                dialog.dismiss();
+
+                updateAddWorkDetailsButton();
+            }
+        });
+        dialog.show();
+    }
+
     // Check all validation of fields and call API
     private void checkAllValidation() {
 
@@ -434,19 +543,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         if(!validatePincode())
             return;
 
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotSchoolName, mTxtinptEtSchoolName, mEntrSchoolName)) // SchoolName
-            return;
-
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotStream, mTxtinptEtStream, mEntrStream)) // Stream
-            return;
-
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotStandr, mTxtinptEtStandr, mEntrStandr)) // Standard
-            return;
-
-        if(!validateStandard())
-            return;
-
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotSubject, mTxtinptEtSubject, mEntrSubject)) // Subject
+        if(!validateWorkDetails())
             return;
 
         if (GeneralFunctions.isNetConnected(getActivity()))
@@ -454,6 +551,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
     }
 
+    // Validation for BirthDay
     private boolean validateBirthday() {
 
         if(!isBirthDateSelected){
@@ -512,20 +610,14 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         }
     }
 
-    // Check Standard input digits validation for field
-    private boolean validateStandard() {
+    // Validation for Work Details Array
+    private boolean validateWorkDetails() {
 
-        int standrVal = Integer.parseInt(mTxtinptEtStandr.getText().toString().trim());
-        if (standrVal >0 && standrVal <=12) {
-            mTxtinptlyotStandr.setError(null);
-            mTxtinptlyotStandr.setErrorEnabled(false);
-            return true;
-        } else {
-            mTxtinptlyotStandr.setErrorEnabled(true);
-            mTxtinptlyotStandr.setError(mInvalidStandr);
-            ValidationUtils.requestFocus(getActivity(), mTxtinptEtStandr);
+        if(mAdapter.getItemCount() == 0) {
+            Snackbar.make(mCrdntrlyot, mAddAtleastOneWorkDtls, Snackbar.LENGTH_SHORT).show();
             return false;
-        }
+        } else
+            return true;
     }
 
     private void callTeacherEditAPI() {
@@ -548,26 +640,15 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         mStateVal = mTxtinptEtState.getText().toString().trim();
         mCountryVal = mTxtinptEtCountry.getText().toString().trim();
         mPincodeVal = mTxtinptEtPincode.getText().toString().trim();
-        mSchoolNameVal = mTxtinptEtSchoolName.getText().toString().trim();
-        mStreamVal = mTxtinptEtStream.getText().toString().trim();
-        mStandrVal = mTxtinptEtStandr.getText().toString().trim();
-        mSubjectVal = mTxtinptEtSubject.getText().toString().trim();
-        ArrayList<MdlTeacherWork> arrylstTeacherWork = new ArrayList<>();
-        MdlTeacherWork objMdlTeacherWork = new MdlTeacherWork();
-        objMdlTeacherWork.setTiId(workJsonTIId);
-        objMdlTeacherWork.setTiInstituteTitle(mSchoolNameVal);
-        objMdlTeacherWork.setTicStream(mStreamVal);
-        objMdlTeacherWork.setTicStd(mStandrVal);
-        objMdlTeacherWork.setTicSubject(mSubjectVal);
-        arrylstTeacherWork.add(objMdlTeacherWork);
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-        String workJSONData = gson.toJson(arrylstTeacherWork);
+        String workJSONData = gson.toJson(mAdapter.getAllItems());
+        String workDeletedIds = TextUtils.join(",", mArrylstDeletedWorkDtlsIds);
 
         APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(false).create(APITeacher.class);
         Call<MdlTeacherEditRes> callMdlTeacherEditRes = objApiTeacher.callTeacherEdit(GeneralFunctions.getDeviceInfo(getActivity()),
                 session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, mBirthDayVal,
                 mExprncVal, mAreaOfIntrstVal, mEductnlQualfctnVal, mAchievmntsVal,
-                mAdrsLine1Val, mAdrsLine2Val, mCityVal, mStateVal, mCountryVal, mPincodeVal, "", workJSONData);
+                mAdrsLine1Val, mAdrsLine2Val, mCityVal, mStateVal, mCountryVal, mPincodeVal, workDeletedIds, workJSONData);
         callMdlTeacherEditRes.enqueue(new Callback<MdlTeacherEditRes>() {
             @Override
             public void onResponse(Call<MdlTeacherEditRes> call, Response<MdlTeacherEditRes> response) {
