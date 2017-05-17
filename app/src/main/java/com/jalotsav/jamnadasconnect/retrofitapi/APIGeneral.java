@@ -17,6 +17,8 @@
 package com.jalotsav.jamnadasconnect.retrofitapi;
 
 import com.jalotsav.jamnadasconnect.common.AppConstants;
+import com.jalotsav.jamnadasconnect.models.MdlGetStandardsRes;
+import com.jalotsav.jamnadasconnect.models.MdlGetStreamsRes;
 import com.jalotsav.jamnadasconnect.models.login.MdlLoginRes;
 import com.jalotsav.jamnadasconnect.models.registration.MdlRegistrationRes;
 
@@ -45,4 +47,10 @@ public interface APIGeneral {
                                               @Field(AppConstants.KEY_EMAIL) String email,
                                               @Field(AppConstants.KEY_PASSWORD) String password,
                                               @Field(AppConstants.KEY_DEVICE_INFO) String deviceInfo);
+
+    @POST(AppConstants.API_GNRL_GET_STREAM_lIST)
+    Call<MdlGetStreamsRes> callGetStreams();
+
+    @POST(AppConstants.API_GNRL_GET_STANDARD_LIST)
+    Call<MdlGetStandardsRes> callGetStandards();
 }

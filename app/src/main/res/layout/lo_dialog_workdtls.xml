@@ -60,37 +60,42 @@
         android:orientation="vertical">
 
         <!--Stream-->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/txtinputlyot_dialog_workdtls_stream"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/txtinptet_dialog_workdtls_stream"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/stream_sml"
-                android:inputType="text"
-                android:textColorHint="@color/grayA8"
-                android:textSize="@dimen/_14jdp" />
-        </android.support.design.widget.TextInputLayout>
+                android:text="@string/stream_sml"
+                android:textColor="@color/colorPrimaryOrange"
+                android:textSize="@dimen/_10jdp" />
+
+            <Spinner
+                android:id="@+id/spnr_dialog_workdtls_stream"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <!--Standard-->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/txtinputlyot_dialog_workdtls_standr"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/txtinptet_dialog_workdtls_standr"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/standr_sml"
-                android:inputType="numberSigned"
-                android:maxLength="2"
-                android:textColorHint="@color/grayA8"
-                android:textSize="@dimen/_14jdp" />
-        </android.support.design.widget.TextInputLayout>
+                android:text="@string/standr_sml"
+                android:textColor="@color/colorPrimaryOrange"
+                android:textSize="@dimen/_10jdp" />
+
+            <Spinner
+                android:id="@+id/spnr_dialog_workdtls_standr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <!--Subject-->
         <android.support.design.widget.TextInputLayout
@@ -113,10 +118,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:layout_marginBottom="@dimen/_8jdp"
         android:layout_marginEnd="@dimen/_8jdp"
         android:layout_marginRight="@dimen/_8jdp"
         android:layout_marginTop="@dimen/_24jdp"
-        android:layout_marginBottom="@dimen/_8jdp"
         android:orientation="horizontal">
 
         <!--Cancel-->

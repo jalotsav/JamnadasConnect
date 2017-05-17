@@ -27,6 +27,7 @@ import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
@@ -71,6 +72,33 @@ public class GeneralFunctions {
             return true;
 
         return false;
+    }
+
+    /**
+     *  Show/Cancel Toast
+     **/
+    private static Toast TOAST = null;
+
+    public static void showToastSingle(Context context, String message, int toastLength) {
+
+        if(TOAST != null) TOAST.cancel();
+        switch (toastLength) {
+            case Toast.LENGTH_SHORT:
+
+                TOAST = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+                TOAST.show();
+                break;
+            case Toast.LENGTH_LONG:
+
+                TOAST = Toast.makeText(context, message, Toast.LENGTH_LONG);
+                TOAST.show();
+                break;
+            default:
+
+                TOAST = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+                TOAST.show();
+                break;
+        }
     }
 
     /***

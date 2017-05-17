@@ -40,10 +40,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,11 +58,14 @@ import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
 import com.jalotsav.jamnadasconnect.common.LogHelper;
 import com.jalotsav.jamnadasconnect.common.RecyclerViewEmptySupport;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
+import com.jalotsav.jamnadasconnect.models.MdlGetStandardsRes;
+import com.jalotsav.jamnadasconnect.models.MdlGetStreamsRes;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherBasic;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherContactEductn;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherEditRes;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherViewRes;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherWork;
+import com.jalotsav.jamnadasconnect.retrofitapi.APIGeneral;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIRetroBuilder;
 import com.jalotsav.jamnadasconnect.retrofitapi.APITeacher;
 import com.jalotsav.jamnadasconnect.utils.ValidationUtils;
@@ -135,6 +140,8 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
     @BindString(R.string.internal_problem_sml) String mInternalPrblmMsg;
+    @BindString(R.string.no_data_avlbl_refresh) String mNoDataAvilblMsg;
+    @BindString(R.string.refresh_sml) String mRefreshStr;
     @BindString(R.string.birthday_sml) String mBirthdayStr;
     @BindString(R.string.select_birthday_sml) String mSelctBirthday;
     @BindString(R.string.invalid_birthday_sml) String mInvalidBirthday;
@@ -147,18 +154,19 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindString(R.string.entr_country_sml) String mEntrCountry;
     @BindString(R.string.entr_pincode_sml) String mEntrPincode;
     @BindString(R.string.entr_schoolname_sml) String mEntrSchoolName;
-    @BindString(R.string.entr_stream_sml) String mEntrStream;
-    @BindString(R.string.entr_standr_sml) String mEntrStandr;
-    @BindString(R.string.invalid_standr) String mInvalidStandr;
     @BindString(R.string.entr_subject_sml) String mEntrSubject;
     @BindString(R.string.work_dtls_appear_here) String mWorkDtlsAppearHere;
-    @BindString(R.string.add_sml) String mAdd;
-    @BindString(R.string.add_more_sml) String mAddMore;
+    @BindString(R.string.add_sml) String mAddStr;
+    @BindString(R.string.add_more_sml) String mAddMoreStr;
+    @BindString(R.string.select_stream_sml) String mSelctStream;
+    @BindString(R.string.select_standard_sml) String mSelctStandr;
     @BindString(R.string.add_atleast_one_work_dtls) String mAddAtleastOneWorkDtls;
     @BindString(R.string.profile_updated_sml) String mProfileUpdatedMsg;
 
-    TextInputLayout mTxtinptlyotSchoolName, mTxtinptlyotStream, mTxtinptlyotStandr, mTxtinptlyotSubject;
-    TextInputEditText mTxtinptEtSchoolName, mTxtinptEtStream, mTxtinptEtStandr, mTxtinptEtSubject;
+    TextInputLayout mTxtinptlyotSchoolName, mTxtinptlyotSubject;
+    TextInputEditText mTxtinptEtSchoolName, mTxtinptEtSubject;
+
+    Spinner mSpnrStream, mSpnrStandr;
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
@@ -171,7 +179,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     String mFirstNameVal, mLastNameVal, mEmailVal = "", mMobileVal, mBirthDayVal,
             mExprncVal, mAreaOfIntrstVal, mEductnlQualfctnVal, mAchievmntsVal = "",
             mAdrsLine1Val, mAdrsLine2Val = "", mCityVal, mStateVal, mCountryVal, mPincodeVal,
-            mSchoolNameVal, mStreamVal, mStandrVal, mSubjectVal;
+            mSchoolNameVal, mSubjectVal;
     int mComeFrom, birthdayAgeCount;
     Calendar mCalendar;
     boolean isBirthDateSelected = false;
@@ -179,6 +187,8 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     RcyclrWorkDtlsAdapter mAdapter;
     ArrayList<MdlTeacherWork> mArrylstMdlTeacherWork;
     public ArrayList<Integer> mArrylstDeletedWorkDtlsIds;
+    ArrayAdapter<String> mArryadptrStream, mArryadptrStandr;
+    ArrayList<String> mArrylstStreams, mArrylstStandrs;
 
     @Nullable
     @Override
@@ -210,11 +220,27 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         mAdapter = new RcyclrWorkDtlsAdapter(getActivity(), FrgmntMyProfile.this, mArrylstMdlTeacherWork);
         mRecyclerView.setAdapter(mAdapter);
 
-        if (GeneralFunctions.isNetConnected(getActivity()))
-            getTeacherDetails();
-        else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
+        mArrylstStreams = new ArrayList<>();
+        mArrylstStreams.add(mSelctStream);
+        mArrylstStandrs = new ArrayList<>();
+        mArrylstStandrs.add(mSelctStandr);
+
+        mArryadptrStream = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStreams);
+        mArryadptrStandr = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStandrs);
+
+        getAllDetails();
 
         return rootView;
+    }
+
+    // Get Teacher, Streams, Standard details
+    private void getAllDetails() {
+
+        if (GeneralFunctions.isNetConnected(getActivity())) {
+            getTeacherDetails();
+            getStreams();
+            getStandards();
+        } else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -311,11 +337,6 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
                                 mTvBirthdayError.setVisibility(View.GONE);
                                 mTvBirthdayLbl.setTextColor(ContextCompat.getColor(getActivity(), R.color.grayA8));
-
-                                /*mTvBirthday.setText(GeneralFunctions.getDateFromTimestamp(Long.parseLong(objMdlTeacherContactEductn.getBirthdate())));
-                                mTvBirthday.setTextColor(Color.BLACK);
-
-                                isBirthDateSelected = true;*/
                             }
                             mTxtinptEtExprnc.setText(objMdlTeacherContactEductn.getExperience());
                             mTxtinptEtAreaOfIntrst.setText(objMdlTeacherContactEductn.getAreaOfInterest());
@@ -330,6 +351,8 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                         }
 
                         // Work Details
+                        mArrylstMdlTeacherWork = new ArrayList<>();
+                        mArrylstDeletedWorkDtlsIds = new ArrayList<>();
                         mArrylstMdlTeacherWork.addAll(objMdlTeacherViewRes.getObjMdlTeacherWork());
                         mAdapter = new RcyclrWorkDtlsAdapter(getActivity(), FrgmntMyProfile.this, mArrylstMdlTeacherWork);
                         mRecyclerView.setAdapter(mAdapter);
@@ -354,13 +377,77 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         });
     }
 
+    // Call Retrofit API
+    private void getStreams() {
+
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        Call<MdlGetStreamsRes> callMdlGetStreamsRes = objApiGeneral.callGetStreams();
+        callMdlGetStreamsRes.enqueue(new Callback<MdlGetStreamsRes>() {
+            @Override
+            public void onResponse(Call<MdlGetStreamsRes> call, Response<MdlGetStreamsRes> response) {
+
+                try {
+
+                    MdlGetStreamsRes objMdlGetStreamsRes = response.body();
+                    if(objMdlGetStreamsRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE))
+                        mArrylstStreams.addAll(objMdlGetStreamsRes.getArrylstStream());
+                    else
+                        Snackbar.make(mCrdntrlyot, objMdlGetStreamsRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
+                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MdlGetStreamsRes> call, Throwable t) {
+
+                Snackbar.make(mCrdntrlyot, mServerPrblmMsg, Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Call Retrofit API
+    private void getStandards() {
+
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        Call<MdlGetStandardsRes> callMdlGetStandardsRes = objApiGeneral.callGetStandards();
+        callMdlGetStandardsRes.enqueue(new Callback<MdlGetStandardsRes>() {
+            @Override
+            public void onResponse(Call<MdlGetStandardsRes> call, Response<MdlGetStandardsRes> response) {
+
+                try {
+
+                    MdlGetStandardsRes objMdlGetStandardsRes = response.body();
+                    if(objMdlGetStandardsRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE))
+                        mArrylstStandrs.addAll(objMdlGetStandardsRes.getArrylstStandard());
+                    else
+                        Snackbar.make(mCrdntrlyot, objMdlGetStandardsRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
+                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MdlGetStandardsRes> call, Throwable t) {
+
+                Snackbar.make(mCrdntrlyot, mServerPrblmMsg, Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     // Update Add WorkDetails button text as per ArrayList size (Add/Add more)
     public void updateAddWorkDetailsButton() {
 
         if(mAdapter.getItemCount() > 0)
-            mAppcmptbtnAddWorkDtls.setText(mAddMore);
+            mAppcmptbtnAddWorkDtls.setText(mAddMoreStr);
         else
-            mAppcmptbtnAddWorkDtls.setText(mAdd);
+            mAppcmptbtnAddWorkDtls.setText(mAddStr);
     }
 
     @OnClick({R.id.rltvlyot_frgmnt_myprofile_birthday, R.id.appcmptbtn_frgmnt_myprofile_workdtls_add})
@@ -429,13 +516,14 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
             mWindow.setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         mTxtinptlyotSchoolName = (TextInputLayout) dialog.findViewById(R.id.txtinputlyot_dialog_workdtls_schoolname);
-        mTxtinptlyotStream = (TextInputLayout) dialog.findViewById(R.id.txtinputlyot_dialog_workdtls_stream);
-        mTxtinptlyotStandr = (TextInputLayout) dialog.findViewById(R.id.txtinputlyot_dialog_workdtls_standr);
         mTxtinptlyotSubject = (TextInputLayout) dialog.findViewById(R.id.txtinputlyot_dialog_workdtls_subject);
         mTxtinptEtSchoolName = (TextInputEditText) dialog.findViewById(R.id.txtinptet_dialog_workdtls_schoolname);
-        mTxtinptEtStream = (TextInputEditText) dialog.findViewById(R.id.txtinptet_dialog_workdtls_stream);
-        mTxtinptEtStandr = (TextInputEditText) dialog.findViewById(R.id.txtinptet_dialog_workdtls_standr);
         mTxtinptEtSubject = (TextInputEditText) dialog.findViewById(R.id.txtinptet_dialog_workdtls_subject);
+        mSpnrStream = (Spinner) dialog.findViewById(R.id.spnr_dialog_workdtls_stream);
+        mSpnrStandr = (Spinner) dialog.findViewById(R.id.spnr_dialog_workdtls_standr);
+
+        mSpnrStream.setAdapter(mArryadptrStream);
+        mSpnrStandr.setAdapter(mArryadptrStandr);
 
         dialog.findViewById(R.id.appcmptbtn_dialog_workdtls_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -456,10 +544,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                 if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotSchoolName, mTxtinptEtSchoolName, mEntrSchoolName)) // SchoolName
                     return;
 
-                if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotStream, mTxtinptEtStream, mEntrStream)) // Stream
-                    return;
-
-                if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotStandr, mTxtinptEtStandr, mEntrStandr)) // Standard
+                if(!validateStream())
                     return;
 
                 if(!validateStandard())
@@ -471,34 +556,48 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                 addWorkDetails();
             }
 
-            // Check Standard input digits validation for field
+            // Validate Stream spinner
+            private boolean validateStream() {
+
+                if(mArrylstStreams.size() <= 1) {
+
+                    dialog.dismiss();
+                    showRefreshSnackbar();
+                    return false;
+                } else if(mSpnrStream.getSelectedItemPosition() == 0) {
+
+                    GeneralFunctions.showToastSingle(getActivity(), mSelctStream, Toast.LENGTH_SHORT);
+                    return false;
+                } else
+                    return true;
+            }
+
+            // Validate Standard spinner
             private boolean validateStandard() {
 
-                int standrVal = Integer.parseInt(mTxtinptEtStandr.getText().toString().trim());
-                if (standrVal >0 && standrVal <=12) {
-                    mTxtinptlyotStandr.setError(null);
-                    mTxtinptlyotStandr.setErrorEnabled(false);
-                    return true;
-                } else {
-                    mTxtinptlyotStandr.setErrorEnabled(true);
-                    mTxtinptlyotStandr.setError(mInvalidStandr);
-                    ValidationUtils.requestFocus(getActivity(), mTxtinptEtStandr);
+                if(mArrylstStandrs.size() <= 1) {
+
+                    dialog.dismiss();
+                    showRefreshSnackbar();
                     return false;
-                }
+                } else if(mSpnrStandr.getSelectedItemPosition() == 0) {
+
+                    GeneralFunctions.showToastSingle(getActivity(), mSelctStandr, Toast.LENGTH_SHORT);
+                    return false;
+                } else
+                    return true;
             }
 
             // Add user entered Work Details in to Array and Update RecyclerView
             private void addWorkDetails() {
 
                 mSchoolNameVal = mTxtinptEtSchoolName.getText().toString().trim();
-                mStreamVal = mTxtinptEtStream.getText().toString().trim();
-                mStandrVal = mTxtinptEtStandr.getText().toString().trim();
                 mSubjectVal = mTxtinptEtSubject.getText().toString().trim();
 
                 MdlTeacherWork objMdlTeacherWork = new MdlTeacherWork();
                 objMdlTeacherWork.setTiInstituteTitle(mSchoolNameVal);
-                objMdlTeacherWork.setTicStream(mStreamVal);
-                objMdlTeacherWork.setTicStd(mStandrVal);
+                objMdlTeacherWork.setTicStream(mSpnrStream.getSelectedItem().toString());
+                objMdlTeacherWork.setTicStd(mSpnrStandr.getSelectedItem().toString());
                 objMdlTeacherWork.setTicSubject(mSubjectVal);
                 mAdapter.addItem(objMdlTeacherWork);
 
@@ -508,6 +607,20 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
             }
         });
         dialog.show();
+    }
+
+    // Show SnackBar with Refresh action
+    private void showRefreshSnackbar() {
+
+        Snackbar.make(mCrdntrlyot, mNoDataAvilblMsg, Snackbar.LENGTH_LONG)
+            .setAction(mRefreshStr, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    getAllDetails();
+                }
+            })
+            .show();
     }
 
     // Check all validation of fields and call API
@@ -685,7 +798,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_done, menu);
+        inflater.inflate(R.menu.menu_myprofile, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -693,7 +806,11 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_done:
+            case R.id.action_myprofile_refresh:
+
+                getAllDetails();
+                break;
+            case R.id.action_myprofile_done:
 
                 if (GeneralFunctions.isNetConnected(getActivity()))
                     checkAllValidation();

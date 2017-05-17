@@ -36,6 +36,8 @@ public interface AppConstants {
     String API_ROOT_URL = "http://www.jamnadas.com/c-jamnadas-admin/api/";
     String API_GNRL_LOGIN = "general/login";
     String API_GNRL_REGISTRATION = "general/registration";
+    String API_GNRL_GET_STREAM_lIST = "general/get_stream_list";
+    String API_GNRL_GET_STANDARD_LIST = "general/get_standard_list";
     String API_TCHR_TEACHER_EDIT = "teacher/api_teacher_edit";
     String API_TCHR_TEACHER_VIEW = "teacher/api_teacher_view";
     String API_TCHR_CHECK_TEACHER_DATA_AVALBLTY = "teacher/api_check_teacher_data_availability";
@@ -95,6 +97,7 @@ public interface AppConstants {
     String KEY_STREAM = "stream";
     String KEY_CLASS = "class";
     String KEY_MISSING_PARAM = "missing_param";
+    String KEY_STANDARD = "standard";
 
     // Web-Service Values
     String VALUES_TRUE = "TRUE";

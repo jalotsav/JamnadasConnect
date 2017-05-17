@@ -27,10 +27,14 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.jalotsav.jamnadasconnect.R;
@@ -38,12 +42,17 @@ import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
 import com.jalotsav.jamnadasconnect.common.LogHelper;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
+import com.jalotsav.jamnadasconnect.models.MdlGetStandardsRes;
+import com.jalotsav.jamnadasconnect.models.MdlGetStreamsRes;
 import com.jalotsav.jamnadasconnect.models.bookrequest.MdlBookReqstAddRes;
 import com.jalotsav.jamnadasconnect.models.teacher.MdlTeacherDataAvialbltyRes;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIBookRequest;
+import com.jalotsav.jamnadasconnect.retrofitapi.APIGeneral;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIRetroBuilder;
 import com.jalotsav.jamnadasconnect.retrofitapi.APITeacher;
 import com.jalotsav.jamnadasconnect.utils.ValidationUtils;
+
+import java.util.ArrayList;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -62,30 +71,28 @@ public class FrgmntSpecimenCopy extends Fragment {
     private static final String TAG = FrgmntSpecimenCopy.class.getSimpleName();
 
     @BindView(R.id.cordntrlyot_frgmnt_specimncopy) CoordinatorLayout mCrdntrlyot;
-
     @BindView(R.id.txtinputlyot_frgmnt_specimncopy_bookname) TextInputLayout mTxtinptlyotBookName;
-    @BindView(R.id.txtinputlyot_frgmnt_specimncopy_stream) TextInputLayout mTxtinptlyotStream;
-    @BindView(R.id.txtinputlyot_frgmnt_specimncopy_standr) TextInputLayout mTxtinptlyotStandr;
-
     @BindView(R.id.txtinptet_frgmnt_specimncopy_bookname) TextInputEditText mTxtinptEtBookName;
-    @BindView(R.id.txtinptet_frgmnt_specimncopy_stream) TextInputEditText mTxtinptEtStream;
-    @BindView(R.id.txtinptet_frgmnt_specimncopy_standr) TextInputEditText mTxtinptEtStandr;
-
+    @BindView(R.id.spnr_frgmnt_specimncopy_stream) Spinner mSpnrStream;
+    @BindView(R.id.spnr_frgmnt_specimncopy_standr) Spinner mSpnrStandr;
     @BindView(R.id.prgrsbr_frgmnt_specimncopy) ProgressBar mPrgrsbrMain;
 
     @BindString(R.string.please_wait_3dots) String mPleaseWait;
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
     @BindString(R.string.internal_problem_sml) String mInternalPrblmMsg;
+    @BindString(R.string.no_data_avlbl_refresh) String mNoDataAvilblMsg;
+    @BindString(R.string.refresh_sml) String mRefreshStr;
     @BindString(R.string.entr_book_name_sml) String mEntrBookName;
-    @BindString(R.string.entr_stream_sml) String mEntrStream;
-    @BindString(R.string.entr_standr_sml) String mEntrStandr;
-    @BindString(R.string.invalid_standr) String mInvalidStandr;
+    @BindString(R.string.select_stream_sml) String mSelctStream;
+    @BindString(R.string.select_standard_sml) String mSelctStandr;
 
     UserSessionManager session;
     ProgressDialog mPrgrsDialog;
     boolean mTeacherDataAvaibltyStatus;
-    String mBookNameVal, mStreamVal, mStandrVal;
+    String mBookNameVal;
+    ArrayAdapter<String> mArryadptrStream, mArryadptrStandr;
+    ArrayList<String> mArrylstStreams, mArrylstStandrs;
 
     @Nullable
     @Override
@@ -94,13 +101,34 @@ public class FrgmntSpecimenCopy extends Fragment {
         View rootView = inflater.inflate(R.layout.lo_frgmnt_specimen_copy, container, false);
         ButterKnife.bind(this, rootView);
 
+        setHasOptionsMenu(true);
+
         session = new UserSessionManager(getActivity());
 
-        if (GeneralFunctions.isNetConnected(getActivity()))
-            getTeacherProfileDetails();
-        else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
+        mArrylstStreams = new ArrayList<>();
+        mArrylstStreams.add(mSelctStream);
+        mArrylstStandrs = new ArrayList<>();
+        mArrylstStandrs.add(mSelctStandr);
+
+        // Init Spinner value
+        mArryadptrStream = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStreams);
+        mSpnrStream.setAdapter(mArryadptrStream);
+        mArryadptrStandr = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStandrs);
+        mSpnrStandr.setAdapter(mArryadptrStandr);
+
+        getAllDetails();
 
         return rootView;
+    }
+
+    // Get Teacher Profile, Streams, Standard details
+    private void getAllDetails() {
+
+        if (GeneralFunctions.isNetConnected(getActivity())) {
+            getTeacherProfileDetails();
+            getStreams();
+            getStandards();
+        } else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
     }
 
     // Call Retrofit API
@@ -142,6 +170,80 @@ public class FrgmntSpecimenCopy extends Fragment {
                 mPrgrsDialog.dismiss();
                 Toast.makeText(getActivity(), mServerPrblmMsg, Toast.LENGTH_SHORT).show();
                 getActivity().onBackPressed();
+            }
+        });
+    }
+
+    // Call Retrofit API
+    private void getStreams() {
+
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        Call<MdlGetStreamsRes> callMdlGetStreamsRes = objApiGeneral.callGetStreams();
+        callMdlGetStreamsRes.enqueue(new Callback<MdlGetStreamsRes>() {
+            @Override
+            public void onResponse(Call<MdlGetStreamsRes> call, Response<MdlGetStreamsRes> response) {
+
+                try {
+
+                    MdlGetStreamsRes objMdlGetStreamsRes = response.body();
+                    if(objMdlGetStreamsRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
+
+                        mArrylstStreams = new ArrayList<>();
+                        mArrylstStreams.add(mSelctStream);
+                        mArrylstStreams.addAll(objMdlGetStreamsRes.getArrylstStream());
+                        mArryadptrStream = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStreams);
+                        mSpnrStream.setAdapter(mArryadptrStream);
+                    } else
+                        Snackbar.make(mCrdntrlyot, objMdlGetStreamsRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
+                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MdlGetStreamsRes> call, Throwable t) {
+
+                Snackbar.make(mCrdntrlyot, mServerPrblmMsg, Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Call Retrofit API
+    private void getStandards() {
+
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        Call<MdlGetStandardsRes> callMdlGetStandardsRes = objApiGeneral.callGetStandards();
+        callMdlGetStandardsRes.enqueue(new Callback<MdlGetStandardsRes>() {
+            @Override
+            public void onResponse(Call<MdlGetStandardsRes> call, Response<MdlGetStandardsRes> response) {
+
+                try {
+
+                    MdlGetStandardsRes objMdlGetStandardsRes = response.body();
+                    if(objMdlGetStandardsRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
+
+                        mArrylstStandrs = new ArrayList<>();
+                        mArrylstStandrs.add(mSelctStandr);
+                        mArrylstStandrs.addAll(objMdlGetStandardsRes.getArrylstStandard());
+                        mArryadptrStandr = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStandrs);
+                        mSpnrStandr.setAdapter(mArryadptrStandr);
+                    } else
+                        Snackbar.make(mCrdntrlyot, objMdlGetStandardsRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
+                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MdlGetStandardsRes> call, Throwable t) {
+
+                Snackbar.make(mCrdntrlyot, mServerPrblmMsg, Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -198,10 +300,7 @@ public class FrgmntSpecimenCopy extends Fragment {
         if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotBookName, mTxtinptEtBookName, mEntrBookName)) // Book Name
             return;
 
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotStream, mTxtinptEtStream, mEntrStream)) // Stream
-            return;
-
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotStandr, mTxtinptEtStandr, mEntrStandr)) // Standard
+        if(!validateStream())
             return;
 
         if(!validateStandard())
@@ -213,17 +312,59 @@ public class FrgmntSpecimenCopy extends Fragment {
 
     }
 
+    // Validate Stream spinner
+    private boolean validateStream() {
+
+        if(mArrylstStreams.size() <= 1) {
+
+            showRefreshSnackbar();
+            return false;
+        } else if(mSpnrStream.getSelectedItemPosition() == 0) {
+
+            GeneralFunctions.showToastSingle(getActivity(), mSelctStream, Toast.LENGTH_SHORT);
+            return false;
+        } else
+            return true;
+    }
+
+    // Validate Standard spinner
+    private boolean validateStandard() {
+
+        if(mArrylstStandrs.size() <= 1) {
+
+            showRefreshSnackbar();
+            return false;
+        } else if(mSpnrStandr.getSelectedItemPosition() == 0) {
+
+            GeneralFunctions.showToastSingle(getActivity(), mSelctStandr, Toast.LENGTH_SHORT);
+            return false;
+        } else
+            return true;
+    }
+
+    // Show SnackBar with Refresh action
+    private void showRefreshSnackbar() {
+
+        Snackbar.make(mCrdntrlyot, mNoDataAvilblMsg, Snackbar.LENGTH_LONG)
+                .setAction(mRefreshStr, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        getAllDetails();
+                    }
+                })
+                .show();
+    }
+
     // Call Retrofit API
     private void callBookRequestAddAPI() {
 
         mPrgrsbrMain.setVisibility(View.VISIBLE);
         mBookNameVal = mTxtinptEtBookName.getText().toString().trim();
-        mStreamVal = mTxtinptEtStream.getText().toString().trim();
-        mStandrVal = mTxtinptEtStandr.getText().toString().trim();
 
         APIBookRequest objApiBookReqst = APIRetroBuilder.getRetroBuilder(false).create(APIBookRequest.class);
         Call<MdlBookReqstAddRes> callMdlBookReqstAddRes = objApiBookReqst.callBookReqstAdd(GeneralFunctions.getDeviceInfo(getActivity()),
-                session.getUserId(), mBookNameVal, mStreamVal, mStandrVal);
+                session.getUserId(), mBookNameVal, mSpnrStream.getSelectedItem().toString(), mSpnrStandr.getSelectedItem().toString());
         callMdlBookReqstAddRes.enqueue(new Callback<MdlBookReqstAddRes>() {
             @Override
             public void onResponse(Call<MdlBookReqstAddRes> call, Response<MdlBookReqstAddRes> response) {
@@ -235,8 +376,8 @@ public class FrgmntSpecimenCopy extends Fragment {
 
                         Snackbar.make(mCrdntrlyot, objMdlBookReqstAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
                         mTxtinptEtBookName.setText("");
-                        mTxtinptEtStream.setText("");
-                        mTxtinptEtStandr.setText("");
+                        mSpnrStream.setSelection(0);
+                        mSpnrStandr.setSelection(0);
                     } else
                         Snackbar.make(mCrdntrlyot, objMdlBookReqstAddRes.getMessage(), Snackbar.LENGTH_LONG).show();
                 } catch (Exception e) {
@@ -256,19 +397,23 @@ public class FrgmntSpecimenCopy extends Fragment {
         });
     }
 
-    // Check Standard input digits validation for field
-    private boolean validateStandard() {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_refresh, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
-        int standrVal = Integer.parseInt(mTxtinptEtStandr.getText().toString().trim());
-        if (standrVal >0 && standrVal <=12) {
-            mTxtinptlyotStandr.setError(null);
-            mTxtinptlyotStandr.setErrorEnabled(false);
-            return true;
-        } else {
-            mTxtinptlyotStandr.setErrorEnabled(true);
-            mTxtinptlyotStandr.setError(mInvalidStandr);
-            ValidationUtils.requestFocus(getActivity(), mTxtinptEtStandr);
-            return false;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+
+                getAllDetails();
+                break;
+            default:
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
 }

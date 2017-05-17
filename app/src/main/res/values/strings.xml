@@ -31,13 +31,6 @@
     <string name="entr_lastname_sml">Enter last name</string>
     <string name="schoolname_sml">School/Institute name</string>
     <string name="entr_schoolname_sml">Enter School/Institute name</string>
-    <string name="stream_sml">Stream</string>
-    <string name="entr_stream_sml">Enter Stream</string>
-    <string name="standr_sml">Standard</string>
-    <string name="entr_standr_sml">Enter Standard</string>
-    <string name="invalid_standr">Invalid standard</string>
-    <string name="subject_sml">Subjects</string>
-    <string name="entr_subject_sml">Enter Subject</string>
     <string name="city_sml">City</string>
     <string name="entr_city_sml">Enter city</string>
     <string name="email_sml">Email</string>
@@ -114,6 +107,13 @@
     <string name="work_dtls_sml">Work Details</string>
     <string name="add_more_sml">Add more</string>
     <string name="work_dtls_appear_here">Work details appear here</string>
+    <string name="select_stream_sml">Select stream</string>
+    <string name="no_data_avlbl_refresh">No data available, Please Refresh.</string>
+    <string name="stream_sml">Stream</string>
+    <string name="select_standard_sml">Select standard</string>
+    <string name="standr_sml">Standard</string>
+    <string name="subject_sml">Subjects</string>
+    <string name="entr_subject_sml">Enter Subject</string>
     <string name="add_atleast_one_work_dtls">Add at least one Work details</string>
     <string name="profile_updated_sml">Profile updated successfully.</string>
 
@@ -123,4 +123,5 @@
 
     <!--Menu Action-->
     <string name="save_sml">Save</string>
+    <string name="refresh_sml">Refresh</string>
 </resources>
