@@ -117,6 +117,9 @@
     <string name="add_atleast_one_work_dtls">Add at least one Work details</string>
     <string name="profile_updated_sml">Profile updated successfully.</string>
 
+    <!--Book Correction-->
+    <string name="attachment_sml">Attachment</string>
+
     <!--Logout-->
     <string name="logout_alrtdlg_msg">Do you want to logout?</string>
     <string name="no_sml">No</string>

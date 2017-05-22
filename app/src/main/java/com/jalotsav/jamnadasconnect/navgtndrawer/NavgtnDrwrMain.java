@@ -122,7 +122,7 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
                 break;
             case R.id.action_nvgtndrwr_book_corectn:
 
-                fragment = new FrgmntInDevlpmnt();
+                fragment = new FrgmntBookCorrection();
                 toolbarTitle = getString(R.string.book_correction_sml);
                 break;
             case R.id.action_nvgtndrwr_teacher_sugstn:

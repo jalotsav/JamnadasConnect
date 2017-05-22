@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright (c) 2017 Jalotsav
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportHeight="508.0"
+    android:viewportWidth="508.0">
+    <path
+        android:fillColor="#FFD05B"
+        android:pathData="M254,254m-254,0a254,254 0,1 1,508 0a254,254 0,1 1,-508 0" />
+    <path
+        android:fillColor="#F9B54C"
+        android:pathData="M76.4,435.2C122,480.4 184.8,508 254,508s132,-27.6 177.6,-72.8H76.4z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M254,71.2c-37.2,0 -67.2,30 -67.2,67.2v96.8c0,36.8 30,66.8 67.2,66.8s67.2,-30 67.2,-67.2V138C321.2,101.2 291.2,71.2 254,71.2z" />
+    <path
+        android:fillColor="#FF7058"
+        android:pathData="M186.8,179.6v55.6c0,36.8 30,66.8 67.2,66.8s67.2,-30 67.2,-67.2v-55.2H186.8z" />
+    <path
+        android:fillColor="#324A5E"
+        android:pathData="M354,179.6v49.6c0,54.4 -42.4,100.4 -96.8,102c-56.4,1.6 -103.2,-44 -103.2,-100v-51.6h-29.2v51.6c0,66.4 50,121.2 114.4,128.4v45.6h-24.4c-16,0 -29.2,13.2 -29.2,29.2H322c0,-16 -13.2,-29.2 -29.2,-29.2h-24.4v-45.6c64.4,-7.2 114.4,-62 114.4,-128.4v-51.6H354z" />
+</vector>
