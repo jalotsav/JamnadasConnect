@@ -57,7 +57,7 @@ public class FireMessagingService extends FirebaseMessagingService implements Ap
         Intent intent = new Intent(this, ActvtyMain.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUESTCODE_SPLASHACTIVITY, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUEST_SPLASHACTIVITY, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)

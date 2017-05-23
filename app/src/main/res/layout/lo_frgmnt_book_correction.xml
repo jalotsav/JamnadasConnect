@@ -28,7 +28,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_120jdp"
+            android:layout_height="@dimen/_110jdp"
             android:background="@color/colorPrimaryBlue">
 
             <LinearLayout
@@ -58,7 +58,7 @@
                         android:maxLines="2"
                         android:textColor="@color/white"
                         android:textColorHint="@color/grayA8"
-                        android:textSize="@dimen/_20jdp" />
+                        android:textSize="@dimen/_16jdp" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </android.support.design.widget.AppBarLayout>
@@ -69,7 +69,7 @@
             android:layout_marginBottom="@dimen/_5jdp"
             android:layout_marginLeft="@dimen/_16jdp"
             android:layout_marginRight="@dimen/_16jdp"
-            android:layout_marginTop="@dimen/_16jdp"
+            android:layout_marginTop="@dimen/_10jdp"
             app:cardCornerRadius="3dp">
 
             <LinearLayout
@@ -78,7 +78,7 @@
                 android:layout_marginLeft="@dimen/_16jdp"
                 android:layout_marginRight="@dimen/_16jdp"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/_10jdp"
+                android:paddingBottom="@dimen/_5jdp"
                 android:paddingTop="@dimen/_5jdp">
 
                 <!--Stream-->
@@ -105,7 +105,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5jdp"
                     android:orientation="vertical">
 
                     <TextView

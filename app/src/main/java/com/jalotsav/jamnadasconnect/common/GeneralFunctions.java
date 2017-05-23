@@ -19,6 +19,8 @@ package com.jalotsav.jamnadasconnect.common;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -27,6 +29,7 @@ import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.Base64;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -35,8 +38,10 @@ import com.google.gson.GsonBuilder;
 import com.jalotsav.jamnadasconnect.R;
 import com.jalotsav.jamnadasconnect.models.MdlDeviceInfo;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -193,5 +198,33 @@ public class GeneralFunctions {
         }
 
         return arrylst_prmrycolor;
+    }
+
+    /***
+     * Convert image to Base64 from file path
+     * ***/
+    public static String convertToBase64(String path) {
+
+        Bitmap btmp = BitmapFactory.decodeFile(path);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        btmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] byteArrayImage = baos.toByteArray();
+
+        return Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+    }
+
+    /***
+     * Get all chunks from Base64
+     * ***/
+    public static List<String> getChunkFromBase64(String base64) {
+
+        List<String> arrylstChunks = new ArrayList<>();
+        int index = 0;
+        while(index < base64.length()) {
+            arrylstChunks.add(base64.substring(index, Math.min(index + AppConstants.CHUNK_SIZE, base64.length())));
+            index += AppConstants.CHUNK_SIZE;
+        }
+
+        return arrylstChunks;
     }
 }

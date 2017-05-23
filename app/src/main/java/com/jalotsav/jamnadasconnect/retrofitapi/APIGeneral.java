@@ -19,9 +19,11 @@ package com.jalotsav.jamnadasconnect.retrofitapi;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.models.MdlGetStandardsRes;
 import com.jalotsav.jamnadasconnect.models.MdlGetStreamsRes;
+import com.jalotsav.jamnadasconnect.models.MdlUploadChunkImageRes;
 import com.jalotsav.jamnadasconnect.models.login.MdlLoginRes;
 import com.jalotsav.jamnadasconnect.models.registration.MdlRegistrationRes;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -47,6 +49,14 @@ public interface APIGeneral {
                                               @Field(AppConstants.KEY_EMAIL) String email,
                                               @Field(AppConstants.KEY_PASSWORD) String password,
                                               @Field(AppConstants.KEY_DEVICE_INFO) String deviceInfo);
+
+    @FormUrlEncoded
+    @POST(AppConstants.API_GNRL_UPLOAD_CHUNK_IMAGE)
+    Call<MdlUploadChunkImageRes> callUploadChunkImage(@Field(AppConstants.KEY_MODULE) String module,
+                                                      @Field(AppConstants.KEY_CHUNK) String chunk,
+                                                      @Field(AppConstants.KEY_FILE_NAME) String fileName,
+                                                      @Field(AppConstants.KEY_LAST_CHUNK) String lastChunk,
+                                                      @Field(AppConstants.KEY_EXT) String extension);
 
     @POST(AppConstants.API_GNRL_GET_STREAM_lIST)
     Call<MdlGetStreamsRes> callGetStreams();

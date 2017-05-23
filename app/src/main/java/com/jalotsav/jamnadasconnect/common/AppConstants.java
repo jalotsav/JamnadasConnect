@@ -36,6 +36,7 @@ public interface AppConstants {
     String API_ROOT_URL = "http://www.jamnadas.com/c-jamnadas-admin/api/";
     String API_GNRL_LOGIN = "general/login";
     String API_GNRL_REGISTRATION = "general/registration";
+    String API_GNRL_UPLOAD_CHUNK_IMAGE = "general/api_upload_chunk_image";
     String API_GNRL_GET_STREAM_lIST = "general/get_stream_list";
     String API_GNRL_GET_STANDARD_LIST = "general/get_standard_list";
     String API_TCHR_TEACHER_EDIT = "teacher/api_teacher_edit";
@@ -98,6 +99,14 @@ public interface AppConstants {
     String KEY_CLASS = "class";
     String KEY_MISSING_PARAM = "missing_param";
     String KEY_STANDARD = "standard";
+    String KEY_MODULE = "module";
+    String KEY_CHUNK = "chunk";
+    String KEY_FILE_NAME = "file_name";
+    String KEY_LAST_CHUNK = "last_chunk";
+    String KEY_EXT = "ext";
+    String KEY_OUTPUT_URL = "output_url";
+    String KEY_UPLOAD_FILE_NAME = "upload_file_name";
+    String KEY_ATTACHMENTS = "attachments";
 
     // Web-Service Values
     String VALUES_TRUE = "TRUE";
@@ -112,7 +121,20 @@ public interface AppConstants {
     // Request Keys
     int REQUEST_VERFCTN_MOBILENO = 101;
     int REQUEST_APP_PERMISSION = 102;
-    int REQUESTCODE_SPLASHACTIVITY = 103;
+    int REQUEST_SPLASHACTIVITY = 103;
+    int REQUEST_PICK_IMAGE = 104;
+    int REQUEST_OPEN_CAMERA = 105;
+
+    // Chunk Image
+    int CHUNK_SIZE = 1400000;
+
+    // Chunk Upload Module
+    String CHUNK_MODULE_CORRECTION = "Correction";
+
+    // Others
+    String ID_SML = "id";
+    String BASE64_PART = "base64Part";
+    String EXTENSION_JPG = "jpg";
 
     // Push Notification
     int NOTIFICATION_BUILDER_ID_SINGLE = 1;

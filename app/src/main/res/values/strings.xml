@@ -119,6 +119,9 @@
 
     <!--Book Correction-->
     <string name="attachment_sml">Attachment</string>
+    <string name="camera_sml">Camera</string>
+    <string name="gallery_sml">Gallery</string>
+    <string name="allow_permtn_atchmnt">To Add attachment, you must have to allow permissions</string>
 
     <!--Logout-->
     <string name="logout_alrtdlg_msg">Do you want to logout?</string>
