@@ -14,17 +14,78 @@
   ~ limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imgvw_frgmnt_bookcorctn_attachimage_preview"
+    <!--Attach Image-->
+    <LinearLayout
+        android:id="@+id/lnrlyot_frgmnt_bookcorctn_attachimage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/imgcd_image"
-        app:srcCompat="@drawable/ic_pictures_flat_128dp" />
-</LinearLayout>
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imgvw_frgmnt_bookcorctn_attachimage_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/imgcd_image"
+            app:srcCompat="@drawable/ic_pictures_flat_128dp" />
+    </LinearLayout>
+
+    <!--Attach/Record Audio-->
+    <LinearLayout
+        android:id="@+id/lnrlyot_frgmnt_bookcorctn_attachaudio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgvw_frgmnt_bookcorctn_attachaudio_startstop"
+            android:layout_width="@dimen/_80jdp"
+            android:layout_height="@dimen/_80jdp"
+            android:contentDescription="@string/imgcd_image"
+            app:srcCompat="@drawable/ic_play_flat_128dp" />
+
+        <ProgressBar
+            android:id="@+id/prgrsbr_frgmnt_bookcorctn_attachaudio_recordprgrs"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5jdp"
+            android:max="180"
+            android:progress="180" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5jdp">
+
+            <TextView
+                android:id="@+id/tv_frgmnt_bookcorctn_attachaudio_timeremain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/gray5B"
+                android:textSize="@dimen/_16jdp"
+                android:text="@string/three_min_zero_sec" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@id/tv_frgmnt_bookcorctn_attachaudio_timeremain"
+                android:layout_toStartOf="@id/tv_frgmnt_bookcorctn_attachaudio_timeremain"
+                android:text="@string/remaining_time_sml"
+                android:textColor="@color/gray5B"
+                android:textSize="@dimen/_14jdp" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

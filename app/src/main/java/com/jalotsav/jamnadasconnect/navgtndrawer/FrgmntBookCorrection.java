@@ -28,6 +28,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -49,8 +50,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
@@ -77,6 +80,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindDrawable;
 import butterknife.BindString;
@@ -102,8 +107,13 @@ public class FrgmntBookCorrection extends Fragment {
     @BindView(R.id.spnr_frgmnt_bookcorctn_standr) Spinner mSpnrStandr;
     @BindView(R.id.vwswtchr_frgmnt_bookcorctn_steppr) ViewSwitcher mVwswtchrSteppr;
     @BindView(R.id.appcmptbtn_frgmnt_bookcorctn_attchmnt_add) AppCompatButton mAppcmptbtnAttachAdd;
+    @BindView(R.id.lnrlyot_frgmnt_bookcorctn_attachimage) LinearLayout mLnrlyotAtchdImg;
+    @BindView(R.id.lnrlyot_frgmnt_bookcorctn_attachaudio) LinearLayout mLnrlyotAtchdAudio;
     @BindView(R.id.imgvw_frgmnt_bookcorctn_attachimage_preview) ImageView mImgvwAtchdImgPreview;
+    @BindView(R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop) ImageView mImgvwAtchdAudStartStop;
+    @BindView(R.id.tv_frgmnt_bookcorctn_attachaudio_timeremain) TextView mTvTimeRemaining;
     @BindView(R.id.prgrsbr_frgmnt_bookcorctn) ProgressBar mPrgrsbrMain;
+    @BindView(R.id.prgrsbr_frgmnt_bookcorctn_attachaudio_recordprgrs) ProgressBar mPrgrsbrAudioRecord;
 
     @BindString(R.string.please_wait_3dots) String mPleaseWait;
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
@@ -117,10 +127,12 @@ public class FrgmntBookCorrection extends Fragment {
     @BindString(R.string.select_standard_sml) String mSelctStandr;
 
     @BindDrawable(R.drawable.ic_pictures_flat_128dp) Drawable mDrwblDefaultPicture;
+    @BindDrawable(R.drawable.ic_play_flat_128dp) Drawable mDrwblPlay;
+    @BindDrawable(R.drawable.ic_stop_flat_128dp) Drawable mDrwblStop;
 
     UserSessionManager session;
     ProgressDialog mPrgrsDialog;
-    boolean mIsAttachImage, mIsWithAttachement, mIsImageProcessing;
+    boolean mIsAttachImage, mIsWithAttachement, mIsImageProcessing, mIsCounterRunning;
     String mBookNameVal, strBase64 = "", FILE_NAME = "", strImageName = "", FIRST_CHUNK = "0", LAST_CHUNK = "0", mSendingImageChunk;
     ArrayAdapter<String> mArryadptrStream, mArryadptrStandr;
     ArrayList<String> mArrylstStreams, mArrylstStandrs;
@@ -130,6 +142,7 @@ public class FrgmntBookCorrection extends Fragment {
     List<String> lstChunk;
     ArrayList<String> lstUploadImageName = new ArrayList<>();
     int imgCount = 0, RESPOSE_COUNT = 0;
+    RecordAudioCountDownTimer mRecordAudioCountTimer;
 
     @Nullable
     @Override
@@ -248,7 +261,7 @@ public class FrgmntBookCorrection extends Fragment {
     }
 
     @OnClick({R.id.fab_frgmnt_bookcorctn_done, R.id.imgvw_frgmnt_bookcorctn_attachimage, R.id.imgvw_frgmnt_bookcorctn_attachaudio,
-            R.id.appcmptbtn_frgmnt_bookcorctn_attchmnt_add})
+            R.id.appcmptbtn_frgmnt_bookcorctn_attchmnt_add, R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop})
     public void onClickView(View view) {
 
         switch (view.getId()) {
@@ -263,24 +276,44 @@ public class FrgmntBookCorrection extends Fragment {
                 break;
             case R.id.imgvw_frgmnt_bookcorctn_attachimage:
 
-                mVwswtchrSteppr.setInAnimation(getActivity(), R.anim.slide_right_in);
-                mVwswtchrSteppr.setOutAnimation(getActivity(), R.anim.slide_left_out);
-                mVwswtchrSteppr.showNext();
                 mIsAttachImage = true;
-                mAppcmptbtnAttachAdd.setVisibility(View.VISIBLE);
+                updateUIAttachmnt();
                 break;
             case R.id.imgvw_frgmnt_bookcorctn_attachaudio:
 
-                mVwswtchrSteppr.setInAnimation(getActivity(), R.anim.slide_right_in);
-                mVwswtchrSteppr.setOutAnimation(getActivity(), R.anim.slide_left_out);
-                mVwswtchrSteppr.showNext();
                 mIsAttachImage = false;
-                mAppcmptbtnAttachAdd.setVisibility(View.VISIBLE);
+                updateUIAttachmnt();
                 break;
             case R.id.appcmptbtn_frgmnt_bookcorctn_attchmnt_add:
 
                 checkAppPermission(view);
                 break;
+            case R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop:
+
+                checkAppPermission(view);
+                break;
+        }
+    }
+
+    // Update Attachment view UI, Change ViewSwitcher
+    private void updateUIAttachmnt() {
+
+        if(mIsAttachImage) {
+
+            mVwswtchrSteppr.setInAnimation(getActivity(), R.anim.slide_right_in);
+            mVwswtchrSteppr.setOutAnimation(getActivity(), R.anim.slide_left_out);
+            mVwswtchrSteppr.showNext();
+            mLnrlyotAtchdImg.setVisibility(View.VISIBLE);
+            mLnrlyotAtchdAudio.setVisibility(View.GONE);
+            mAppcmptbtnAttachAdd.setVisibility(View.VISIBLE);
+        } else {
+
+            mVwswtchrSteppr.setInAnimation(getActivity(), R.anim.slide_right_in);
+            mVwswtchrSteppr.setOutAnimation(getActivity(), R.anim.slide_left_out);
+            mVwswtchrSteppr.showNext();
+            mLnrlyotAtchdImg.setVisibility(View.GONE);
+            mLnrlyotAtchdAudio.setVisibility(View.VISIBLE);
+            mAppcmptbtnAttachAdd.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -290,18 +323,26 @@ public class FrgmntBookCorrection extends Fragment {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (!isCheckSelfPermission())
-                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, AppConstants.REQUEST_APP_PERMISSION);
-            else
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO}, AppConstants.REQUEST_APP_PERMISSION);
+            else {
+                if(mIsAttachImage)
+                    showImagePickPopupmenu(view);
+                else startRecordAudio();
+            }
+        } else {
+
+            if(mIsAttachImage)
                 showImagePickPopupmenu(view);
-        } else
-            showImagePickPopupmenu(view);
+            else startRecordAudio();
+        }
     }
 
     private boolean isCheckSelfPermission(){
 
-        int selfPermsnStorage = ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int selfPermsnStorage = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int selfPermsnCamera = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
-        return  selfPermsnStorage == PackageManager.PERMISSION_GRANTED && selfPermsnCamera == PackageManager.PERMISSION_GRANTED;
+        int selfPermsnAudio = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO);
+        return  selfPermsnStorage == PackageManager.PERMISSION_GRANTED && selfPermsnCamera == PackageManager.PERMISSION_GRANTED && selfPermsnAudio == PackageManager.PERMISSION_GRANTED;
     }
 
     // Show pop-up for pick or capture image
@@ -331,6 +372,20 @@ public class FrgmntBookCorrection extends Fragment {
             }
         });
         mPopupmenu.show();
+    }
+
+    // Start Record Audio
+    private void startRecordAudio() {
+
+        if(!mIsCounterRunning) {
+
+            mIsCounterRunning = true;
+            mPrgrsbrAudioRecord.setProgress(1800);
+            mRecordAudioCountTimer = new RecordAudioCountDownTimer(180000, 1000);
+            mRecordAudioCountTimer.start();
+            mImgvwAtchdAudStartStop.setImageDrawable(mDrwblStop);
+        } else
+            finishRecordAudioCountDownTimer();
     }
 
     // Check all validation of fields and call API
@@ -576,6 +631,48 @@ public class FrgmntBookCorrection extends Fragment {
         mAppcmptbtnAttachAdd.setVisibility(View.INVISIBLE);
     }
 
+    private class RecordAudioCountDownTimer extends CountDownTimer {
+
+        RecordAudioCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+            String currentTime = String.format(Locale.getDefault(), "%02d : %02d",
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
+                                );
+            mTvTimeRemaining.setText(currentTime);
+            int currentprgrs = (int) (millisUntilFinished / 1000);
+            LogHelper.printLog(AppConstants.LOGTYPE_INFO, TAG, "CurrentProgress: " + currentprgrs);
+            mPrgrsbrAudioRecord.setProgress(currentprgrs);
+        }
+
+        @Override
+        public void onFinish() {
+
+            finishRecordAudioCountDownTimer();
+        }
+    }
+
+    // Finish current Record Audio CountDownTimer
+    private void finishRecordAudioCountDownTimer() {
+
+        mIsCounterRunning = false;
+        mRecordAudioCountTimer.cancel();
+        mPrgrsbrAudioRecord.setProgress(1800);
+        String currentTime = String.format(Locale.getDefault(), "%02d : %02d",
+                TimeUnit.MILLISECONDS.toMinutes(180000),
+                TimeUnit.MILLISECONDS.toSeconds(180000) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(180000))
+        );
+        mTvTimeRemaining.setText(currentTime);
+        mImgvwAtchdAudStartStop.setImageDrawable(mDrwblPlay);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
@@ -583,7 +680,9 @@ public class FrgmntBookCorrection extends Fragment {
 
             if(grantResults.length > 0) {
 
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                     mAppcmptbtnAttachAdd.performClick();
                 } else
                     Snackbar.make(mCrdntrlyot, mAllowPermsnMsg, Snackbar.LENGTH_LONG).show();
@@ -722,5 +821,13 @@ public class FrgmntBookCorrection extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if(mIsCounterRunning)
+            mRecordAudioCountTimer.cancel();
     }
 }
