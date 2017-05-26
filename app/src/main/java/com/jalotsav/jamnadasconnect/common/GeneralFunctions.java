@@ -39,6 +39,9 @@ import com.jalotsav.jamnadasconnect.R;
 import com.jalotsav.jamnadasconnect.models.MdlDeviceInfo;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -179,6 +182,14 @@ public class GeneralFunctions {
     }
 
     /***
+     * Get Current TimeStamp
+     * ***/
+    public static String getCurrentTimestamp() {
+
+        return String.valueOf(System.currentTimeMillis() / 1000);
+    }
+
+    /***
      * Common Material Primary colors array
      * ***/
     public static ArrayList<Integer> getPrimaryColorArray(Context context) {
@@ -203,12 +214,37 @@ public class GeneralFunctions {
     /***
      * Convert image to Base64 from file path
      * ***/
-    public static String convertToBase64(String path) {
+    public static String convertImageToBase64(String path) {
 
         Bitmap btmp = BitmapFactory.decodeFile(path);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         btmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] byteArrayImage = baos.toByteArray();
+
+        return Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+    }
+
+    /***
+     * Convert image to Base64 from file path
+     * ***/
+    public static String convertAudioToBase64(String path) {
+
+        byte[] byteArrayImage = new byte[0];
+
+        try {
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            FileInputStream fis = new FileInputStream(new File(path));
+
+            byte[] buf = new byte[1024];
+            int n;
+            while (-1 != (n = fis.read(buf)))
+                baos.write(buf, 0, n);
+
+            byteArrayImage = baos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
     }
@@ -226,5 +262,20 @@ public class GeneralFunctions {
         }
 
         return arrylstChunks;
+    }
+
+    /***
+     * Delete all inner directories and files of given path
+     * ***/
+    public static void deleteFilesRecursive(String strPath) {
+
+        File fileOrDirectory = new File(strPath);
+
+        if (fileOrDirectory.isDirectory()){
+            for (File child : fileOrDirectory.listFiles())
+                deleteFilesRecursive(child.getPath());
+            fileOrDirectory.delete();
+        }else
+            fileOrDirectory.delete();
     }
 }

@@ -25,6 +25,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -77,6 +78,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -112,6 +114,7 @@ public class FrgmntBookCorrection extends Fragment {
     @BindView(R.id.imgvw_frgmnt_bookcorctn_attachimage_preview) ImageView mImgvwAtchdImgPreview;
     @BindView(R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop) ImageView mImgvwAtchdAudStartStop;
     @BindView(R.id.tv_frgmnt_bookcorctn_attachaudio_timeremain) TextView mTvTimeRemaining;
+    @BindView(R.id.tv_frgmnt_bookcorctn_attachaudio_recordattchdmsg) TextView mTvRecrdngAttachd;
     @BindView(R.id.prgrsbr_frgmnt_bookcorctn) ProgressBar mPrgrsbrMain;
     @BindView(R.id.prgrsbr_frgmnt_bookcorctn_attachaudio_recordprgrs) ProgressBar mPrgrsbrAudioRecord;
 
@@ -119,6 +122,7 @@ public class FrgmntBookCorrection extends Fragment {
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
     @BindString(R.string.internal_problem_sml) String mInternalPrblmMsg;
+    @BindString(R.string.audio_record_problem_sml) String mAudioRcrdPrblmMsg;
     @BindString(R.string.no_data_avlbl_refresh) String mNoDataAvilblMsg;
     @BindString(R.string.allow_permtn_atchmnt) String mAllowPermsnMsg;
     @BindString(R.string.refresh_sml) String mRefreshStr;
@@ -133,7 +137,7 @@ public class FrgmntBookCorrection extends Fragment {
     UserSessionManager session;
     ProgressDialog mPrgrsDialog;
     boolean mIsAttachImage, mIsWithAttachement, mIsImageProcessing, mIsCounterRunning;
-    String mBookNameVal, strBase64 = "", FILE_NAME = "", strImageName = "", FIRST_CHUNK = "0", LAST_CHUNK = "0", mSendingImageChunk;
+    String mBookNameVal, FILE_NAME = "", strImageName = "", FIRST_CHUNK = "0", LAST_CHUNK = "0", mSendingImageChunk;
     ArrayAdapter<String> mArryadptrStream, mArryadptrStandr;
     ArrayList<String> mArrylstStreams, mArrylstStandrs;
     Uri mImageUri;
@@ -143,6 +147,8 @@ public class FrgmntBookCorrection extends Fragment {
     ArrayList<String> lstUploadImageName = new ArrayList<>();
     int imgCount = 0, RESPOSE_COUNT = 0;
     RecordAudioCountDownTimer mRecordAudioCountTimer;
+    MediaRecorder mMediaRcrdr;
+    String mAudioRcrdOutputFile;
 
     @Nullable
     @Override
@@ -379,13 +385,52 @@ public class FrgmntBookCorrection extends Fragment {
 
         if(!mIsCounterRunning) {
 
-            mIsCounterRunning = true;
-            mPrgrsbrAudioRecord.setProgress(1800);
-            mRecordAudioCountTimer = new RecordAudioCountDownTimer(180000, 1000);
-            mRecordAudioCountTimer.start();
-            mImgvwAtchdAudStartStop.setImageDrawable(mDrwblStop);
+            try {
+
+                initMediaRecorder();
+
+                mMediaRcrdr.prepare();
+                mMediaRcrdr.start();
+
+                mIsCounterRunning = true;
+                mPrgrsbrAudioRecord.setProgress(1800);
+                mRecordAudioCountTimer = new RecordAudioCountDownTimer(180000, 1000);
+                mRecordAudioCountTimer.start();
+                mImgvwAtchdAudStartStop.setImageDrawable(mDrwblStop);
+                mTvRecrdngAttachd.setVisibility(View.INVISIBLE);
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                Snackbar.make(mCrdntrlyot, mAudioRcrdPrblmMsg, Snackbar.LENGTH_LONG).show();
+            }
         } else
-            finishRecordAudioCountDownTimer();
+            finishRecordAudio();
+    }
+
+    // Init MediaRecorder
+    private void initMediaRecorder() {
+
+        try {
+
+            File tempAudioPath = AppConstants.PATH_TEMP_AUDIO;
+
+            // Delete all previous files
+            if(tempAudioPath.exists())
+                GeneralFunctions.deleteFilesRecursive(tempAudioPath.getAbsolutePath());
+
+            tempAudioPath.mkdirs();
+            String fileSuffix = ".".concat(AppConstants.EXTENSION_3GPP);
+            File fileAudioRcrdFileName = File.createTempFile(GeneralFunctions.getCurrentTimestamp(), fileSuffix, tempAudioPath);
+            mAudioRcrdOutputFile = fileAudioRcrdFileName.getAbsolutePath();
+
+            mMediaRcrdr = new MediaRecorder();
+            mMediaRcrdr.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mMediaRcrdr.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mMediaRcrdr.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+            mMediaRcrdr.setOutputFile(mAudioRcrdOutputFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Check all validation of fields and call API
@@ -402,11 +447,10 @@ public class FrgmntBookCorrection extends Fragment {
 
         if (GeneralFunctions.isNetConnected(getActivity())) {
 
-            if(mIsWithAttachement) {
-
+            if(mIsWithAttachement)
                 getChunksListFromBase64();
-            } /*else
-                callBookRequestAddAPI();*/
+            else
+                callBookCorrectionAddAPI();
         } else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
 
     }
@@ -505,7 +549,7 @@ public class FrgmntBookCorrection extends Fragment {
 
         APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
         Call<MdlUploadChunkImageRes> callResponseBody = objApiGeneral.callUploadChunkImage(AppConstants.CHUNK_MODULE_CORRECTION,
-                mSendingImageChunk, FILE_NAME, LAST_CHUNK, AppConstants.EXTENSION_JPG);
+                mSendingImageChunk, FILE_NAME, LAST_CHUNK, mIsAttachImage ? AppConstants.EXTENSION_JPG : AppConstants.EXTENSION_3GPP);
         callResponseBody.enqueue(new Callback<MdlUploadChunkImageRes>() {
             @Override
             public void onResponse(Call<MdlUploadChunkImageRes> call, Response<MdlUploadChunkImageRes> response) {
@@ -568,14 +612,17 @@ public class FrgmntBookCorrection extends Fragment {
     // Call Retrofit API
     private void callBookCorrectionAddAPI() {
 
-
         mPrgrsbrMain.setVisibility(View.VISIBLE);
         mBookNameVal = mTxtinptEtBookName.getText().toString().trim();
+        String attchmentsNames;
+        if(lstUploadImageName.isEmpty())
+            attchmentsNames = "";
+        else attchmentsNames = lstUploadImageName.get(0);
 
         APIBookCorrection objApiBookCorrctn = APIRetroBuilder.getRetroBuilder(false).create(APIBookCorrection.class);
-        Call<MdlBookCorrectionAddRes> callMdlBookReqstAddRes = objApiBookCorrctn.callBookCorrectnAdd(GeneralFunctions.getDeviceInfo(getActivity()),
-                session.getUserId(), mBookNameVal, mSpnrStream.getSelectedItem().toString(), mSpnrStandr.getSelectedItem().toString(),
-                lstUploadImageName.get(0));
+        Call<MdlBookCorrectionAddRes> callMdlBookReqstAddRes = objApiBookCorrctn.callBookCorrectnAdd(
+                GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId(), mBookNameVal,
+                mSpnrStream.getSelectedItem().toString(), mSpnrStandr.getSelectedItem().toString(), attchmentsNames);
         callMdlBookReqstAddRes.enqueue(new Callback<MdlBookCorrectionAddRes>() {
             @Override
             public void onResponse(Call<MdlBookCorrectionAddRes> call, Response<MdlBookCorrectionAddRes> response) {
@@ -625,10 +672,14 @@ public class FrgmntBookCorrection extends Fragment {
         adapterSendConversationImgList = new AdapterSendConversationImgList(activity, alSelectedImages, alProgress, alDelete);
         rvImages.setAdapter(adapterSendConversationImgList);*/
 
-        mVwswtchrSteppr.setInAnimation(getActivity(), R.anim.slide_left_in);
-        mVwswtchrSteppr.setOutAnimation(getActivity(), R.anim.slide_right_out);
-        mVwswtchrSteppr.showPrevious();
+        if(mVwswtchrSteppr.getDisplayedChild() != 0) {
+            mVwswtchrSteppr.setInAnimation(getActivity(), R.anim.slide_left_in);
+            mVwswtchrSteppr.setOutAnimation(getActivity(), R.anim.slide_right_out);
+            mVwswtchrSteppr.showPrevious();
+        }
+
         mAppcmptbtnAttachAdd.setVisibility(View.INVISIBLE);
+        mTvRecrdngAttachd.setVisibility(View.INVISIBLE);
     }
 
     private class RecordAudioCountDownTimer extends CountDownTimer {
@@ -654,23 +705,48 @@ public class FrgmntBookCorrection extends Fragment {
         @Override
         public void onFinish() {
 
-            finishRecordAudioCountDownTimer();
+            finishRecordAudio();
         }
     }
 
-    // Finish current Record Audio CountDownTimer
-    private void finishRecordAudioCountDownTimer() {
+    // Finish current Record Audio CountDownTimer & Media Recorder
+    private void finishRecordAudio() {
 
-        mIsCounterRunning = false;
-        mRecordAudioCountTimer.cancel();
-        mPrgrsbrAudioRecord.setProgress(1800);
-        String currentTime = String.format(Locale.getDefault(), "%02d : %02d",
-                TimeUnit.MILLISECONDS.toMinutes(180000),
-                TimeUnit.MILLISECONDS.toSeconds(180000) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(180000))
-        );
-        mTvTimeRemaining.setText(currentTime);
-        mImgvwAtchdAudStartStop.setImageDrawable(mDrwblPlay);
+        try {
+
+            mMediaRcrdr.stop();
+            mMediaRcrdr.release();
+            mMediaRcrdr = null;
+
+            mIsCounterRunning = false;
+            mRecordAudioCountTimer.cancel();
+            mPrgrsbrAudioRecord.setProgress(1800);
+            String currentTime = String.format(Locale.getDefault(), "%02d : %02d",
+                    TimeUnit.MILLISECONDS.toMinutes(180000),
+                    TimeUnit.MILLISECONDS.toSeconds(180000) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(180000))
+            );
+            mTvTimeRemaining.setText(currentTime);
+            mImgvwAtchdAudStartStop.setImageDrawable(mDrwblPlay);
+
+            if(mAudioRcrdOutputFile.length() != 0) {
+
+                mTvRecrdngAttachd.setVisibility(View.VISIBLE);
+
+                String strBase64 = GeneralFunctions.convertAudioToBase64(mAudioRcrdOutputFile);
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put(AppConstants.ID_SML, imgCount);
+                jsonObject.put(AppConstants.BASE64_PART, strBase64);
+                arrayImage.add(jsonObject);
+                imgCount++;
+
+                mIsWithAttachement = true;
+            }
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            Snackbar.make(mCrdntrlyot, mAudioRcrdPrblmMsg, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -762,7 +838,7 @@ public class FrgmntBookCorrection extends Fragment {
                 adapterSendConversationImgList = new AdapterSendConversationImgList(activity, alSelectedImages, alProgress, alDelete);
                 rvImages.setAdapter(adapterSendConversationImgList);*/
 
-                strBase64 = GeneralFunctions.convertToBase64(imagePathName);
+                String strBase64 = GeneralFunctions.convertImageToBase64(imagePathName);
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put(AppConstants.ID_SML, imgCount);
                 jsonObject.put(AppConstants.BASE64_PART, strBase64);

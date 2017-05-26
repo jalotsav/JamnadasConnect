@@ -16,6 +16,10 @@
 
 package com.jalotsav.jamnadasconnect.common;
 
+import android.os.Environment;
+
+import java.io.File;
+
 /**
  * Created by Jalotsav on 5/4/17.
  */
@@ -131,10 +135,20 @@ public interface AppConstants {
     // Chunk Upload Module
     String CHUNK_MODULE_CORRECTION = "Correction";
 
+    // External storage path directory
+    String JAMNADAS_CONNECT = "Jamnadas Connect";
+    String DOT_TEMP = ".temp";
+    String AUDIO_SML = "Audio";
+    String EXTRNL_STORAGE_PATH_STRING = Environment.getExternalStorageDirectory().getAbsolutePath();
+//    File PATH_EXTRNL_STORAGE = new File(EXTRNL_STORAGE_PATH_STRING);
+    File PATH_TEMP_AUDIO = new File(EXTRNL_STORAGE_PATH_STRING + File.separator + JAMNADAS_CONNECT
+        + File.separator + DOT_TEMP + File.separator + AUDIO_SML);
+
     // Others
     String ID_SML = "id";
     String BASE64_PART = "base64Part";
     String EXTENSION_JPG = "jpg";
+    String EXTENSION_3GPP = "3gpp";
 
     // Push Notification
     int NOTIFICATION_BUILDER_ID_SINGLE = 1;

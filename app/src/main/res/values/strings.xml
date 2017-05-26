@@ -124,6 +124,8 @@
     <string name="allow_permtn_atchmnt">To Add attachment, you must have to allow permissions</string>
     <string name="remaining_time_sml">Remaining time</string>
     <string name="three_min_zero_sec">3:00</string>
+    <string name="audio_record_problem_sml">There are some problem for record audio.</string>
+    <string name="recrdng_attached_sml">1 recording attached.</string>
 
     <!--Logout-->
     <string name="logout_alrtdlg_msg">Do you want to logout?</string>

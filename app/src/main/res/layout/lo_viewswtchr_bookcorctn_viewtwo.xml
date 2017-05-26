@@ -47,8 +47,8 @@
 
         <ImageView
             android:id="@+id/imgvw_frgmnt_bookcorctn_attachaudio_startstop"
-            android:layout_width="@dimen/_80jdp"
-            android:layout_height="@dimen/_80jdp"
+            android:layout_width="@dimen/_65jdp"
+            android:layout_height="@dimen/_65jdp"
             android:contentDescription="@string/imgcd_image"
             app:srcCompat="@drawable/ic_play_flat_128dp" />
 
@@ -57,7 +57,6 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5jdp"
             android:max="180"
             android:progress="180" />
 
@@ -73,7 +72,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:textColor="@color/gray5B"
-                android:textSize="@dimen/_16jdp"
+                android:textSize="@dimen/_12jdp"
                 android:text="@string/three_min_zero_sec" />
 
             <TextView
@@ -85,7 +84,16 @@
                 android:layout_toStartOf="@id/tv_frgmnt_bookcorctn_attachaudio_timeremain"
                 android:text="@string/remaining_time_sml"
                 android:textColor="@color/gray5B"
-                android:textSize="@dimen/_14jdp" />
+                android:textSize="@dimen/_12jdp" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_frgmnt_bookcorctn_attachaudio_recordattchdmsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDarkTeal"
+            android:textSize="@dimen/_14jdp"
+            android:text="@string/recrdng_attached_sml"
+            android:visibility="invisible"/>
     </LinearLayout>
 </RelativeLayout>
