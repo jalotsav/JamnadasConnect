@@ -53,7 +53,7 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
     @BindView(R.id.navgtnvw_nvgtndrwr_main) NavigationView mNavgtnVw;
 
     TextView mTvFullName, mTvEmailMobile;
-    MenuItem mMenuItemDashboard, mMenuItemSpecmnCopy, mMenuItemBookOrder, mMenuItemBookCorctn, mMenuItemSugstn, mMenuItemMyProfile;
+    MenuItem mMenuItemDashboard, mMenuItemSpecmnCopy, mMenuItemBookCorctn, mMenuItemSugstn, mMenuItemNotifctns, mMenuItemMyProfile;
 
     UserSessionManager session;
     Bundle mBundle;
@@ -115,11 +115,6 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
                 fragment = new FrgmntSpecimenCopy();
                 toolbarTitle = getString(R.string.specimen_copy_sml);
                 break;
-            case R.id.action_nvgtndrwr_book_order:
-
-                fragment = new FrgmntInDevlpmnt();
-                toolbarTitle = getString(R.string.book_order_sml);
-                break;
             case R.id.action_nvgtndrwr_book_corectn:
 
                 fragment = new FrgmntBookCorrection();
@@ -129,6 +124,11 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
 
                 fragment = new FrgmntTeacherSuggestions();
                 toolbarTitle = getString(R.string.suggestions_sml);
+                break;
+            case R.id.action_nvgtndrwr_notifctns:
+
+                fragment = new FrgmntInDevlpmnt();
+                toolbarTitle = getString(R.string.notifctns_sml);
                 break;
             case R.id.action_nvgtndrwr_teacher_profile:
 
@@ -163,9 +163,9 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
 
         mMenuItemDashboard = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_dashboard);
         mMenuItemSpecmnCopy = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_specimen_copy);
-        mMenuItemBookOrder = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_book_order);
         mMenuItemBookCorctn = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_book_corectn);
         mMenuItemSugstn = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_teacher_sugstn);
+        mMenuItemNotifctns = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_notifctns);
         mMenuItemMyProfile = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_teacher_profile);
 
         MenuItem currntSelctdMenuItem;
@@ -173,12 +173,12 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
             currntSelctdMenuItem = mMenuItemDashboard;
         else if (mMenuItemSpecmnCopy.isChecked())
             currntSelctdMenuItem = mMenuItemSpecmnCopy;
-        else if (mMenuItemBookOrder.isChecked())
-            currntSelctdMenuItem = mMenuItemBookOrder;
         else if (mMenuItemBookCorctn.isChecked())
             currntSelctdMenuItem = mMenuItemBookCorctn;
         else if (mMenuItemSugstn.isChecked())
             currntSelctdMenuItem = mMenuItemSugstn;
+        else if (mMenuItemNotifctns.isChecked())
+            currntSelctdMenuItem = mMenuItemNotifctns;
         else if (mMenuItemMyProfile.isChecked())
             currntSelctdMenuItem = mMenuItemMyProfile;
         else

@@ -172,7 +172,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
                         Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
                 }
                 break;
-            case R.id.imgvw_frgmnt_bookcorctn_backsteppr:
+            case R.id.imgvw_frgmnt_teachrsugstns_backsteppr:
 
                 if(mVwswtchrSteppr.getDisplayedChild() != 0) {
                     mVwswtchrSteppr.setInAnimation(getActivity(), R.anim.slide_left_in);
@@ -403,7 +403,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
             mPrgrsDialog.show();
 
         APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(true).create(APIGeneral.class);
-        Call<MdlUploadChunkImageRes> callResponseBody = objApiGeneral.callUploadChunkImage(AppConstants.CHUNK_MODULE_CORRECTION,
+        Call<MdlUploadChunkImageRes> callResponseBody = objApiGeneral.callUploadChunkImage(AppConstants.CHUNK_MODULE_SUGGESTION,
                 mSendingImageChunk, mChunkResFileName, mLastChunk, mIsAttachImage ? AppConstants.EXTENSION_JPG : AppConstants.EXTENSION_MP3);
         callResponseBody.enqueue(new Callback<MdlUploadChunkImageRes>() {
             @Override

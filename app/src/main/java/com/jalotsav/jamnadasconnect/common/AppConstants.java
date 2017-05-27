@@ -138,6 +138,7 @@ public interface AppConstants {
 
     // Chunk Upload Module
     String CHUNK_MODULE_CORRECTION = "Correction";
+    String CHUNK_MODULE_SUGGESTION = "Suggestion";
 
     // External storage path directory
     String JAMNADAS_CONNECT = "Jamnadas Connect";

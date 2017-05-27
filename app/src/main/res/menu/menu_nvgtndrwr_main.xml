@@ -30,10 +30,6 @@
                     android:icon="@drawable/ic_folder_open_black_56dp"
                     android:title="@string/specimen_copy_sml" />
                 <item
-                    android:id="@+id/action_nvgtndrwr_book_order"
-                    android:icon="@drawable/ic_folder_shared_black_56dp"
-                    android:title="@string/book_order_sml" />
-                <item
                     android:id="@+id/action_nvgtndrwr_book_corectn"
                     android:icon="@drawable/ic_playlist_add_check_black_56dp"
                     android:title="@string/book_correction_sml" />
@@ -48,6 +44,10 @@
                     android:id="@+id/action_nvgtndrwr_teacher_sugstn"
                     android:icon="@drawable/ic_school_black_56dp"
                     android:title="@string/suggestions_sml" />
+                <item
+                    android:id="@+id/action_nvgtndrwr_notifctns"
+                    android:icon="@drawable/ic_notifications_black_56dp"
+                    android:title="@string/notifctns_sml" />
                 <item
                     android:id="@+id/action_nvgtndrwr_teacher_profile"
                     android:icon="@drawable/ic_account_circle_black_56dp"

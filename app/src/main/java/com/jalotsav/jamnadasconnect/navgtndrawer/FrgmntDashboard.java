@@ -38,10 +38,10 @@ import butterknife.OnClick;
 public class FrgmntDashboard extends Fragment {
 
     @BindView(R.id.rltvlyot_frgmnt_dashbrd_specimencopy) RelativeLayout mRltvlyotSpecimenCopy;
-    @BindView(R.id.rltvlyot_frgmnt_dashbrd_bookroder) RelativeLayout mRltvlyotBookOrder;
-    @BindView(R.id.rltvlyot_frgmnt_dashbrd_suggestion) RelativeLayout mRltvlyotSuggestn;
     @BindView(R.id.rltvlyot_frgmnt_dashbrd_bookcorctn) RelativeLayout mRltvlyotBookCorrectn;
+    @BindView(R.id.rltvlyot_frgmnt_dashbrd_suggestion) RelativeLayout mRltvlyotSuggestn;
     @BindView(R.id.rltvlyot_frgmnt_dashbrd_myprofile) RelativeLayout mRltvlyotMyProfile;
+    @BindView(R.id.rltvlyot_frgmnt_dashbrd_notifctns) RelativeLayout mRltvlyotNotifctns;
 
     @Nullable
     @Override
@@ -53,9 +53,9 @@ public class FrgmntDashboard extends Fragment {
         return rootView;
     }
 
-    @OnClick({R.id.rltvlyot_frgmnt_dashbrd_specimencopy, R.id.rltvlyot_frgmnt_dashbrd_bookroder,
-            R.id.rltvlyot_frgmnt_dashbrd_suggestion, R.id.rltvlyot_frgmnt_dashbrd_bookcorctn,
-            R.id.rltvlyot_frgmnt_dashbrd_myprofile})
+    @OnClick({R.id.rltvlyot_frgmnt_dashbrd_specimencopy, R.id.rltvlyot_frgmnt_dashbrd_bookcorctn,
+            R.id.rltvlyot_frgmnt_dashbrd_suggestion, R.id.rltvlyot_frgmnt_dashbrd_myprofile,
+            R.id.rltvlyot_frgmnt_dashbrd_notifctns})
     public void onClickView(View view) {
 
         MenuItem menuItem;
@@ -64,10 +64,6 @@ public class FrgmntDashboard extends Fragment {
             case R.id.rltvlyot_frgmnt_dashbrd_specimencopy:
 
                 menuItem = ((NavgtnDrwrMain) getActivity()).mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_specimen_copy);
-                break;
-            case R.id.rltvlyot_frgmnt_dashbrd_bookroder:
-
-                menuItem = ((NavgtnDrwrMain) getActivity()).mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_book_order);
                 break;
             case R.id.rltvlyot_frgmnt_dashbrd_suggestion:
 
@@ -80,6 +76,10 @@ public class FrgmntDashboard extends Fragment {
             case R.id.rltvlyot_frgmnt_dashbrd_myprofile:
 
                 menuItem = ((NavgtnDrwrMain) getActivity()).mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_teacher_profile);
+                break;
+            case R.id.rltvlyot_frgmnt_dashbrd_notifctns:
+
+                menuItem = ((NavgtnDrwrMain) getActivity()).mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_notifctns);
                 break;
             default:
 
