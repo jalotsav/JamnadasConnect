@@ -127,6 +127,12 @@
     <string name="audio_record_problem_sml">There are some problem for record audio.</string>
     <string name="recrdng_attached_sml">1 recording attached.</string>
 
+    <!--Teacher Suggestions-->
+    <string name="title_sml">Title</string>
+    <string name="entr_title_sml">Enter title</string>
+    <string name="descrptn_sml">Description</string>
+    <string name="entr_descrptn_sml">Enter description</string>
+
     <!--Logout-->
     <string name="logout_alrtdlg_msg">Do you want to logout?</string>
     <string name="no_sml">No</string>

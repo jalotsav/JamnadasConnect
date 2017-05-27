@@ -17,7 +17,7 @@
 package com.jalotsav.jamnadasconnect.retrofitapi;
 
 import com.jalotsav.jamnadasconnect.common.AppConstants;
-import com.jalotsav.jamnadasconnect.models.bookcorrection.MdlBookCorrectionAddRes;
+import com.jalotsav.jamnadasconnect.models.teachersuggestions.MdlTeachrSugstnsAddRes;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -25,17 +25,16 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 /**
- * Created by Jalotsav on 5/23/2017.
+ * Created by Jalotsav on 5/27/2017.
  */
 
-public interface APIBookCorrection {
+public interface APITeacherSuggestions {
 
     @FormUrlEncoded
-    @POST(AppConstants.API_BOOKCORCTN_BOOKCORCTN_ADD)
-    Call<MdlBookCorrectionAddRes> callBookCorrectnAdd(@Field(AppConstants.KEY_DEVICE_INFO) String deviceInfo,
-                                                   @Field(AppConstants.KEY_USER_ID) int userId,
-                                                   @Field(AppConstants.KEY_BOOK_NAME) String bookName,
-                                                   @Field(AppConstants.KEY_STREAM) String stream,
-                                                   @Field(AppConstants.KEY_CLASS) String standard,
-                                                   @Field(AppConstants.KEY_ATTACHMENTS) String attachments);
+    @POST(AppConstants.API_TEACHRSUGSTN_TEACHRSUGSTN_ADD)
+    Call<MdlTeachrSugstnsAddRes> callTeachSugstnsAdd(@Field(AppConstants.KEY_DEVICE_INFO) String deviceInfo,
+                                                     @Field(AppConstants.KEY_USER_ID) int userId,
+                                                     @Field(AppConstants.KEY_SUBJECT) String subject,
+                                                     @Field(AppConstants.KEY_DESCRIPTION) String description,
+                                                     @Field(AppConstants.KEY_ATTACHMENTS) String attachments);
 }

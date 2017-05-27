@@ -44,18 +44,13 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.jalotsav.jamnadasconnect.R;
@@ -63,13 +58,11 @@ import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
 import com.jalotsav.jamnadasconnect.common.LogHelper;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
-import com.jalotsav.jamnadasconnect.models.MdlGetStandardsRes;
-import com.jalotsav.jamnadasconnect.models.MdlGetStreamsRes;
 import com.jalotsav.jamnadasconnect.models.MdlUploadChunkImageRes;
-import com.jalotsav.jamnadasconnect.models.bookcorrection.MdlBookCorrectionAddRes;
-import com.jalotsav.jamnadasconnect.retrofitapi.APIBookCorrection;
+import com.jalotsav.jamnadasconnect.models.teachersuggestions.MdlTeachrSugstnsAddRes;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIGeneral;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIRetroBuilder;
+import com.jalotsav.jamnadasconnect.retrofitapi.APITeacherSuggestions;
 import com.jalotsav.jamnadasconnect.utils.ValidationUtils;
 
 import org.json.JSONException;
@@ -95,28 +88,28 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by Jalotsav on 5/22/2017.
+ * Created by Jalotsav on 5/27/2017.
  */
 
-public class FrgmntBookCorrection extends Fragment {
+public class FrgmntTeacherSuggestions extends Fragment {
 
-    private static final String TAG = FrgmntBookCorrection.class.getSimpleName();
+    private static final String TAG = FrgmntTeacherSuggestions.class.getSimpleName();
 
-    @BindView(R.id.cordntrlyot_frgmnt_bookcorctn) CoordinatorLayout mCrdntrlyot;
-    @BindView(R.id.txtinputlyot_frgmnt_bookcorctn_bookname) TextInputLayout mTxtinptlyotBookName;
-    @BindView(R.id.txtinptet_frgmnt_bookcorctn_bookname) TextInputEditText mTxtinptEtBookName;
-    @BindView(R.id.spnr_frgmnt_bookcorctn_stream) Spinner mSpnrStream;
-    @BindView(R.id.spnr_frgmnt_bookcorctn_standr) Spinner mSpnrStandr;
-    @BindView(R.id.imgvw_frgmnt_bookcorctn_backsteppr) ImageView mImgvwBackSteppr;
-    @BindView(R.id.vwswtchr_frgmnt_bookcorctn_steppr) ViewSwitcher mVwswtchrSteppr;
-    @BindView(R.id.appcmptbtn_frgmnt_bookcorctn_attchmnt_add) AppCompatButton mAppcmptbtnAttachAdd;
+    @BindView(R.id.cordntrlyot_frgmnt_teachrsugstns) CoordinatorLayout mCrdntrlyot;
+    @BindView(R.id.txtinputlyot_frgmnt_teachrsugstns_title) TextInputLayout mTxtinptlyotTitle;
+    @BindView(R.id.txtinputlyot_frgmnt_teachrsugstns_descrptn) TextInputLayout mTxtinptlyotDescrptn;
+    @BindView(R.id.txtinptet_frgmnt_teachrsugstns_title) TextInputEditText mTxtinptEtTitle;
+    @BindView(R.id.txtinptet_frgmnt_teachrsugstns_descrptn) TextInputEditText mTxtinptEtDescrptn;
+    @BindView(R.id.imgvw_frgmnt_teachrsugstns_backsteppr) ImageView mImgvwBackSteppr;
+    @BindView(R.id.vwswtchr_frgmnt_teachrsugstns_steppr) ViewSwitcher mVwswtchrSteppr;
+    @BindView(R.id.appcmptbtn_frgmnt_teachrsugstns_attchmnt_add) AppCompatButton mAppcmptbtnAttachAdd;
     @BindView(R.id.lnrlyot_frgmnt_bookcorctn_attachimage) LinearLayout mLnrlyotAtchdImg;
     @BindView(R.id.lnrlyot_frgmnt_bookcorctn_attachaudio) LinearLayout mLnrlyotAtchdAudio;
     @BindView(R.id.imgvw_frgmnt_bookcorctn_attachimage_preview) ImageView mImgvwAtchdImgPreview;
     @BindView(R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop) ImageView mImgvwAtchdAudStartStop;
     @BindView(R.id.tv_frgmnt_bookcorctn_attachaudio_timeremain) TextView mTvTimeRemaining;
     @BindView(R.id.tv_frgmnt_bookcorctn_attachaudio_recordattchdmsg) TextView mTvRecrdngAttachd;
-    @BindView(R.id.prgrsbr_frgmnt_bookcorctn) ProgressBar mPrgrsbrMain;
+    @BindView(R.id.prgrsbr_frgmnt_teachrsugstns) ProgressBar mPrgrsbrMain;
     @BindView(R.id.prgrsbr_frgmnt_bookcorctn_attachaudio_recordprgrs) ProgressBar mPrgrsbrAudioRecord;
 
     @BindString(R.string.please_wait_3dots) String mPleaseWait;
@@ -124,12 +117,10 @@ public class FrgmntBookCorrection extends Fragment {
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
     @BindString(R.string.internal_problem_sml) String mInternalPrblmMsg;
     @BindString(R.string.audio_record_problem_sml) String mAudioRcrdPrblmMsg;
-    @BindString(R.string.no_data_avlbl_refresh) String mNoDataAvilblMsg;
     @BindString(R.string.allow_permtn_atchmnt) String mAllowPermsnMsg;
     @BindString(R.string.refresh_sml) String mRefreshStr;
-    @BindString(R.string.entr_book_name_sml) String mEntrBookName;
-    @BindString(R.string.select_stream_sml) String mSelctStream;
-    @BindString(R.string.select_standard_sml) String mSelctStandr;
+    @BindString(R.string.entr_title_sml) String mEntrTitle;
+    @BindString(R.string.entr_descrptn_sml) String mEntrDescrptn;
 
     @BindDrawable(R.drawable.ic_pictures_flat_128dp) Drawable mDrwblDefaultPicture;
     @BindDrawable(R.drawable.ic_play_flat_128dp) Drawable mDrwblPlay;
@@ -138,9 +129,7 @@ public class FrgmntBookCorrection extends Fragment {
     UserSessionManager session;
     ProgressDialog mPrgrsDialog;
     boolean mIsAttachImage, mIsWithAttachement, mIsImageProcessing, mIsCounterRunning;
-    String mBookNameVal, mChunkResFileName = "", mChunkResImageName = "", mFirstChunk = "0", mLastChunk = "0", mSendingImageChunk;
-    ArrayAdapter<String> mArryadptrStream, mArryadptrStandr;
-    ArrayList<String> mArrylstStreams, mArrylstStandrs;
+    String mTitleVal, mDescrptnVal, mChunkResFileName = "", mChunkResImageName = "", mFirstChunk = "0", mLastChunk = "0", mSendingImageChunk;
     Uri mImageUri;
     List<String> mArrylstSelectedImages = new ArrayList<>();
     List<JSONObject> mArrlstJsonAttchdImgBase64 = new ArrayList<>();
@@ -155,125 +144,26 @@ public class FrgmntBookCorrection extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.lo_frgmnt_book_correction, container, false);
+        View rootView = inflater.inflate(R.layout.lo_frgmnt_teacher_suggestions, container, false);
         ButterKnife.bind(this, rootView);
 
-        setHasOptionsMenu(true);
-
         session = new UserSessionManager(getActivity());
-
-        mArrylstStreams = new ArrayList<>();
-        mArrylstStreams.add(mSelctStream);
-        mArrylstStandrs = new ArrayList<>();
-        mArrylstStandrs.add(mSelctStandr);
-
-        // Init Spinner value
-        mArryadptrStream = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStreams);
-        mSpnrStream.setAdapter(mArryadptrStream);
-        mArryadptrStandr = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStandrs);
-        mSpnrStandr.setAdapter(mArryadptrStandr);
 
         // Init image upload in chunk Progress Dialog
         mPrgrsDialog = new ProgressDialog(getActivity());
         mPrgrsDialog.setMessage(mPleaseWait);
         mPrgrsDialog.setCancelable(false);
 
-        getAllDetails();
-
         return rootView;
     }
 
-    // Get Teacher Profile, Streams, Standard details
-    private void getAllDetails() {
-
-        if (GeneralFunctions.isNetConnected(getActivity())) {
-
-            getStreams();
-            getStandards();
-        } else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
-    }
-
-    // Call Retrofit API
-    private void getStreams() {
-
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
-        Call<MdlGetStreamsRes> callMdlGetStreamsRes = objApiGeneral.callGetStreams();
-        callMdlGetStreamsRes.enqueue(new Callback<MdlGetStreamsRes>() {
-            @Override
-            public void onResponse(Call<MdlGetStreamsRes> call, Response<MdlGetStreamsRes> response) {
-
-                try {
-
-                    MdlGetStreamsRes objMdlGetStreamsRes = response.body();
-                    if(objMdlGetStreamsRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
-
-                        mArrylstStreams = new ArrayList<>();
-                        mArrylstStreams.add(mSelctStream);
-                        mArrylstStreams.addAll(objMdlGetStreamsRes.getArrylstStream());
-                        mArryadptrStream = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStreams);
-                        mSpnrStream.setAdapter(mArryadptrStream);
-                    } else
-                        Snackbar.make(mCrdntrlyot, objMdlGetStreamsRes.getMessage(), Snackbar.LENGTH_LONG).show();
-                } catch (Exception e) {
-
-                    e.printStackTrace();
-                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
-                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MdlGetStreamsRes> call, Throwable t) {
-
-                Snackbar.make(mCrdntrlyot, mServerPrblmMsg, Snackbar.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    // Call Retrofit API
-    private void getStandards() {
-
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
-        Call<MdlGetStandardsRes> callMdlGetStandardsRes = objApiGeneral.callGetStandards();
-        callMdlGetStandardsRes.enqueue(new Callback<MdlGetStandardsRes>() {
-            @Override
-            public void onResponse(Call<MdlGetStandardsRes> call, Response<MdlGetStandardsRes> response) {
-
-                try {
-
-                    MdlGetStandardsRes objMdlGetStandardsRes = response.body();
-                    if(objMdlGetStandardsRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
-
-                        mArrylstStandrs = new ArrayList<>();
-                        mArrylstStandrs.add(mSelctStandr);
-                        mArrylstStandrs.addAll(objMdlGetStandardsRes.getArrylstStandard());
-                        mArryadptrStandr = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStandrs);
-                        mSpnrStandr.setAdapter(mArryadptrStandr);
-                    } else
-                        Snackbar.make(mCrdntrlyot, objMdlGetStandardsRes.getMessage(), Snackbar.LENGTH_LONG).show();
-                } catch (Exception e) {
-
-                    e.printStackTrace();
-                    LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
-                    Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MdlGetStandardsRes> call, Throwable t) {
-
-                Snackbar.make(mCrdntrlyot, mServerPrblmMsg, Snackbar.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    @OnClick({R.id.fab_frgmnt_bookcorctn_done, R.id.imgvw_frgmnt_bookcorctn_backsteppr, R.id.imgvw_frgmnt_bookcorctn_attachimage,
-            R.id.imgvw_frgmnt_bookcorctn_attachaudio, R.id.appcmptbtn_frgmnt_bookcorctn_attchmnt_add,
+    @OnClick({R.id.fab_frgmnt_teachrsugstns_done, R.id.imgvw_frgmnt_teachrsugstns_backsteppr, R.id.imgvw_frgmnt_bookcorctn_attachimage,
+            R.id.imgvw_frgmnt_bookcorctn_attachaudio, R.id.appcmptbtn_frgmnt_teachrsugstns_attchmnt_add,
             R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop})
     public void onClickView(View view) {
 
         switch (view.getId()) {
-            case R.id.fab_frgmnt_bookcorctn_done:
+            case R.id.fab_frgmnt_teachrsugstns_done:
 
                 if(!mIsCounterRunning && mPrgrsbrMain.getVisibility() != View.VISIBLE) {
                     if (GeneralFunctions.isNetConnected(getActivity()))
@@ -301,7 +191,7 @@ public class FrgmntBookCorrection extends Fragment {
                 mIsAttachImage = false;
                 updateUIAttachmnt();
                 break;
-            case R.id.appcmptbtn_frgmnt_bookcorctn_attchmnt_add:
+            case R.id.appcmptbtn_frgmnt_teachrsugstns_attchmnt_add:
 
                 checkAppPermission(view);
                 break;
@@ -449,13 +339,10 @@ public class FrgmntBookCorrection extends Fragment {
     // Check all validation of fields and call API
     private void checkAllValidation() {
 
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotBookName, mTxtinptEtBookName, mEntrBookName)) // Book Name
+        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotTitle, mTxtinptEtTitle, mEntrTitle)) // Title
             return;
 
-        if(!validateStream())
-            return;
-
-        if(!validateStandard())
+        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotDescrptn, mTxtinptEtDescrptn, mEntrDescrptn)) // Description
             return;
 
         if (GeneralFunctions.isNetConnected(getActivity())) {
@@ -465,51 +352,6 @@ public class FrgmntBookCorrection extends Fragment {
             else
                 callBookCorrectionAddAPI();
         } else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
-
-    }
-
-    // Validate Stream spinner
-    private boolean validateStream() {
-
-        if(mArrylstStreams.size() <= 1) {
-
-            showRefreshSnackbar();
-            return false;
-        } else if(mSpnrStream.getSelectedItemPosition() == 0) {
-
-            GeneralFunctions.showToastSingle(getActivity(), mSelctStream, Toast.LENGTH_SHORT);
-            return false;
-        } else
-            return true;
-    }
-
-    // Validate Standard spinner
-    private boolean validateStandard() {
-
-        if(mArrylstStandrs.size() <= 1) {
-
-            showRefreshSnackbar();
-            return false;
-        } else if(mSpnrStandr.getSelectedItemPosition() == 0) {
-
-            GeneralFunctions.showToastSingle(getActivity(), mSelctStandr, Toast.LENGTH_SHORT);
-            return false;
-        } else
-            return true;
-    }
-
-    // Show SnackBar with Refresh action
-    private void showRefreshSnackbar() {
-
-        Snackbar.make(mCrdntrlyot, mNoDataAvilblMsg, Snackbar.LENGTH_LONG)
-                .setAction(mRefreshStr, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        getAllDetails();
-                    }
-                })
-                .show();
     }
 
     // Get chunks list
@@ -626,30 +468,30 @@ public class FrgmntBookCorrection extends Fragment {
     private void callBookCorrectionAddAPI() {
 
         mPrgrsbrMain.setVisibility(View.VISIBLE);
-        mBookNameVal = mTxtinptEtBookName.getText().toString().trim();
+        mTitleVal = mTxtinptEtTitle.getText().toString().trim();
+        mDescrptnVal = mTxtinptEtDescrptn.getText().toString().trim();
         String attchmentsNames;
         if(mArrylstUploadedImageNames.isEmpty())
             attchmentsNames = "";
         else attchmentsNames = mArrylstUploadedImageNames.get(0);
 
-        APIBookCorrection objApiBookCorrctn = APIRetroBuilder.getRetroBuilder(false).create(APIBookCorrection.class);
-        Call<MdlBookCorrectionAddRes> callMdlBookReqstAddRes = objApiBookCorrctn.callBookCorrectnAdd(
-                GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId(), mBookNameVal,
-                mSpnrStream.getSelectedItem().toString(), mSpnrStandr.getSelectedItem().toString(), attchmentsNames);
-        callMdlBookReqstAddRes.enqueue(new Callback<MdlBookCorrectionAddRes>() {
+        APITeacherSuggestions objApiTeachrSugstns = APIRetroBuilder.getRetroBuilder(false).create(APITeacherSuggestions.class);
+        Call<MdlTeachrSugstnsAddRes> callMdlTeachrSugstnsAddRes = objApiTeachrSugstns.callTeachSugstnsAdd(
+                GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId(), mTitleVal, mDescrptnVal, attchmentsNames);
+        callMdlTeachrSugstnsAddRes.enqueue(new Callback<MdlTeachrSugstnsAddRes>() {
             @Override
-            public void onResponse(Call<MdlBookCorrectionAddRes> call, Response<MdlBookCorrectionAddRes> response) {
+            public void onResponse(Call<MdlTeachrSugstnsAddRes> call, Response<MdlTeachrSugstnsAddRes> response) {
 
                 mPrgrsbrMain.setVisibility(View.GONE);
                 try {
-                    MdlBookCorrectionAddRes objMdlBookCorrctnAddRes = response.body();
-                    if(objMdlBookCorrctnAddRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
+                    MdlTeachrSugstnsAddRes objMdlTeachrSugstnsAddRes = response.body();
+                    if(objMdlTeachrSugstnsAddRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-                        Snackbar.make(mCrdntrlyot, objMdlBookCorrctnAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(mCrdntrlyot, objMdlTeachrSugstnsAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
 
                         clearUI();
                     } else
-                        Snackbar.make(mCrdntrlyot, objMdlBookCorrctnAddRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(mCrdntrlyot, objMdlTeachrSugstnsAddRes.getMessage(), Snackbar.LENGTH_LONG).show();
                 } catch (Exception e) {
 
                     e.printStackTrace();
@@ -659,7 +501,7 @@ public class FrgmntBookCorrection extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<MdlBookCorrectionAddRes> call, Throwable t) {
+            public void onFailure(Call<MdlTeachrSugstnsAddRes> call, Throwable t) {
 
                 mPrgrsbrMain.setVisibility(View.GONE);
                 Snackbar.make(mCrdntrlyot, mServerPrblmMsg, Snackbar.LENGTH_LONG).show();
@@ -670,9 +512,8 @@ public class FrgmntBookCorrection extends Fragment {
     // Clear all values of UI
     private void clearUI() {
 
-        mTxtinptEtBookName.setText("");
-        mSpnrStream.setSelection(0);
-        mSpnrStandr.setSelection(0);
+        mTxtinptEtTitle.setText("");
+        mTxtinptEtDescrptn.setText("");
         mImgvwAtchdImgPreview.setImageDrawable(mDrwblDefaultPicture);
 
         mArrylstUploadedImageNames = new ArrayList<>();
@@ -705,10 +546,10 @@ public class FrgmntBookCorrection extends Fragment {
         public void onTick(long millisUntilFinished) {
 
             String currentTime = String.format(Locale.getDefault(), "%02d : %02d",
-                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
-                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
-                                );
+                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
+                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
+            );
             mTvTimeRemaining.setText(currentTime);
             int currentprgrs = (int) (millisUntilFinished / 1000);
             LogHelper.printLog(AppConstants.LOGTYPE_INFO, TAG, "CurrentProgress: " + currentprgrs);
@@ -837,9 +678,9 @@ public class FrgmntBookCorrection extends Fragment {
                 general.DisplayToast(activity, getString(R.string.image_upload_error), AppKeyword.TOASTSHORT, AppKeyword.status_toast);
             } else {*/
 
-                String imagePathName = picturePath;
+            String imagePathName = picturePath;
 //                IMAGE_URI_PROFILE_STR = imagePathName;
-                mArrylstSelectedImages.add(String.valueOf(imagePathName));
+            mArrylstSelectedImages.add(String.valueOf(imagePathName));
 
                 /*alProgress.add(mArrylstUploadedImageNames.size(), AppKeyword.statusmessage_700_true);
                 alDelete.add(mArrylstUploadedImageNames.size(), AppKeyword.statusmessage_600_false);
@@ -851,14 +692,14 @@ public class FrgmntBookCorrection extends Fragment {
                 adapterSendConversationImgList = new AdapterSendConversationImgList(activity, mArrylstSelectedImages, alProgress, alDelete);
                 rvImages.setAdapter(adapterSendConversationImgList);*/
 
-                String strBase64 = GeneralFunctions.convertImageToBase64(imagePathName);
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put(AppConstants.ID_SML, mImgCount);
-                jsonObject.put(AppConstants.BASE64_PART, strBase64);
-                mArrlstJsonAttchdImgBase64.add(jsonObject);
-                mImgCount++;
+            String strBase64 = GeneralFunctions.convertImageToBase64(imagePathName);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(AppConstants.ID_SML, mImgCount);
+            jsonObject.put(AppConstants.BASE64_PART, strBase64);
+            mArrlstJsonAttchdImgBase64.add(jsonObject);
+            mImgCount++;
 
-                mIsWithAttachement = true;
+            mIsWithAttachement = true;
 //            }
         } catch (Exception e) {
             e.printStackTrace();
@@ -890,26 +731,6 @@ public class FrgmntBookCorrection extends Fragment {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_refresh, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-
-                getAllDetails();
-                break;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

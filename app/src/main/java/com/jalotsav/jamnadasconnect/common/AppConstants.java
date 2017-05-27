@@ -47,6 +47,8 @@ public interface AppConstants {
     String API_TCHR_TEACHER_VIEW = "teacher/api_teacher_view";
     String API_TCHR_CHECK_TEACHER_DATA_AVALBLTY = "teacher/api_check_teacher_data_availability";
     String API_BOOKREQST_BOOKREQST_ADD = "book_request/api_book_request_add";
+    String API_BOOKCORCTN_BOOKCORCTN_ADD = "book_correction/api_book_correction_add";
+    String API_TEACHRSUGSTN_TEACHRSUGSTN_ADD = "teacher_suggestion/api_teacher_suggestion_add";
 
     // Web-Service Keys
     String KEY_EMAIL_MOB = "email_mob";
@@ -111,6 +113,8 @@ public interface AppConstants {
     String KEY_OUTPUT_URL = "output_url";
     String KEY_UPLOAD_FILE_NAME = "upload_file_name";
     String KEY_ATTACHMENTS = "attachments";
+    String KEY_SUBJECT = "subject";
+    String KEY_DESCRIPTION = "description";
 
     // Web-Service Values
     String VALUES_TRUE = "TRUE";
@@ -149,6 +153,7 @@ public interface AppConstants {
     String BASE64_PART = "base64Part";
     String EXTENSION_JPG = "jpg";
     String EXTENSION_3GPP = "3gpp";
+    String EXTENSION_MP3 = "mp3";
 
     // Push Notification
     int NOTIFICATION_BUILDER_ID_SINGLE = 1;
