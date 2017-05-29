@@ -158,4 +158,14 @@ public interface AppConstants {
 
     // Push Notification
     int NOTIFICATION_BUILDER_ID_SINGLE = 1;
+
+    // Push Notification Keys
+    String KEY_PUSHNOTFCTN_TITLE = "title";
+    String KEY_PUSHNOTFCTN_MESSAGE = "message";
+    String KEY_PUSHNOTFCTN_MODULE_ID = "module_id";
+    String KEY_PUSHNOTFCTN_MODULE = "module";
+    String KEY_PUSHNOTFCTN_IMAGE = "image";
+    String KEY_PUSHNOTFCTN_MODULE_BOOK_REQUEST = "BOOK_REQUEST";
+    String KEY_PUSHNOTFCTN_MODULE_BOOK_ORDER = "BOOK_ORDER";
+    String KEY_PUSHNOTFCTN_MODULE_NEWS = "NEWS";
 }

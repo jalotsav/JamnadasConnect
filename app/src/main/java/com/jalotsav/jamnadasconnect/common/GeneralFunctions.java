@@ -42,6 +42,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -277,5 +280,24 @@ public class GeneralFunctions {
             fileOrDirectory.delete();
         }else
             fileOrDirectory.delete();
+    }
+
+    /*
+    *To get a Bitmap image from the URL received
+    * */
+    public static Bitmap getBitmapFromUrl(String imageUrl) {
+
+        try {
+
+            URL url = new URL(imageUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            return BitmapFactory.decodeStream(input);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
