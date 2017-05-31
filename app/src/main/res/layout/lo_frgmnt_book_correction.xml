@@ -202,20 +202,6 @@
         </android.support.v7.widget.CardView>
     </LinearLayout>
 
-    <!--Save FAB Button-->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_frgmnt_bookcorctn_done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_32jdp"
-        android:layout_marginRight="@dimen/_32jdp"
-        android:clickable="true"
-        android:tint="@color/white"
-        app:fabSize="normal"
-        app:layout_anchor="@id/lnrlyot_frgmnt_bookcorctn_bookname"
-        app:layout_anchorGravity="right|end|bottom"
-        app:srcCompat="@drawable/ic_done_black_24dp" />
-
     <ProgressBar
         android:id="@+id/prgrsbr_frgmnt_bookcorctn"
         android:layout_width="wrap_content"

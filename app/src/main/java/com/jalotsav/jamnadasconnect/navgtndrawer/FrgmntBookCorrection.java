@@ -291,21 +291,12 @@ public class FrgmntBookCorrection extends Fragment {
         });
     }
 
-    @OnClick({R.id.fab_frgmnt_bookcorctn_done, R.id.imgvw_frgmnt_bookcorctn_backsteppr, R.id.imgvw_frgmnt_bookcorctn_attachimage,
+    @OnClick({R.id.imgvw_frgmnt_bookcorctn_backsteppr, R.id.imgvw_frgmnt_bookcorctn_attachimage,
             R.id.imgvw_frgmnt_bookcorctn_attachaudio, R.id.appcmptbtn_frgmnt_bookcorctn_attchmnt_add,
             R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop})
     public void onClickView(View view) {
 
         switch (view.getId()) {
-            case R.id.fab_frgmnt_bookcorctn_done:
-
-                if(!mIsCounterRunning && mPrgrsbrMain.getVisibility() != View.VISIBLE) {
-                    if (GeneralFunctions.isNetConnected(getActivity()))
-                        checkAllValidation();
-                    else
-                        Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
-                }
-                break;
             case R.id.imgvw_frgmnt_bookcorctn_backsteppr:
 
                 if(mVwswtchrSteppr.getDisplayedChild() != 0) {
@@ -922,7 +913,7 @@ public class FrgmntBookCorrection extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_refresh, menu);
+        inflater.inflate(R.menu.menu_myprofile, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -930,9 +921,18 @@ public class FrgmntBookCorrection extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_refresh:
+            case R.id.action_myprofile_refresh:
 
                 getAllDetails();
+                break;
+            case R.id.action_myprofile_done:
+
+                if(!mIsCounterRunning && mPrgrsbrMain.getVisibility() != View.VISIBLE) {
+                    if (GeneralFunctions.isNetConnected(getActivity()))
+                        checkAllValidation();
+                    else
+                        Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
+                }
                 break;
             default:
                 break;

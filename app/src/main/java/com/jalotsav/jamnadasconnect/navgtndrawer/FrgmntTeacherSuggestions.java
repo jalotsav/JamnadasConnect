@@ -44,6 +44,8 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -148,6 +150,8 @@ public class FrgmntTeacherSuggestions extends Fragment {
         View rootView = inflater.inflate(R.layout.lo_frgmnt_teacher_suggestions, container, false);
         ButterKnife.bind(this, rootView);
 
+        setHasOptionsMenu(true);
+
         session = new UserSessionManager(getActivity());
 
         // Init image upload in chunk Progress Dialog
@@ -158,21 +162,12 @@ public class FrgmntTeacherSuggestions extends Fragment {
         return rootView;
     }
 
-    @OnClick({R.id.fab_frgmnt_teachrsugstns_done, R.id.imgvw_frgmnt_teachrsugstns_backsteppr, R.id.imgvw_frgmnt_bookcorctn_attachimage,
+    @OnClick({R.id.imgvw_frgmnt_teachrsugstns_backsteppr, R.id.imgvw_frgmnt_bookcorctn_attachimage,
             R.id.imgvw_frgmnt_bookcorctn_attachaudio, R.id.appcmptbtn_frgmnt_teachrsugstns_attchmnt_add,
             R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop})
     public void onClickView(View view) {
 
         switch (view.getId()) {
-            case R.id.fab_frgmnt_teachrsugstns_done:
-
-                if(!mIsCounterRunning && mPrgrsbrMain.getVisibility() != View.VISIBLE) {
-                    if (GeneralFunctions.isNetConnected(getActivity()))
-                        checkAllValidation();
-                    else
-                        Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
-                }
-                break;
             case R.id.imgvw_frgmnt_teachrsugstns_backsteppr:
 
                 if(mVwswtchrSteppr.getDisplayedChild() != 0) {
@@ -736,6 +731,33 @@ public class FrgmntTeacherSuggestions extends Fragment {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_myprofile, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+        menu.getItem(0).setVisible(false); // Hide Refresh menu
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_myprofile_done:
+
+                if(!mIsCounterRunning && mPrgrsbrMain.getVisibility() != View.VISIBLE) {
+                    if (GeneralFunctions.isNetConnected(getActivity()))
+                        checkAllValidation();
+                    else
+                        Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

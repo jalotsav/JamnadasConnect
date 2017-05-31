@@ -138,7 +138,7 @@ public class SignIn extends AppCompatActivity {
                         startActivity(new Intent(SignIn.this, NavgtnDrwrMain.class));
                     } else
                         Snackbar.make(mCrdntrlyot, response.body().getMessage(), Snackbar.LENGTH_LONG).show();
-                } catch (NumberFormatException e) {
+                } catch (Exception e) {
 
                     e.printStackTrace();
                     LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());

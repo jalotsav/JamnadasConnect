@@ -322,6 +322,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                             mLastNameVal = objMdlTeacherBasic.getLastName();
                             mMobileVal = objMdlTeacherBasic.getMobile();
                             mEmailVal = objMdlTeacherBasic.getEmail();
+                            mTxtinptEtEmail.setText(mEmailVal);
                         }
 
                         // Education & Contact Details
@@ -628,6 +629,12 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
         if(!validateBirthday())
             return;
+
+        if(!TextUtils.isEmpty(mTxtinptEtEmail.getText().toString().trim())) { // Email
+            if (!ValidationUtils.validateEmailFormat(getActivity(), mTxtinptlyotEmail, mTxtinptEtEmail)) {
+                return;
+            }
+        }
 
         if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotAdrsLine1, mTxtinptEtAdrsLine1, mEntrAdrsLine1)) // Address Line 1
             return;

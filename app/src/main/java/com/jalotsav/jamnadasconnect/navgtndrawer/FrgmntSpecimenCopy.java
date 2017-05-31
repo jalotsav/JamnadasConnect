@@ -278,22 +278,6 @@ public class FrgmntSpecimenCopy extends Fragment {
         alrtDlg.show();
     }
 
-    @OnClick({R.id.fab_frgmnt_specimncopy_done})
-    public void onClickView(View view) {
-
-        switch (view.getId()) {
-            case R.id.fab_frgmnt_specimncopy_done:
-
-                if(mPrgrsbrMain.getVisibility() != View.VISIBLE && mTeacherDataAvaibltyStatus) {
-                    if (GeneralFunctions.isNetConnected(getActivity()))
-                        checkAllValidation();
-                    else
-                        Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
-                }
-                break;
-        }
-    }
-
     // Check all validation of fields and call API
     private void checkAllValidation() {
 
@@ -403,7 +387,7 @@ public class FrgmntSpecimenCopy extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_refresh, menu);
+        inflater.inflate(R.menu.menu_myprofile, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -411,9 +395,18 @@ public class FrgmntSpecimenCopy extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_refresh:
+            case R.id.action_myprofile_refresh:
 
                 getAllDetails();
+                break;
+            case R.id.action_myprofile_done:
+
+                if(mPrgrsbrMain.getVisibility() != View.VISIBLE && mTeacherDataAvaibltyStatus) {
+                    if (GeneralFunctions.isNetConnected(getActivity()))
+                        checkAllValidation();
+                    else
+                        Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
+                }
                 break;
             default:
                 break;
