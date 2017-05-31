@@ -84,7 +84,7 @@ public class FrgmntSpecimenCopy extends Fragment {
     @BindString(R.string.no_data_avlbl_refresh) String mNoDataAvilblMsg;
     @BindString(R.string.refresh_sml) String mRefreshStr;
     @BindString(R.string.entr_book_name_sml) String mEntrBookName;
-    @BindString(R.string.select_stream_sml) String mSelctStream;
+    @BindString(R.string.select_medium_sml) String mSelctStream;
     @BindString(R.string.select_standard_sml) String mSelctStandr;
 
     UserSessionManager session;
@@ -374,10 +374,14 @@ public class FrgmntSpecimenCopy extends Fragment {
                     MdlBookReqstAddRes objMdlBookReqstAddRes = response.body();
                     if(objMdlBookReqstAddRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-                        Snackbar.make(mCrdntrlyot, objMdlBookReqstAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
+                        GeneralFunctions.hideSoftKeyboard(getActivity());
+                        GeneralFunctions.showToastSingle(getActivity(), objMdlBookReqstAddRes.getMessage(), Toast.LENGTH_LONG);
+//                        Snackbar.make(mCrdntrlyot, objMdlBookReqstAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
                         mTxtinptEtBookName.setText("");
                         mSpnrStream.setSelection(0);
                         mSpnrStandr.setSelection(0);
+
+                        getActivity().onBackPressed();
                     } else
                         Snackbar.make(mCrdntrlyot, objMdlBookReqstAddRes.getMessage(), Snackbar.LENGTH_LONG).show();
                 } catch (Exception e) {

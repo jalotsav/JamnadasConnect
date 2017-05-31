@@ -16,6 +16,7 @@
 
 package com.jalotsav.jamnadasconnect.common;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -30,6 +31,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Base64;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -298,6 +300,20 @@ public class GeneralFunctions {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    /***
+     * Hide Soft Keyboard
+     * ***/
+    public static void hideSoftKeyboard(Activity activity) {
+
+        try {
+
+            InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

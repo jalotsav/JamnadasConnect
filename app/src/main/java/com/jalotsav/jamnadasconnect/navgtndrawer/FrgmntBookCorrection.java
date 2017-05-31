@@ -20,6 +20,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -40,6 +41,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
@@ -120,6 +122,8 @@ public class FrgmntBookCorrection extends Fragment {
     @BindView(R.id.prgrsbr_frgmnt_bookcorctn_attachaudio_recordprgrs) ProgressBar mPrgrsbrAudioRecord;
 
     @BindString(R.string.please_wait_3dots) String mPleaseWait;
+    @BindString(R.string.note_sml) String mNoteStr;
+    @BindString(R.string.bookcrctn_note_dialog_msg) String mBookCrctnNoteDialogMsg;
     @BindString(R.string.no_intrnt_cnctn) String mNoInternetConnMsg;
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
     @BindString(R.string.internal_problem_sml) String mInternalPrblmMsg;
@@ -128,7 +132,7 @@ public class FrgmntBookCorrection extends Fragment {
     @BindString(R.string.allow_permtn_atchmnt) String mAllowPermsnMsg;
     @BindString(R.string.refresh_sml) String mRefreshStr;
     @BindString(R.string.entr_book_name_sml) String mEntrBookName;
-    @BindString(R.string.select_stream_sml) String mSelctStream;
+    @BindString(R.string.select_medium_sml) String mSelctStream;
     @BindString(R.string.select_standard_sml) String mSelctStandr;
 
     @BindDrawable(R.drawable.ic_pictures_flat_128dp) Drawable mDrwblDefaultPicture;
@@ -178,9 +182,29 @@ public class FrgmntBookCorrection extends Fragment {
         mPrgrsDialog.setMessage(mPleaseWait);
         mPrgrsDialog.setCancelable(false);
 
+        noteAlertDialog();
+
         getAllDetails();
 
         return rootView;
+    }
+
+    // Show AlertDialog for Note
+    private void noteAlertDialog() {
+
+        AlertDialog.Builder alrtDlg = new AlertDialog.Builder(getActivity());
+        alrtDlg.setTitle(mNoteStr);
+        alrtDlg.setMessage(mBookCrctnNoteDialogMsg);
+        alrtDlg.setCancelable(false);
+        alrtDlg.setPositiveButton(getString(android.R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                dialogInterface.dismiss();
+            }
+        });
+
+        alrtDlg.show();
     }
 
     // Get Teacher Profile, Streams, Standard details
@@ -645,9 +669,13 @@ public class FrgmntBookCorrection extends Fragment {
                     MdlBookCorrectionAddRes objMdlBookCorrctnAddRes = response.body();
                     if(objMdlBookCorrctnAddRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-                        Snackbar.make(mCrdntrlyot, objMdlBookCorrctnAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
+                        GeneralFunctions.hideSoftKeyboard(getActivity());
+                        GeneralFunctions.showToastSingle(getActivity(), objMdlBookCorrctnAddRes.getMessage(), Toast.LENGTH_LONG);
+//                        Snackbar.make(mCrdntrlyot, objMdlBookCorrctnAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
 
                         clearUI();
+
+                        getActivity().onBackPressed();
                     } else
                         Snackbar.make(mCrdntrlyot, objMdlBookCorrctnAddRes.getMessage(), Snackbar.LENGTH_LONG).show();
                 } catch (Exception e) {

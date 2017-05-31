@@ -158,9 +158,9 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindString(R.string.work_dtls_appear_here) String mWorkDtlsAppearHere;
     @BindString(R.string.add_sml) String mAddStr;
     @BindString(R.string.add_more_sml) String mAddMoreStr;
-    @BindString(R.string.select_stream_sml) String mSelctStream;
+    @BindString(R.string.select_medium_sml) String mSelctStream;
     @BindString(R.string.select_standard_sml) String mSelctStandr;
-    @BindString(R.string.add_atleast_one_work_dtls) String mAddAtleastOneWorkDtls;
+    @BindString(R.string.plz_add_work_dtls) String mAddAtleastOneWorkDtls;
     @BindString(R.string.profile_updated_sml) String mProfileUpdatedMsg;
 
     TextInputLayout mTxtinptlyotSchoolName, mTxtinptlyotSubject;
@@ -177,7 +177,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
     UserSessionManager session;
     String mFirstNameVal, mLastNameVal, mEmailVal = "", mMobileVal, mBirthDayVal,
-            mExprncVal, mAreaOfIntrstVal, mEductnlQualfctnVal, mAchievmntsVal = "",
+            mExprncVal = "", mAreaOfIntrstVal = "", mEductnlQualfctnVal = "", mAchievmntsVal = "",
             mAdrsLine1Val, mAdrsLine2Val = "", mCityVal, mStateVal, mCountryVal, mPincodeVal,
             mSchoolNameVal, mSubjectVal;
     int mComeFrom, birthdayAgeCount;
@@ -629,15 +629,6 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         if(!validateBirthday())
             return;
 
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotExprnc, mTxtinptEtExprnc, mEntrExprnc)) // Experience
-            return;
-
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotAreaOfIntrst, mTxtinptEtAreaOfIntrst, mEntrAreaOfIntrst)) // Area Of Interest
-            return;
-
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotEductnlQualfctn, mTxtinptEtEductnlQualfctn, mEntrEductnlQualfctn)) // Education Qualification
-            return;
-
         if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotAdrsLine1, mTxtinptEtAdrsLine1, mEntrAdrsLine1)) // Address Line 1
             return;
 
@@ -658,6 +649,15 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
         if(!validateWorkDetails())
             return;
+
+        /*if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotExprnc, mTxtinptEtExprnc, mEntrExprnc)) // Experience
+            return;
+
+        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotAreaOfIntrst, mTxtinptEtAreaOfIntrst, mEntrAreaOfIntrst)) // Area Of Interest
+            return;
+
+        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotEductnlQualfctn, mTxtinptEtEductnlQualfctn, mEntrEductnlQualfctn)) // Education Qualification
+            return;*/
 
         if (GeneralFunctions.isNetConnected(getActivity()))
             callTeacherEditAPI();
@@ -771,12 +771,15 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                     MdlTeacherEditRes objMdlRegstrRes = response.body();
                     if(objMdlRegstrRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-                        Snackbar.make(mCrdntrlyot, mProfileUpdatedMsg, Snackbar.LENGTH_SHORT).show();
+                        GeneralFunctions.hideSoftKeyboard(getActivity());
+                        GeneralFunctions.showToastSingle(getActivity(), mProfileUpdatedMsg, Toast.LENGTH_LONG);
+//                        Snackbar.make(mCrdntrlyot, mProfileUpdatedMsg, Snackbar.LENGTH_SHORT).show();
                         if(mComeFrom == AppConstants.COME_FROM_SPECIMEN_COPY) {
 
                             MenuItem mMenuItem = ((NavgtnDrwrMain) getActivity()).mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_specimen_copy);
                             ((NavgtnDrwrMain) getActivity()).onNavigationItemSelected(mMenuItem);
-                        }
+                        } else
+                            getActivity().onBackPressed();
                     } else
                         Snackbar.make(mCrdntrlyot, objMdlRegstrRes.getMessage(), Snackbar.LENGTH_LONG).show();
                 } catch (Exception e) {

@@ -51,6 +51,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.jalotsav.jamnadasconnect.R;
@@ -350,7 +351,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
             if(mIsWithAttachement)
                 getChunksListFromBase64();
             else
-                callBookCorrectionAddAPI();
+                callTeacherSuggestionAddAPI();
         } else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
     }
 
@@ -431,7 +432,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
                             } else {
                                 mPrgrsDialog.dismiss();
 
-                                callBookCorrectionAddAPI();
+                                callTeacherSuggestionAddAPI();
                             }
                         } else if (TextUtils.isEmpty(objMdlUploadChunkImageRes.getUploadFileName())) {
 
@@ -465,7 +466,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
     }
 
     // Call Retrofit API
-    private void callBookCorrectionAddAPI() {
+    private void callTeacherSuggestionAddAPI() {
 
         mPrgrsbrMain.setVisibility(View.VISIBLE);
         mTitleVal = mTxtinptEtTitle.getText().toString().trim();
@@ -487,9 +488,13 @@ public class FrgmntTeacherSuggestions extends Fragment {
                     MdlTeachrSugstnsAddRes objMdlTeachrSugstnsAddRes = response.body();
                     if(objMdlTeachrSugstnsAddRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-                        Snackbar.make(mCrdntrlyot, objMdlTeachrSugstnsAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
+                        GeneralFunctions.hideSoftKeyboard(getActivity());
+                        GeneralFunctions.showToastSingle(getActivity(), objMdlTeachrSugstnsAddRes.getMessage(), Toast.LENGTH_LONG);
+//                        Snackbar.make(mCrdntrlyot, objMdlTeachrSugstnsAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
 
                         clearUI();
+
+                        getActivity().onBackPressed();
                     } else
                         Snackbar.make(mCrdntrlyot, objMdlTeachrSugstnsAddRes.getMessage(), Snackbar.LENGTH_LONG).show();
                 } catch (Exception e) {
