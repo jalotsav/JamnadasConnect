@@ -130,6 +130,7 @@ public class FrgmntBookCorrection extends Fragment {
     @BindString(R.string.audio_record_problem_sml) String mAudioRcrdPrblmMsg;
     @BindString(R.string.no_data_avlbl_refresh) String mNoDataAvilblMsg;
     @BindString(R.string.allow_permtn_atchmnt) String mAllowPermsnMsg;
+    @BindString(R.string.selctd_file_mustbe_lessthan_5mb) String mSelctLessThan5MBMsg;
     @BindString(R.string.refresh_sml) String mRefreshStr;
     @BindString(R.string.entr_book_name_sml) String mEntrBookName;
     @BindString(R.string.select_medium_sml) String mSelctStream;
@@ -851,14 +852,13 @@ public class FrgmntBookCorrection extends Fragment {
 
             cursor.close();
 
-            /*if (fileSizeInMB > 2) {
+            if (fileSizeInMB > 5) {
 
-                general.DisplayToast(activity, getString(R.string.image_upload_error), AppKeyword.TOASTSHORT, AppKeyword.status_toast);
-            } else {*/
+                mImgvwAtchdImgPreview.setImageDrawable(mDrwblDefaultPicture);
+                Snackbar.make(mCrdntrlyot, mSelctLessThan5MBMsg, Snackbar.LENGTH_LONG).show();
+            } else {
 
-                String imagePathName = picturePath;
-//                IMAGE_URI_PROFILE_STR = imagePathName;
-                mArrylstSelectedImages.add(String.valueOf(imagePathName));
+                mArrylstSelectedImages.add(String.valueOf(picturePath));
 
                 /*alProgress.add(mArrylstUploadedImageNames.size(), AppKeyword.statusmessage_700_true);
                 alDelete.add(mArrylstUploadedImageNames.size(), AppKeyword.statusmessage_600_false);
@@ -870,7 +870,7 @@ public class FrgmntBookCorrection extends Fragment {
                 adapterSendConversationImgList = new AdapterSendConversationImgList(activity, mArrylstSelectedImages, alProgress, alDelete);
                 rvImages.setAdapter(adapterSendConversationImgList);*/
 
-                String strBase64 = GeneralFunctions.convertImageToBase64(imagePathName);
+                String strBase64 = GeneralFunctions.convertImageToBase64(picturePath);
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put(AppConstants.ID_SML, mImgCount);
                 jsonObject.put(AppConstants.BASE64_PART, strBase64);
@@ -878,7 +878,7 @@ public class FrgmntBookCorrection extends Fragment {
                 mImgCount++;
 
                 mIsWithAttachement = true;
-//            }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

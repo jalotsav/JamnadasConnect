@@ -67,6 +67,7 @@ public interface AppConstants {
     String KEY_MIDDLE_NAME = "middle_name";
     String KEY_LAST_NAME = "last_name";
     String KEY_MOBILE = "mobile";
+    String KEY_PROFILE_PICTURE = "profile_picture";
     String KEY_EMAIL = "email";
     String KEY_BIRTHDATE = "birthdate";
     String KEY_EXPERIENCE = "experience";
@@ -81,6 +82,7 @@ public interface AppConstants {
     String KEY_PINCODE = "pincode";
     String KEY_WORK_DELETE_ID = "work_delete_id";
     String KEY_WORK_JSON_DATA = "work_json_data";
+    String KEY_PROFILE = "profile";
     String KEY_TI_ID = "ti_id";
     String KEY_TI_INSTITUTE_TITLE = "ti_institute_title";
     String KEY_TIC_STREAM = "tic_stream";
@@ -139,6 +141,7 @@ public interface AppConstants {
     // Chunk Upload Module
     String CHUNK_MODULE_CORRECTION = "Correction";
     String CHUNK_MODULE_SUGGESTION = "Suggestion";
+    String CHUNK_MODULE_PROFILE = "Profile";
 
     // External storage path directory
     String JAMNADAS_CONNECT = "Jamnadas Connect";

@@ -35,6 +35,8 @@ public class MdlTeacherBasic implements AppConstants {
     String email;
     @SerializedName(KEY_MOBILE)
     String mobile;
+    @SerializedName(KEY_PROFILE_PICTURE)
+    String profilePicture;
 
     public String getFirstName() {
         return firstName;
@@ -74,5 +76,13 @@ public class MdlTeacherBasic implements AppConstants {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

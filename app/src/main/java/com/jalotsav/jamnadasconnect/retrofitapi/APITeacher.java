@@ -53,7 +53,8 @@ public interface APITeacher {
                                             @Field(AppConstants.KEY_COUNTRY) String country,
                                             @Field(AppConstants.KEY_PINCODE) String pincode,
                                             @Field(AppConstants.KEY_WORK_DELETE_ID) String workDeleteId,
-                                            @Field(AppConstants.KEY_WORK_JSON_DATA) String workJsonData);
+                                            @Field(AppConstants.KEY_WORK_JSON_DATA) String workJsonData,
+                                            @Field(AppConstants.KEY_PROFILE) String profilePicture);
 
     @FormUrlEncoded
     @POST(AppConstants.API_TCHR_TEACHER_VIEW)

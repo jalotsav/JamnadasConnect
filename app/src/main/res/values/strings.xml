@@ -8,6 +8,7 @@
     <string name="please_wait_3dots">Please wait&#8230;</string>
     <string name="add_sml">Add</string>
     <string name="cancel_sml">Cancel</string>
+    <string name="selctd_file_mustbe_lessthan_5mb">Selected file must be less than 5MB!</string>
 
     <!--Sign In-->
     <string name="mobileno_sml">Mobile Number</string>
@@ -115,6 +116,7 @@
     <string name="standr_sml">Standard</string>
     <string name="subject_sml">Subjects</string>
     <string name="entr_subject_sml">Enter Subject</string>
+    <string name="allow_permtn_myprofile">To add a profile picture, you must have to allow permissions</string>
     <string name="plz_add_work_dtls">Please add Work details</string>
     <string name="profile_updated_sml">Profile updated successfully.</string>
 
@@ -124,7 +126,7 @@
     <string name="gallery_sml">Gallery</string>
     <string name="note_sml">Note</string>
     <string name="bookcrctn_note_dialog_msg">If you have any suggestions for our books, please write the name of the book and attach a picture of the mistake or suggestion.</string>
-    <string name="allow_permtn_atchmnt">To Add attachment, you must have to allow permissions</string>
+    <string name="allow_permtn_atchmnt">To add an attachment, you must have to allow permissions</string>
     <string name="remaining_time_sml">Remaining time</string>
     <string name="three_min_zero_sec">3:00</string>
     <string name="audio_record_problem_sml">There are some problem for record audio.</string>

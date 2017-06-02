@@ -291,7 +291,7 @@ public class SignUp extends AppCompatActivity {
 
         APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(true).create(APITeacher.class);
         Call<MdlTeacherEditRes> callMdlTeacherEditRes = objApiTeacher.callTeacherEdit(GeneralFunctions.getDeviceInfo(this),
-                session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, "", "", "", "", "", "", "", mCityVal, "", "", "", "", workJSONData);
+                session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, "", "", "", "", "", "", "", mCityVal, "", "", "", "", workJSONData, "");
         callMdlTeacherEditRes.enqueue(new Callback<MdlTeacherEditRes>() {
             @Override
             public void onResponse(Call<MdlTeacherEditRes> call, Response<MdlTeacherEditRes> response) {

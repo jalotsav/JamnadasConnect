@@ -538,6 +538,7 @@
     </android.support.v7.widget.Toolbar>
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgvw_frgmnt_myprofile_profile"
         android:layout_width="@dimen/_90jdp"
         android:layout_height="@dimen/_90jdp"
         android:layout_gravity="center_horizontal"
