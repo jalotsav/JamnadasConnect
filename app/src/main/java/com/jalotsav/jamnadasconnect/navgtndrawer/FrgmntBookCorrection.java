@@ -26,6 +26,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
@@ -43,7 +44,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -55,15 +58,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.jalotsav.jamnadasconnect.R;
+import com.jalotsav.jamnadasconnect.adapters.RcyclrAttchdImgsAdapter;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
 import com.jalotsav.jamnadasconnect.common.LogHelper;
+import com.jalotsav.jamnadasconnect.common.RecyclerViewEmptySupport;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 import com.jalotsav.jamnadasconnect.models.MdlGetStandardsRes;
 import com.jalotsav.jamnadasconnect.models.MdlGetStreamsRes;
@@ -83,7 +89,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -114,10 +119,16 @@ public class FrgmntBookCorrection extends Fragment {
     @BindView(R.id.appcmptbtn_frgmnt_bookcorctn_attchmnt_add) AppCompatButton mAppcmptbtnAttachAdd;
     @BindView(R.id.lnrlyot_frgmnt_bookcorctn_attachimage) LinearLayout mLnrlyotAtchdImg;
     @BindView(R.id.lnrlyot_frgmnt_bookcorctn_attachaudio) LinearLayout mLnrlyotAtchdAudio;
-    @BindView(R.id.imgvw_frgmnt_bookcorctn_attachimage_preview) ImageView mImgvwAtchdImgPreview;
+    @BindView(R.id.lnrlyot_recyclremptyvw_appearhere) LinearLayout mLnrlyotAppearHere;
+    @BindView(R.id.lnrlyot_frgmnt_bookcorctn_attachaudio_mainplaystop) LinearLayout mLnrlyotAtchdAudMainPlayStop;
+    @BindView(R.id.rcyclrvw_frgmnt_bookcorctn_attchdimgs) RecyclerViewEmptySupport mRecyclerView;
     @BindView(R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop) ImageView mImgvwAtchdAudStartStop;
+    @BindView(R.id.imgvw_frgmnt_bookcorctn_attachaudio_playstop) ImageView mImgvwAtchdAudPlayStop;
+    @BindView(R.id.tv_frgmnt_bookcorctn_attachaudio_lblstartstop) TextView mTvAtchdAudStartStopLbl;
+    @BindView(R.id.tv_frgmnt_bookcorctn_attachaudio_lblplaystop) TextView mTvAtchdAudPlayStopLbl;
     @BindView(R.id.tv_frgmnt_bookcorctn_attachaudio_timeremain) TextView mTvTimeRemaining;
-    @BindView(R.id.tv_frgmnt_bookcorctn_attachaudio_recordattchdmsg) TextView mTvRecrdngAttachd;
+    @BindView(R.id.rltvlyot_frgmnt_bookcorctn_attachaudio_timeremain) RelativeLayout mRltvlyotRemaining;
+    @BindView(R.id.tv_recyclremptyvw_appearhere) TextView mTvAppearHere;
     @BindView(R.id.prgrsbr_frgmnt_bookcorctn) ProgressBar mPrgrsbrMain;
     @BindView(R.id.prgrsbr_frgmnt_bookcorctn_attachaudio_recordprgrs) ProgressBar mPrgrsbrAudioRecord;
 
@@ -128,32 +139,42 @@ public class FrgmntBookCorrection extends Fragment {
     @BindString(R.string.server_problem_sml) String mServerPrblmMsg;
     @BindString(R.string.internal_problem_sml) String mInternalPrblmMsg;
     @BindString(R.string.audio_record_problem_sml) String mAudioRcrdPrblmMsg;
+    @BindString(R.string.playing_audio_recorded_problem_sml) String mPlayingAudioRcrdedPrblmMsg;
     @BindString(R.string.no_data_avlbl_refresh) String mNoDataAvilblMsg;
     @BindString(R.string.allow_permtn_atchmnt) String mAllowPermsnMsg;
+    @BindString(R.string.record_sml) String mRecordStr;
+    @BindString(R.string.play_sml) String mPlayStr;
+    @BindString(R.string.stop_sml) String mStopStr;
     @BindString(R.string.selctd_file_mustbe_lessthan_5mb) String mSelctLessThan5MBMsg;
     @BindString(R.string.refresh_sml) String mRefreshStr;
+    @BindString(R.string.attchd_imgs_appear_here) String mAttchdImgsAppearHere;
+    @BindString(R.string.cant_add_morethan_10_items) String mCantAddMoreThan10Items;
     @BindString(R.string.entr_book_name_sml) String mEntrBookName;
     @BindString(R.string.select_medium_sml) String mSelctStream;
     @BindString(R.string.select_standard_sml) String mSelctStandr;
 
     @BindDrawable(R.drawable.ic_pictures_flat_128dp) Drawable mDrwblDefaultPicture;
+    @BindDrawable(R.drawable.ic_microphone_flat_128dp) Drawable mDrwblMicrophone;
     @BindDrawable(R.drawable.ic_play_flat_128dp) Drawable mDrwblPlay;
     @BindDrawable(R.drawable.ic_stop_flat_128dp) Drawable mDrwblStop;
 
     UserSessionManager session;
     ProgressDialog mPrgrsDialog;
-    boolean mIsAttachImage, mIsWithAttachement, mIsImageProcessing, mIsCounterRunning;
+    boolean mIsAttachImage, mIsWithAttachement, mIsImageProcessing, mIsCounterRunning, mIsMediaPlaying;
     String mBookNameVal, mChunkResFileName = "", mChunkResImageName = "", mFirstChunk = "0", mLastChunk = "0", mSendingImageChunk;
     ArrayAdapter<String> mArryadptrStream, mArryadptrStandr;
     ArrayList<String> mArrylstStreams, mArrylstStandrs;
+    RecyclerView.LayoutManager mLayoutManager;
+    RcyclrAttchdImgsAdapter mAdapter;
     Uri mImageUri;
-    List<String> mArrylstSelectedImages = new ArrayList<>();
-    List<JSONObject> mArrlstJsonAttchdImgBase64 = new ArrayList<>();
-    List<String> mArrlystChunks;
+    ArrayList<String> mArrylstSelectedImages = new ArrayList<>();
+    public ArrayList<JSONObject> mArrlstJsonAttchdImgBase64 = new ArrayList<>();
+    ArrayList<String> mArrlystChunks;
     ArrayList<String> mArrylstUploadedImageNames = new ArrayList<>();
-    int mImgCount = 0, mResposeCount = 0;
+    public int mImgCount = 0, mResposeCount = 0;
     RecordAudioCountDownTimer mRecordAudioCountTimer;
     MediaRecorder mMediaRcrdr;
+    MediaPlayer mMediaPlayer;
     String mAudioRcrdOutputFile;
 
     @Nullable
@@ -178,6 +199,17 @@ public class FrgmntBookCorrection extends Fragment {
         mArryadptrStandr = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStandrs);
         mSpnrStandr.setAdapter(mArryadptrStandr);
 
+        mLayoutManager = new GridLayoutManager(getActivity(), 5);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setEmptyView(mLnrlyotAppearHere);
+
+        mTvAppearHere.setText(mAttchdImgsAppearHere);
+
+        mArrylstSelectedImages = new ArrayList<>();
+        mAdapter = new RcyclrAttchdImgsAdapter(getActivity(), FrgmntBookCorrection.this, null, mArrylstSelectedImages);
+        mRecyclerView.setAdapter(mAdapter);
+
         // Init image upload in chunk Progress Dialog
         mPrgrsDialog = new ProgressDialog(getActivity());
         mPrgrsDialog.setMessage(mPleaseWait);
@@ -186,6 +218,15 @@ public class FrgmntBookCorrection extends Fragment {
         noteAlertDialog();
 
         getAllDetails();
+
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+
+                playStopRecordedMedia();
+            }
+        });
 
         return rootView;
     }
@@ -294,18 +335,13 @@ public class FrgmntBookCorrection extends Fragment {
 
     @OnClick({R.id.imgvw_frgmnt_bookcorctn_backsteppr, R.id.imgvw_frgmnt_bookcorctn_attachimage,
             R.id.imgvw_frgmnt_bookcorctn_attachaudio, R.id.appcmptbtn_frgmnt_bookcorctn_attchmnt_add,
-            R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop})
+            R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop, R.id.imgvw_frgmnt_bookcorctn_attachaudio_playstop})
     public void onClickView(View view) {
 
         switch (view.getId()) {
             case R.id.imgvw_frgmnt_bookcorctn_backsteppr:
 
-                if(mVwswtchrSteppr.getDisplayedChild() != 0) {
-                    mVwswtchrSteppr.setInAnimation(getActivity(), R.anim.slide_left_in);
-                    mVwswtchrSteppr.setOutAnimation(getActivity(), R.anim.slide_right_out);
-                    mVwswtchrSteppr.showPrevious();
-                }
-                mImgvwBackSteppr.setVisibility(View.GONE);
+                clearAttachmentUI();
                 break;
             case R.id.imgvw_frgmnt_bookcorctn_attachimage:
 
@@ -319,12 +355,68 @@ public class FrgmntBookCorrection extends Fragment {
                 break;
             case R.id.appcmptbtn_frgmnt_bookcorctn_attchmnt_add:
 
-                checkAppPermission(view);
+                if(mAdapter.getItemCount() == 10)
+                    Snackbar.make(mCrdntrlyot, mCantAddMoreThan10Items, Snackbar.LENGTH_LONG).show();
+                else
+                    checkAppPermission(view);
                 break;
             case R.id.imgvw_frgmnt_bookcorctn_attachaudio_startstop:
 
                 checkAppPermission(view);
                 break;
+            case R.id.imgvw_frgmnt_bookcorctn_attachaudio_playstop:
+
+                playStopRecordedMedia();
+                break;
+        }
+    }
+
+    // Play/Stop Recorded Audio
+    private void playStopRecordedMedia() {
+
+        if(!mIsMediaPlaying) {
+
+            if (mAudioRcrdOutputFile.length() != 0) {
+
+                try {
+
+                    mIsMediaPlaying = true;
+                    if(mMediaPlayer == null)
+                        mMediaPlayer = new MediaPlayer();
+                    mMediaPlayer.setDataSource(mAudioRcrdOutputFile);
+                    mMediaPlayer.prepare();
+                    mMediaPlayer.start();
+                    mImgvwAtchdAudPlayStop.setImageDrawable(mDrwblStop);
+                    mTvAtchdAudPlayStopLbl.setText(mStopStr);
+                    mRltvlyotRemaining.setVisibility(View.INVISIBLE);
+                    mPrgrsbrAudioRecord.setVisibility(View.INVISIBLE);
+                } catch (IOException e) {
+
+                    e.printStackTrace();
+                    mIsMediaPlaying = false;
+                    Snackbar.make(mCrdntrlyot, mPlayingAudioRcrdedPrblmMsg, Snackbar.LENGTH_LONG).show();
+                }
+            }
+        } else {
+
+            try {
+
+                if(mMediaPlayer != null) {
+
+                    mMediaPlayer.stop();
+                    mMediaPlayer.release();
+                    mMediaPlayer = null;
+                    mIsMediaPlaying = false;
+                    mImgvwAtchdAudPlayStop.setImageDrawable(mDrwblPlay);
+                    mTvAtchdAudPlayStopLbl.setText(mPlayStr);
+                    mRltvlyotRemaining.setVisibility(View.VISIBLE);
+                    mPrgrsbrAudioRecord.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                Snackbar.make(mCrdntrlyot, mPlayingAudioRcrdedPrblmMsg, Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -362,13 +454,13 @@ public class FrgmntBookCorrection extends Fragment {
             else {
                 if(mIsAttachImage)
                     showImagePickPopupmenu(view);
-                else startRecordAudio();
+                else startStopRecordAudio();
             }
         } else {
 
             if(mIsAttachImage)
                 showImagePickPopupmenu(view);
-            else startRecordAudio();
+            else startStopRecordAudio();
         }
     }
 
@@ -409,14 +501,20 @@ public class FrgmntBookCorrection extends Fragment {
         mPopupmenu.show();
     }
 
-    // Start Record Audio
-    private void startRecordAudio() {
+    // Start/Stop Record Audio
+    private void startStopRecordAudio() {
 
         if(!mIsCounterRunning) {
 
             try {
 
+                if(mIsMediaPlaying)
+                    playStopRecordedMedia();
+
                 initMediaRecorder();
+
+                mRltvlyotRemaining.setVisibility(View.VISIBLE);
+                mPrgrsbrAudioRecord.setVisibility(View.VISIBLE);
 
                 mMediaRcrdr.prepare();
                 mMediaRcrdr.start();
@@ -426,10 +524,12 @@ public class FrgmntBookCorrection extends Fragment {
                 mRecordAudioCountTimer = new RecordAudioCountDownTimer(180000, 1000);
                 mRecordAudioCountTimer.start();
                 mImgvwAtchdAudStartStop.setImageDrawable(mDrwblStop);
-                mTvRecrdngAttachd.setVisibility(View.INVISIBLE);
+                mTvAtchdAudStartStopLbl.setText(mStopStr);
+                mLnrlyotAtchdAudMainPlayStop.setVisibility(View.GONE);
             } catch (Exception e) {
 
                 e.printStackTrace();
+                mIsCounterRunning = false;
                 Snackbar.make(mCrdntrlyot, mAudioRcrdPrblmMsg, Snackbar.LENGTH_LONG).show();
             }
         } else
@@ -560,7 +660,6 @@ public class FrgmntBookCorrection extends Fragment {
             mFirstChunk = "1";
         else
             mFirstChunk = "0";
-        //  mapParam.put("first_chunk", String.valueOf(mFirstChunk));
 
         if (mResposeCount == last_chunk)
             mLastChunk = "1";
@@ -593,12 +692,6 @@ public class FrgmntBookCorrection extends Fragment {
                             mArrylstUploadedImageNames.add(mChunkResImageName);
                             mIsImageProcessing = false;
                             mArrlstJsonAttchdImgBase64.remove(0);
-
-                            /*alProgress.set(mArrylstUploadedImageNames.size() - 1, AppKeyword.statusmessage_600_false);
-                            alDelete.set(mArrylstUploadedImageNames.size() - 1, AppKeyword.statusmessage_700_true);
-
-                            adapterSendConversationImgList = new AdapterSendConversationImgList(activity, mArrylstSelectedImages, alProgress, alDelete);
-                            rvImages.setAdapter(adapterSendConversationImgList);*/
 
                             if (mArrlstJsonAttchdImgBase64.size() > 0) {
                                 getChunksListFromBase64();
@@ -644,9 +737,9 @@ public class FrgmntBookCorrection extends Fragment {
         mPrgrsbrMain.setVisibility(View.VISIBLE);
         mBookNameVal = mTxtinptEtBookName.getText().toString().trim();
         String attchmentsNames;
-        if(mArrylstUploadedImageNames.isEmpty())
-            attchmentsNames = "";
-        else attchmentsNames = mArrylstUploadedImageNames.get(0);
+        if(mAdapter.getItemCount() > 0)
+            attchmentsNames = TextUtils.join(",", mArrylstUploadedImageNames);
+        else attchmentsNames = "";
 
         APIBookCorrection objApiBookCorrctn = APIRetroBuilder.getRetroBuilder(false).create(APIBookCorrection.class);
         Call<MdlBookCorrectionAddRes> callMdlBookReqstAddRes = objApiBookCorrctn.callBookCorrectnAdd(
@@ -663,9 +756,12 @@ public class FrgmntBookCorrection extends Fragment {
 
                         GeneralFunctions.hideSoftKeyboard(getActivity());
                         GeneralFunctions.showToastSingle(getActivity(), objMdlBookCorrctnAddRes.getMessage(), Toast.LENGTH_LONG);
-//                        Snackbar.make(mCrdntrlyot, objMdlBookCorrctnAddRes.getMessage(), Snackbar.LENGTH_SHORT).show();
 
-                        clearUI();
+                        mTxtinptEtBookName.setText("");
+                        mSpnrStream.setSelection(0);
+                        mSpnrStandr.setSelection(0);
+
+                        clearAttachmentUI();
 
                         getActivity().onBackPressed();
                     } else
@@ -687,23 +783,21 @@ public class FrgmntBookCorrection extends Fragment {
         });
     }
 
-    // Clear all values of UI
-    private void clearUI() {
+    // Clear all values of Attachment UI
+    private void clearAttachmentUI() {
 
-        mTxtinptEtBookName.setText("");
-        mSpnrStream.setSelection(0);
-        mSpnrStandr.setSelection(0);
-        mImgvwAtchdImgPreview.setImageDrawable(mDrwblDefaultPicture);
+        if(mIsCounterRunning)
+            finishRecordAudio();
+        if(mIsMediaPlaying)
+            playStopRecordedMedia();
 
         mArrylstUploadedImageNames = new ArrayList<>();
         mArrlstJsonAttchdImgBase64 = new ArrayList<>();
         mIsImageProcessing = false;
         mImgCount = 0;
         mArrylstSelectedImages = new ArrayList<>();
-        /*alProgress = new ArrayList<>();
-        alDelete = new ArrayList<>();
-        adapterSendConversationImgList = new AdapterSendConversationImgList(activity, mArrylstSelectedImages, alProgress, alDelete);
-        rvImages.setAdapter(adapterSendConversationImgList);*/
+        mAdapter = new RcyclrAttchdImgsAdapter(getActivity(), FrgmntBookCorrection.this, null, mArrylstSelectedImages);
+        mRecyclerView.setAdapter(mAdapter);
 
         if(mVwswtchrSteppr.getDisplayedChild() != 0) {
             mVwswtchrSteppr.setInAnimation(getActivity(), R.anim.slide_left_in);
@@ -712,7 +806,8 @@ public class FrgmntBookCorrection extends Fragment {
         }
 
         mAppcmptbtnAttachAdd.setVisibility(View.INVISIBLE);
-        mTvRecrdngAttachd.setVisibility(View.INVISIBLE);
+        mLnrlyotAtchdAudMainPlayStop.setVisibility(View.GONE);
+        mImgvwBackSteppr.setVisibility(View.GONE);
     }
 
     private class RecordAudioCountDownTimer extends CountDownTimer {
@@ -760,11 +855,12 @@ public class FrgmntBookCorrection extends Fragment {
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(180000))
             );
             mTvTimeRemaining.setText(currentTime);
-            mImgvwAtchdAudStartStop.setImageDrawable(mDrwblPlay);
+            mImgvwAtchdAudStartStop.setImageDrawable(mDrwblMicrophone);
+            mTvAtchdAudStartStopLbl.setText(mRecordStr);
 
             if(mAudioRcrdOutputFile.length() != 0) {
 
-                mTvRecrdngAttachd.setVisibility(View.VISIBLE);
+                mLnrlyotAtchdAudMainPlayStop.setVisibility(View.VISIBLE);
 
                 String strBase64 = GeneralFunctions.convertAudioToBase64(mAudioRcrdOutputFile);
                 JSONObject jsonObject = new JSONObject();
@@ -811,20 +907,14 @@ public class FrgmntBookCorrection extends Fragment {
                     LogHelper.printLog(AppConstants.LOGTYPE_INFO, TAG, "onActivityResult: " + mImageUri);
 
                     updateUISetAttchdImageArray();
-
-                    /*if (!TextUtils.isEmpty(mImageUri.toString()))
-                        new UserImageUploadTask().execute();*/
                     break;
                 case AppConstants.REQUEST_PICK_IMAGE:
 
                     mImageUri = result.getData();
-                    mImgvwAtchdImgPreview.setImageURI(mImageUri);
 
                     LogHelper.printLog(AppConstants.LOGTYPE_INFO, TAG, "onActivityResult: " + mImageUri);
 
                     updateUISetAttchdImageArray();
-                    /*if (!TextUtils.isEmpty(mImageUri.toString()))
-                        new UserImageUploadTask().execute();*/
                     break;
             }
         }
@@ -852,23 +942,11 @@ public class FrgmntBookCorrection extends Fragment {
 
             cursor.close();
 
-            if (fileSizeInMB > 5) {
-
-                mImgvwAtchdImgPreview.setImageDrawable(mDrwblDefaultPicture);
+            if (fileSizeInMB > 5)
                 Snackbar.make(mCrdntrlyot, mSelctLessThan5MBMsg, Snackbar.LENGTH_LONG).show();
-            } else {
+            else {
 
-                mArrylstSelectedImages.add(String.valueOf(picturePath));
-
-                /*alProgress.add(mArrylstUploadedImageNames.size(), AppKeyword.statusmessage_700_true);
-                alDelete.add(mArrylstUploadedImageNames.size(), AppKeyword.statusmessage_600_false);
-                rvImages.setHasFixedSize(true);
-
-                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
-                rvImages.setLayoutManager(layoutManager);
-
-                adapterSendConversationImgList = new AdapterSendConversationImgList(activity, mArrylstSelectedImages, alProgress, alDelete);
-                rvImages.setAdapter(adapterSendConversationImgList);*/
+                mAdapter.addItem(String.valueOf(picturePath));
 
                 String strBase64 = GeneralFunctions.convertImageToBase64(picturePath);
                 JSONObject jsonObject = new JSONObject();
@@ -899,9 +977,7 @@ public class FrgmntBookCorrection extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mImgvwAtchdImgPreview.setImageBitmap(thumbnail);
         mImageUri = getImageUri(getActivity(), thumbnail);
-//        File finalFile = new File(getRealPathFromURI(mImageUri));
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -946,5 +1022,12 @@ public class FrgmntBookCorrection extends Fragment {
 
         if(mIsCounterRunning)
             mRecordAudioCountTimer.cancel();
+
+        if(mIsMediaPlaying) {
+
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
     }
 }

@@ -257,9 +257,9 @@ public class GeneralFunctions {
     /***
      * Get all chunks from Base64
      * ***/
-    public static List<String> getChunkFromBase64(String base64) {
+    public static ArrayList<String> getChunkFromBase64(String base64) {
 
-        List<String> arrylstChunks = new ArrayList<>();
+        ArrayList<String> arrylstChunks = new ArrayList<>();
         int index = 0;
         while(index < base64.length()) {
             arrylstChunks.add(base64.substring(index, Math.min(index + AppConstants.CHUNK_SIZE, base64.length())));

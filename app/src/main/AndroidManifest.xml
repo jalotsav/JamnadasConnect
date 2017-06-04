@@ -54,6 +54,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/MDTheme.Blue.NavigationNoActionBar" />
         <activity
+            android:name=".ActvtyPreviewImage"
+            android:screenOrientation="portrait"
+            android:label="@string/preview_sml"/>
+        <activity
             android:name=".ActvtyInDevlpmnt"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.BGStyle" />

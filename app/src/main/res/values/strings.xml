@@ -127,9 +127,17 @@
     <string name="note_sml">Note</string>
     <string name="bookcrctn_note_dialog_msg">If you have any suggestions for our books, please write the name of the book and attach a picture of the mistake or suggestion.</string>
     <string name="allow_permtn_atchmnt">To add an attachment, you must have to allow permissions</string>
+    <string name="attchd_imgs_appear_here">Attached images appear here</string>
+    <string name="cant_add_morethan_10_items">Can\'t add more than 10 media items</string>
+    <string name="preview_sml">Preview</string>
+    <string name="remove_sml">Remove</string>
+    <string name="record_sml">Record</string>
+    <string name="play_sml">Play</string>
+    <string name="stop_sml">Stop</string>
     <string name="remaining_time_sml">Remaining time</string>
     <string name="three_min_zero_sec">3:00</string>
     <string name="audio_record_problem_sml">There are some problem for record audio.</string>
+    <string name="playing_audio_recorded_problem_sml">There are some problem for playing recorded audio.</string>
     <string name="recrdng_attached_sml">1 recording attached.</string>
 
     <!--Teacher Suggestions-->

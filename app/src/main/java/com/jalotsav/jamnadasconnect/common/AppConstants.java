@@ -124,6 +124,7 @@ public interface AppConstants {
 
     // PutExtra Keys
     String PUT_EXTRA_COME_FROM = "comeFrom";
+    String PUT_EXTRA_STRING_PATH = "stringPath";
 
     // Come From Values
     int COME_FROM_SPECIMEN_COPY = 21;

@@ -250,6 +250,14 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
 
         mComeFrom = getArguments().getInt(AppConstants.PUT_EXTRA_COME_FROM, 0);
 
+        mArrylstStreams = new ArrayList<>();
+        mArrylstStreams.add(mSelctStream);
+        mArrylstStandrs = new ArrayList<>();
+        mArrylstStandrs.add(mSelctStandr);
+
+        mArryadptrStream = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStreams);
+        mArryadptrStandr = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStandrs);
+
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -261,14 +269,6 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         mArrylstDeletedWorkDtlsIds = new ArrayList<>();
         mAdapter = new RcyclrWorkDtlsAdapter(getActivity(), FrgmntMyProfile.this, mArrylstMdlTeacherWork);
         mRecyclerView.setAdapter(mAdapter);
-
-        mArrylstStreams = new ArrayList<>();
-        mArrylstStreams.add(mSelctStream);
-        mArrylstStandrs = new ArrayList<>();
-        mArrylstStandrs.add(mSelctStandr);
-
-        mArryadptrStream = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStreams);
-        mArryadptrStandr = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, mArrylstStandrs);
 
         // Init image upload in chunk Progress Dialog
         mPrgrsDialog = new ProgressDialog(getActivity());

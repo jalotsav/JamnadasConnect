@@ -29,12 +29,16 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <ImageView
-            android:id="@+id/imgvw_frgmnt_bookcorctn_attachimage_preview"
+        <com.jalotsav.jamnadasconnect.common.RecyclerViewEmptySupport
+            android:id="@+id/rcyclrvw_frgmnt_bookcorctn_attchdimgs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/imgcd_image"
-            app:srcCompat="@drawable/ic_pictures_flat_128dp" />
+            tools:listitem="@layout/lo_recyclritem_bookcorctn_attchdimgs" />
+
+        <include
+            layout="@layout/lo_recyclremptyvw_appearhere"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <!--Attach/Record Audio-->
@@ -45,12 +49,74 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imgvw_frgmnt_bookcorctn_attachaudio_startstop"
-            android:layout_width="@dimen/_65jdp"
-            android:layout_height="@dimen/_65jdp"
-            android:contentDescription="@string/imgcd_image"
-            app:srcCompat="@drawable/ic_play_flat_128dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!--Record-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imgvw_frgmnt_bookcorctn_attachaudio_startstop"
+                    android:layout_width="@dimen/_65jdp"
+                    android:layout_height="@dimen/_65jdp"
+                    android:contentDescription="@string/imgcd_image"
+                    app:srcCompat="@drawable/ic_microphone_flat_128dp" />
+
+                <TextView
+                    android:id="@+id/tv_frgmnt_bookcorctn_attachaudio_lblstartstop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5jdp"
+                    android:text="@string/record_sml"
+                    android:textColor="@color/gray5B"
+                    android:textSize="@dimen/_14jdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnrlyot_frgmnt_bookcorctn_attachaudio_mainplaystop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="@dimen/_1jdp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_10jdp"
+                    android:background="@color/grayA8" />
+
+                <!--Play-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imgvw_frgmnt_bookcorctn_attachaudio_playstop"
+                        android:layout_width="@dimen/_65jdp"
+                        android:layout_height="@dimen/_65jdp"
+                        android:contentDescription="@string/imgcd_image"
+                        app:srcCompat="@drawable/ic_play_flat_128dp" />
+
+                    <TextView
+                        android:id="@+id/tv_frgmnt_bookcorctn_attachaudio_lblplaystop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5jdp"
+                        android:text="@string/play_sml"
+                        android:textColor="@color/gray5B"
+                        android:textSize="@dimen/_14jdp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
 
         <ProgressBar
             android:id="@+id/prgrsbr_frgmnt_bookcorctn_attachaudio_recordprgrs"
@@ -61,6 +127,7 @@
             android:progress="180" />
 
         <RelativeLayout
+            android:id="@+id/rltvlyot_frgmnt_bookcorctn_attachaudio_timeremain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5jdp">
@@ -71,9 +138,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:text="@string/three_min_zero_sec"
                 android:textColor="@color/gray5B"
-                android:textSize="@dimen/_12jdp"
-                android:text="@string/three_min_zero_sec" />
+                android:textSize="@dimen/_12jdp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -86,14 +153,5 @@
                 android:textColor="@color/gray5B"
                 android:textSize="@dimen/_12jdp" />
         </RelativeLayout>
-
-        <TextView
-            android:id="@+id/tv_frgmnt_bookcorctn_attachaudio_recordattchdmsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDarkTeal"
-            android:textSize="@dimen/_14jdp"
-            android:text="@string/recrdng_attached_sml"
-            android:visibility="invisible"/>
     </LinearLayout>
 </RelativeLayout>
