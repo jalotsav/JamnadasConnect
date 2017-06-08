@@ -65,8 +65,7 @@
     <string name="dashboard_sml">Dashboard</string>
     <string name="book_sml">Book</string>
     <string name="specimen_copy_sml">Specimen Copy</string>
-    <!--<string name="book_order_sml">Book Order</string>-->
-    <string name="notifctns_sml">Notifications</string>
+    <string name="news_sml">News</string>
     <string name="book_correction_sml">Book Correction</string>
     <string name="teacher_sml">Teacher</string>
     <string name="suggestions_sml">Suggestions</string>

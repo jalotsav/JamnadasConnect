@@ -30,7 +30,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -53,7 +52,7 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
     @BindView(R.id.navgtnvw_nvgtndrwr_main) NavigationView mNavgtnVw;
 
     TextView mTvFullName, mTvEmailMobile;
-    MenuItem mMenuItemDashboard, mMenuItemSpecmnCopy, mMenuItemBookCorctn, mMenuItemSugstn, mMenuItemNotifctns, mMenuItemMyProfile;
+    MenuItem mMenuItemDashboard, mMenuItemSpecmnCopy, mMenuItemBookCorctn, mMenuItemSugstn, mMenuItemNews, mMenuItemMyProfile;
 
     UserSessionManager session;
     Bundle mBundle;
@@ -125,10 +124,10 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
                 fragment = new FrgmntTeacherSuggestions();
                 toolbarTitle = getString(R.string.suggestions_sml);
                 break;
-            case R.id.action_nvgtndrwr_notifctns:
+            case R.id.action_nvgtndrwr_news:
 
-                fragment = new FrgmntInDevlpmnt();
-                toolbarTitle = getString(R.string.notifctns_sml);
+                fragment = new FrgmntNews();
+                toolbarTitle = getString(R.string.news_sml);
                 break;
             case R.id.action_nvgtndrwr_teacher_profile:
 
@@ -137,7 +136,6 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
                 break;
             case R.id.action_nvgtndrwr_teacher_logout:
 
-                // Show AlertDialog for confirm to Logout
                 confirmLogoutAlertDialog();
                 break;
         }
@@ -165,7 +163,7 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
         mMenuItemSpecmnCopy = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_specimen_copy);
         mMenuItemBookCorctn = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_book_corectn);
         mMenuItemSugstn = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_teacher_sugstn);
-        mMenuItemNotifctns = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_notifctns);
+        mMenuItemNews = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_news);
         mMenuItemMyProfile = mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_teacher_profile);
 
         MenuItem currntSelctdMenuItem;
@@ -177,8 +175,8 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
             currntSelctdMenuItem = mMenuItemBookCorctn;
         else if (mMenuItemSugstn.isChecked())
             currntSelctdMenuItem = mMenuItemSugstn;
-        else if (mMenuItemNotifctns.isChecked())
-            currntSelctdMenuItem = mMenuItemNotifctns;
+        else if (mMenuItemNews.isChecked())
+            currntSelctdMenuItem = mMenuItemNews;
         else if (mMenuItemMyProfile.isChecked())
             currntSelctdMenuItem = mMenuItemMyProfile;
         else

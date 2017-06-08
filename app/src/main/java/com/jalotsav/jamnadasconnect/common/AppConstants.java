@@ -49,6 +49,8 @@ public interface AppConstants {
     String API_BOOKREQST_BOOKREQST_ADD = "book_request/api_book_request_add";
     String API_BOOKCORCTN_BOOKCORCTN_ADD = "book_correction/api_book_correction_add";
     String API_TEACHRSUGSTN_TEACHRSUGSTN_ADD = "teacher_suggestion/api_teacher_suggestion_add";
+    String API_TEACHRMSG_TEACHRMSG_LIST = "teacher_message/api_teacher_message_list";
+    String API_TEACHRMSG_TEACHRMSG_VIEW = "teacher_message/api_teacher_message_view";
 
     // Web-Service Keys
     String KEY_EMAIL_MOB = "email_mob";
@@ -117,6 +119,15 @@ public interface AppConstants {
     String KEY_ATTACHMENTS = "attachments";
     String KEY_SUBJECT = "subject";
     String KEY_DESCRIPTION = "description";
+    String KEY_LAST_ID = "last_id";
+    String KEY_KEYWORD = "keyword";
+    String KEY_TEACHER_MESSAGE_LIST = "teacher_message_list";
+    String KEY_TM_ID = "tm_id";
+    String KEY_TM_SUBJECT = "tm_subject";
+    String KEY_TM_MODULE = "tm_module";
+    String KEY_TM_MESSAGE = "tm_message";
+    String KEY_TM_IMAGE = "tm_image";
+    String KEY_TEACHER_MESSAGE_DATA = "teacher_message_data";
 
     // Web-Service Values
     String VALUES_TRUE = "TRUE";

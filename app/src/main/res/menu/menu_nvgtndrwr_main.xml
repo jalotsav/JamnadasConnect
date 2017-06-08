@@ -45,9 +45,9 @@
                     android:icon="@drawable/ic_school_black_56dp"
                     android:title="@string/suggestions_sml" />
                 <item
-                    android:id="@+id/action_nvgtndrwr_notifctns"
+                    android:id="@+id/action_nvgtndrwr_news"
                     android:icon="@drawable/ic_notifications_black_56dp"
-                    android:title="@string/notifctns_sml" />
+                    android:title="@string/news_sml" />
                 <item
                     android:id="@+id/action_nvgtndrwr_teacher_profile"
                     android:icon="@drawable/ic_account_circle_black_56dp"

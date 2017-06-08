@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2017 Jalotsav
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="@dimen/_10jdp"
+    android:paddingTop="@dimen/_10jdp"
+    android:paddingLeft="@dimen/_16jdp"
+    android:paddingStart="@dimen/_16jdp"
+    android:paddingRight="@dimen/_16jdp"
+    android:paddingEnd="@dimen/_16jdp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_recylrvw_item_news_firstchr"
+            android:layout_width="@dimen/_40jdp"
+            android:layout_height="@dimen/_40jdp"
+            android:background="@drawable/drwbl_round"
+            android:gravity="center"
+            android:padding="@dimen/_5jdp"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18jdp"
+            tools:text="a" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgvw_frecylrvw_item_news_image"
+            android:layout_width="@dimen/_40jdp"
+            android:layout_height="@dimen/_40jdp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/img_teacher_profile_flat" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10jdp"
+        android:layout_marginStart="@dimen/_10jdp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_recylrvw_item_news_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="News Title"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16jdp"/>
+
+        <TextView
+            android:id="@+id/tv_recylrvw_item_news_descrptn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="News Description"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/gray5B"
+            android:textSize="@dimen/_14jdp"/>
+
+        <!--Separator-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.7dp"
+            android:layout_marginTop="@dimen/_5jdp"
+            android:background="@color/grayA8" />
+    </LinearLayout>
+</LinearLayout>

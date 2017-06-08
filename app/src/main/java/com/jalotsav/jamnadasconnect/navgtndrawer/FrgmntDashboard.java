@@ -41,7 +41,7 @@ public class FrgmntDashboard extends Fragment {
     @BindView(R.id.rltvlyot_frgmnt_dashbrd_bookcorctn) RelativeLayout mRltvlyotBookCorrectn;
     @BindView(R.id.rltvlyot_frgmnt_dashbrd_suggestion) RelativeLayout mRltvlyotSuggestn;
     @BindView(R.id.rltvlyot_frgmnt_dashbrd_myprofile) RelativeLayout mRltvlyotMyProfile;
-    @BindView(R.id.rltvlyot_frgmnt_dashbrd_notifctns) RelativeLayout mRltvlyotNotifctns;
+    @BindView(R.id.rltvlyot_frgmnt_dashbrd_news) RelativeLayout mRltvlyotNews;
 
     @Nullable
     @Override
@@ -55,7 +55,7 @@ public class FrgmntDashboard extends Fragment {
 
     @OnClick({R.id.rltvlyot_frgmnt_dashbrd_specimencopy, R.id.rltvlyot_frgmnt_dashbrd_bookcorctn,
             R.id.rltvlyot_frgmnt_dashbrd_suggestion, R.id.rltvlyot_frgmnt_dashbrd_myprofile,
-            R.id.rltvlyot_frgmnt_dashbrd_notifctns})
+            R.id.rltvlyot_frgmnt_dashbrd_news})
     public void onClickView(View view) {
 
         MenuItem menuItem;
@@ -77,9 +77,9 @@ public class FrgmntDashboard extends Fragment {
 
                 menuItem = ((NavgtnDrwrMain) getActivity()).mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_teacher_profile);
                 break;
-            case R.id.rltvlyot_frgmnt_dashbrd_notifctns:
+            case R.id.rltvlyot_frgmnt_dashbrd_news:
 
-                menuItem = ((NavgtnDrwrMain) getActivity()).mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_notifctns);
+                menuItem = ((NavgtnDrwrMain) getActivity()).mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_news);
                 break;
             default:
 

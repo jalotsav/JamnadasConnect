@@ -186,7 +186,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rltvlyot_frgmnt_dashbrd_notifctns"
+                android:id="@+id/rltvlyot_frgmnt_dashbrd_news"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -213,7 +213,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="@dimen/_10jdp"
-                        android:text="@string/notifctns_sml"
+                        android:text="@string/news_sml"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/white" />
                 </RelativeLayout>
