@@ -44,11 +44,11 @@ public class RcyclrWorkDtlsAdapter extends RecyclerView.Adapter<RcyclrWorkDtlsAd
     private ArrayList<Integer> mArrylstPrmryclrs;
     private FrgmntMyProfile mFrgmntMyProfile;
 
-    public RcyclrWorkDtlsAdapter(Context context, FrgmntMyProfile frgmntMyProfile, ArrayList<MdlTeacherWork> arrylstMdlMasterDtlsData) {
+    public RcyclrWorkDtlsAdapter(Context context, FrgmntMyProfile frgmntMyProfile, ArrayList<MdlTeacherWork> arrylstMdlTeacherWork) {
 
         mContext = context;
         mArrylstMdlTeacherWork = new ArrayList<>();
-        mArrylstMdlTeacherWork.addAll(arrylstMdlMasterDtlsData);
+        mArrylstMdlTeacherWork.addAll(arrylstMdlTeacherWork);
         mFrgmntMyProfile = frgmntMyProfile;
         mArrylstPrmryclrs = GeneralFunctions.getPrimaryColorArray(mContext);
     }

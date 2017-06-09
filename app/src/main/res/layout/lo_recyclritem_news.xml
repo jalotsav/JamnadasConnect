@@ -15,74 +15,84 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:paddingBottom="@dimen/_10jdp"
-    android:paddingTop="@dimen/_10jdp"
-    android:paddingLeft="@dimen/_16jdp"
-    android:paddingStart="@dimen/_16jdp"
-    android:paddingRight="@dimen/_16jdp"
-    android:paddingEnd="@dimen/_16jdp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/tv_recylrvw_item_news_firstchr"
-            android:layout_width="@dimen/_40jdp"
-            android:layout_height="@dimen/_40jdp"
-            android:background="@drawable/drwbl_round"
-            android:gravity="center"
-            android:padding="@dimen/_5jdp"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_18jdp"
-            tools:text="a" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgvw_frecylrvw_item_news_image"
-            android:layout_width="@dimen/_40jdp"
-            android:layout_height="@dimen/_40jdp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/img_teacher_profile_flat" />
-    </RelativeLayout>
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_10jdp"
-        android:layout_marginStart="@dimen/_10jdp"
-        android:orientation="vertical">
+        android:clickable="true"
+        android:background="?android:selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/_10jdp"
+        android:paddingEnd="@dimen/_16jdp"
+        android:paddingLeft="@dimen/_16jdp"
+        android:paddingRight="@dimen/_16jdp"
+        android:paddingStart="@dimen/_16jdp"
+        android:paddingTop="@dimen/_10jdp">
 
-        <TextView
-            android:id="@+id/tv_recylrvw_item_news_title"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_recylrvw_item_news_firstchr"
+                android:layout_width="@dimen/_50jdp"
+                android:layout_height="@dimen/_50jdp"
+                android:background="@drawable/drwbl_round"
+                android:gravity="center"
+                android:padding="@dimen/_5jdp"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18jdp"
+                tools:text="a" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgvw_frecylrvw_item_news_image"
+                android:layout_width="@dimen/_50jdp"
+                android:layout_height="@dimen/_50jdp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/img_teacher_profile_flat" />
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="News Title"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_16jdp"/>
+            android:layout_marginLeft="@dimen/_10jdp"
+            android:layout_marginStart="@dimen/_10jdp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_recylrvw_item_news_descrptn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="News Description"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:textColor="@color/gray5B"
-            android:textSize="@dimen/_14jdp"/>
+            <TextView
+                android:id="@+id/tv_recylrvw_item_news_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16jdp"
+                tools:text="News Title" />
 
-        <!--Separator-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.7dp"
-            android:layout_marginTop="@dimen/_5jdp"
-            android:background="@color/grayA8" />
+            <TextView
+                android:id="@+id/tv_recylrvw_item_news_descrptn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/gray5B"
+                android:textSize="@dimen/_12jdp"
+                tools:text="News Description" />
+        </LinearLayout>
     </LinearLayout>
+
+    <!--Separator-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:layout_marginLeft="@dimen/_76jdp"
+        android:layout_marginStart="@dimen/_76jdp"
+
+        android:background="@color/grayC5" />
 </LinearLayout>

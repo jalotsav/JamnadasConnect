@@ -164,6 +164,10 @@ public interface AppConstants {
     File PATH_TEMP_AUDIO = new File(EXTRNL_STORAGE_PATH_STRING + File.separator + JAMNADAS_CONNECT
         + File.separator + DOT_TEMP + File.separator + AUDIO_SML);
 
+    // RecyclerView View Type
+    int RECYCLRVIEW_TYPE_DATA = 0;
+    int RECYCLRVIEW_TYPE_LOADING = 1;
+
     // Others
     String ID_SML = "id";
     String BASE64_PART = "base64Part";

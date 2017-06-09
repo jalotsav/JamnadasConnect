@@ -138,9 +138,9 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     @BindView(R.id.view_frgmnt_myprofile_birthdayunderline) View mVwBirthdayUnderLine;
 
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_email) TextInputLayout mTxtinptlyotEmail;
-    @BindView(R.id.txtinputlyot_frgmnt_myprofile_exprnc) TextInputLayout mTxtinptlyotExprnc;
+    /*@BindView(R.id.txtinputlyot_frgmnt_myprofile_exprnc) TextInputLayout mTxtinptlyotExprnc;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_areaofintrst) TextInputLayout mTxtinptlyotAreaOfIntrst;
-    @BindView(R.id.txtinputlyot_frgmnt_myprofile_eductnlqualfctn) TextInputLayout mTxtinptlyotEductnlQualfctn;
+    @BindView(R.id.txtinputlyot_frgmnt_myprofile_eductnlqualfctn) TextInputLayout mTxtinptlyotEductnlQualfctn;*/
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_adrsline1) TextInputLayout mTxtinptlyotAdrsLine1;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_city) TextInputLayout mTxtinptlyotCity;
     @BindView(R.id.txtinputlyot_frgmnt_myprofile_state) TextInputLayout mTxtinptlyotState;
@@ -284,9 +284,9 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     private void getAllDetails() {
 
         if (GeneralFunctions.isNetConnected(getActivity())) {
-            getTeacherDetails();
-            getStreams();
-            getStandards();
+            callGetTeacherDetailsAPI();
+            callGetStreamsAPI();
+            callGetStandardsAPI();
         } else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
     }
 
@@ -343,7 +343,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     }
 
     // Call Retrofit API
-    private void getTeacherDetails() {
+    private void callGetTeacherDetailsAPI() {
 
         mPrgrsbrMain.setVisibility(View.VISIBLE);
         APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(false).create(APITeacher.class);
@@ -433,7 +433,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     }
 
     // Call Retrofit API
-    private void getStreams() {
+    private void callGetStreamsAPI() {
 
         APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
         Call<MdlGetStreamsRes> callMdlGetStreamsRes = objApiGeneral.callGetStreams();
@@ -465,7 +465,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     }
 
     // Call Retrofit API
-    private void getStandards() {
+    private void callGetStandardsAPI() {
 
         APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
         Call<MdlGetStandardsRes> callMdlGetStandardsRes = objApiGeneral.callGetStandards();

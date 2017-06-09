@@ -80,6 +80,9 @@
     <string name="edit_profile_miss_data_msg">We need some information to confirm and send specimen copy to you. Please provide us remaining details.</string>
     <string name="goto_profile_sml">Go to profile</string>
 
+    <!--News-->
+    <string name="news_appear_here">News appear here</string>
+
     <!--My Profile-->
     <string name="basic_dtls_sml">Basic Details</string>
     <string name="birthday_sml">Birthday</string>

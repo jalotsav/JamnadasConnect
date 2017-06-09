@@ -26,7 +26,7 @@ import com.jalotsav.jamnadasconnect.common.AppConstants;
 public class MdlTeacherMsg implements AppConstants {
 
     @SerializedName(KEY_TM_ID)
-    String tmId;
+    int tmId;
     @SerializedName(KEY_TM_SUBJECT)
     String tmSubject;
     @SerializedName(KEY_TM_MODULE)
@@ -36,11 +36,11 @@ public class MdlTeacherMsg implements AppConstants {
     @SerializedName(KEY_TM_IMAGE)
     String tmImage;
 
-    public String getTmId() {
+    public int getTmId() {
         return tmId;
     }
 
-    public void setTmId(String tmId) {
+    public void setTmId(int tmId) {
         this.tmId = tmId;
     }
 
