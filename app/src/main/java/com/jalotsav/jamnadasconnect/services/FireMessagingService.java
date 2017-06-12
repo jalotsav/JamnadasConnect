@@ -71,7 +71,17 @@ public class FireMessagingService extends FirebaseMessagingService implements Ap
         String notifctnModule = messageBody.get(KEY_PUSHNOTFCTN_MODULE);
         String notifctnImageUri = messageBody.get(KEY_PUSHNOTFCTN_IMAGE);
 
-        NotificationCompat.Style notifctnStyle = null;
+        int navDrwrPostn;
+        if(TextUtils.isEmpty(notifctnModule))
+            navDrwrPostn = NAVDRWER_DASHBOARD;
+        else if (notifctnModule.equalsIgnoreCase(AppConstants.KEY_PUSHNOTFCTN_MODULE_BOOK_REQUEST))
+            navDrwrPostn = NAVDRWER_BOOK_REQUEST;
+        else if (notifctnModule.equalsIgnoreCase(AppConstants.KEY_PUSHNOTFCTN_MODULE_NEWS))
+            navDrwrPostn = NAVDRWER_NEWS;
+        else
+            navDrwrPostn = NAVDRWER_DASHBOARD;
+
+        NotificationCompat.Style notifctnStyle;
 
         if(!TextUtils.isEmpty(notifctnImageUri))
             notifctnStyle = new NotificationCompat.BigPictureStyle().setBigContentTitle(notifctnTitle).setSummaryText(notifctnMessage).bigPicture(GeneralFunctions.getBitmapFromUrl(notifctnImageUri));
@@ -79,6 +89,7 @@ public class FireMessagingService extends FirebaseMessagingService implements Ap
             notifctnStyle = new NotificationCompat.BigTextStyle().setBigContentTitle(notifctnTitle).bigText(notifctnMessage);
 
         Intent intent = new Intent(this, ActvtyMain.class);
+        intent.putExtra(PUT_EXTRA_NAVDRWER_POSTN, navDrwrPostn);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUEST_SPLASHACTIVITY, intent, PendingIntent.FLAG_ONE_SHOT);

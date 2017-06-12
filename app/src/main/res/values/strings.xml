@@ -82,6 +82,8 @@
 
     <!--News-->
     <string name="news_appear_here">News appear here</string>
+        <!--News Details-->
+        <string name="news_dtls_sml">News Details</string>
 
     <!--My Profile-->
     <string name="basic_dtls_sml">Basic Details</string>

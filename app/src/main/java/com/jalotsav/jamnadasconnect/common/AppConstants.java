@@ -135,10 +135,22 @@ public interface AppConstants {
 
     // PutExtra Keys
     String PUT_EXTRA_COME_FROM = "comeFrom";
-    String PUT_EXTRA_STRING_PATH = "stringPath";
+    String PUT_EXTRA_IMAGE_PATH = "imagePath";
+    String PUT_EXTRA_IMAGE_PATH_TYPE = "imagePathType";
+    String PUT_EXTRA_NAVDRWER_POSTN = "navdrawerPosition";
+    String PUT_EXTRA_TM_ID = "tMessageId";
+
+    // PutExtra Values
+    int IMAGE_PATH_TYPE_FILE = 11;
+    int IMAGE_PATH_TYPE_SERVER = 12;
+
+    // Navigation Drawer MenuItem position check for direct open that fragment
+    int NAVDRWER_DASHBOARD = 21;
+    int NAVDRWER_BOOK_REQUEST = 22;
+    int NAVDRWER_NEWS = 23;
 
     // Come From Values
-    int COME_FROM_SPECIMEN_COPY = 21;
+    int COME_FROM_SPECIMEN_COPY = 31;
 
     // Request Keys
     int REQUEST_VERFCTN_MOBILENO = 101;
@@ -185,6 +197,6 @@ public interface AppConstants {
     String KEY_PUSHNOTFCTN_MODULE = "module";
     String KEY_PUSHNOTFCTN_IMAGE = "image";
     String KEY_PUSHNOTFCTN_MODULE_BOOK_REQUEST = "BOOK_REQUEST";
-    String KEY_PUSHNOTFCTN_MODULE_BOOK_ORDER = "BOOK_ORDER";
+//    String KEY_PUSHNOTFCTN_MODULE_BOOK_ORDER = "BOOK_ORDER";
     String KEY_PUSHNOTFCTN_MODULE_NEWS = "NEWS";
 }

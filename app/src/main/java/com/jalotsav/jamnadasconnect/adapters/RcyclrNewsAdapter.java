@@ -17,6 +17,7 @@
 package com.jalotsav.jamnadasconnect.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,9 +27,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.jalotsav.jamnadasconnect.ActvtyNewsDetails;
 import com.jalotsav.jamnadasconnect.R;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.GeneralFunctions;
@@ -140,7 +143,7 @@ public class RcyclrNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             Random rndm_no = new Random();
             n = rndm_no.nextInt(n);
 
-            GradientDrawable bgShape = (GradientDrawable)viewHolderData.tvFirstChar.getBackground();
+            GradientDrawable bgShape = (GradientDrawable)viewHolderData.mTvFirstChar.getBackground();
             bgShape.setColor(mArrylstPrmryclrs.get(n));
 
             return viewHolderData;
@@ -158,23 +161,34 @@ public class RcyclrNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (holder instanceof ViewHolderData) {
 
             ViewHolderData viewHolderData = (ViewHolderData) holder;
-            MdlTeacherMsg objMdlTeacherMsg = mArrylstMdlTeacherMsg.get(position);
+            final MdlTeacherMsg objMdlTeacherMsg = mArrylstMdlTeacherMsg.get(position);
             if (!TextUtils.isEmpty(objMdlTeacherMsg.getTmImage())) {
 
-                viewHolderData.tvFirstChar.setVisibility(View.GONE);
-                viewHolderData.imgvwImage.setVisibility(View.VISIBLE);
+                viewHolderData.mTvFirstChar.setVisibility(View.GONE);
+                viewHolderData.mImgvwImage.setVisibility(View.VISIBLE);
                 Picasso.with(mContext)
                         .load(objMdlTeacherMsg.getTmImage())
                         .placeholder(mDrwblDefaultNtfctn)
-                        .into(viewHolderData.imgvwImage);
+                        .into(viewHolderData.mImgvwImage);
             } else {
 
-                viewHolderData.tvFirstChar.setVisibility(View.VISIBLE);
-                viewHolderData.imgvwImage.setVisibility(View.GONE);
-                viewHolderData.tvFirstChar.setText(objMdlTeacherMsg.getTmMessage().substring(0, 1));
+                viewHolderData.mTvFirstChar.setVisibility(View.VISIBLE);
+                viewHolderData.mImgvwImage.setVisibility(View.GONE);
+                viewHolderData.mTvFirstChar.setText(objMdlTeacherMsg.getTmSubject().substring(0, 1));
             }
-            viewHolderData.tvTitle.setText(objMdlTeacherMsg.getTmMessage());
-            viewHolderData.tvDescrptn.setText(objMdlTeacherMsg.getTmSubject());
+            viewHolderData.mTvTitle.setText(objMdlTeacherMsg.getTmSubject());
+            viewHolderData.mTvDescrptn.setText(objMdlTeacherMsg.getTmMessage());
+            viewHolderData.mLnrlyotMainContain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(objMdlTeacherMsg.getTmId() != 0) {
+
+                        mContext.startActivity(new Intent(mContext, ActvtyNewsDetails.class)
+                                .putExtra(AppConstants.PUT_EXTRA_TM_ID, objMdlTeacherMsg.getTmId()));
+                    }
+                }
+            });
         } else if (holder instanceof ViewHolderLoading) {
 
             ViewHolderLoading viewHolderLoading = (ViewHolderLoading) holder;
@@ -189,16 +203,18 @@ public class RcyclrNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private class ViewHolderData extends RecyclerView.ViewHolder{
 
-        TextView tvFirstChar, tvTitle, tvDescrptn;
-        ImageView imgvwImage;
+        LinearLayout mLnrlyotMainContain;
+        TextView mTvFirstChar, mTvTitle, mTvDescrptn;
+        ImageView mImgvwImage;
 
         ViewHolderData(View itemView) {
             super(itemView);
 
-            tvFirstChar = (TextView) itemView.findViewById(R.id.tv_recylrvw_item_news_firstchr);
-            tvTitle = (TextView) itemView.findViewById(R.id.tv_recylrvw_item_news_title);
-            tvDescrptn = (TextView) itemView.findViewById(R.id.tv_recylrvw_item_news_descrptn);
-            imgvwImage = (ImageView) itemView.findViewById(R.id.imgvw_frecylrvw_item_news_image);
+            mLnrlyotMainContain = (LinearLayout) itemView.findViewById(R.id.lnrlyot_recylrvw_item_news_contain);
+            mTvFirstChar = (TextView) itemView.findViewById(R.id.tv_recylrvw_item_news_firstchr);
+            mTvTitle = (TextView) itemView.findViewById(R.id.tv_recylrvw_item_news_title);
+            mTvDescrptn = (TextView) itemView.findViewById(R.id.tv_recylrvw_item_news_descrptn);
+            mImgvwImage = (ImageView) itemView.findViewById(R.id.imgvw_frecylrvw_item_news_image);
         }
     }
 
@@ -213,8 +229,17 @@ public class RcyclrNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
+    // Set isLoading FALSE for data loaded
     public void setLoaded() {
         isLoading = false;
+    }
+
+    // Reset LoadMore state
+    public void resetLoadMore() {
+
+        isLoading = false;
+        visibleThreshold = 5;
+        previousTotal = 0;
     }
 
     // Get All Items

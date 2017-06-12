@@ -98,8 +98,8 @@ public class RcyclrAttchdImgsAdapter extends RecyclerView.Adapter<RcyclrAttchdIm
 
                         mContext.startActivity(
                                 new Intent(mContext, ActvtyPreviewImage.class)
-                                    .putExtra(AppConstants.PUT_EXTRA_STRING_PATH,
-                                        mArrylstImgFilePath.get(holderAdapterPosition)));
+                                    .putExtra(AppConstants.PUT_EXTRA_IMAGE_PATH, mArrylstImgFilePath.get(holderAdapterPosition))
+                                    .putExtra(AppConstants.PUT_EXTRA_IMAGE_PATH_TYPE, AppConstants.IMAGE_PATH_TYPE_FILE));
                         break;
                     case R.id.action_remove:
 

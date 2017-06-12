@@ -16,6 +16,7 @@
 
 package com.jalotsav.jamnadasconnect;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -38,6 +40,8 @@ public class ActvtyPreviewImage extends AppCompatActivity {
 
     @BindView(R.id.imgvw_actvty_prevwimage_preview) ImageView mImgvwPrevwImg;
 
+    @BindDrawable(R.drawable.ic_pictures_flat_128dp) Drawable mDrwblDefaultPicture;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,17 +49,24 @@ public class ActvtyPreviewImage extends AppCompatActivity {
         ButterKnife.bind(this);
 
         try {
-
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
 
-        String imgStringPath = getIntent().getStringExtra(AppConstants.PUT_EXTRA_STRING_PATH);
-        Picasso.with(this)
-                .load(new File(imgStringPath))
-//                .placeholder(mDrwblDefaultPicture)
-                .into(mImgvwPrevwImg);
+        String imgPath = getIntent().getStringExtra(AppConstants.PUT_EXTRA_IMAGE_PATH);
+        int imgPathType = getIntent().getIntExtra(AppConstants.PUT_EXTRA_IMAGE_PATH_TYPE, 0);
+        if(imgPathType == AppConstants.IMAGE_PATH_TYPE_FILE) {
+
+            Picasso.with(this)
+                    .load(new File(imgPath))
+                    .placeholder(mDrwblDefaultPicture)
+                    .into(mImgvwPrevwImg);
+        } else if(imgPathType == AppConstants.IMAGE_PATH_TYPE_SERVER) {
+
+            Picasso.with(this)
+                    .load(imgPath)
+                    .placeholder(mDrwblDefaultPicture)
+                    .into(mImgvwPrevwImg);
+        }
     }
 
     @Override

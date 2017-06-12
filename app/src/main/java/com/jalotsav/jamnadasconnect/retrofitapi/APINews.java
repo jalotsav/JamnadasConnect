@@ -41,6 +41,6 @@ public interface APINews {
     @FormUrlEncoded
     @POST(AppConstants.API_TEACHRMSG_TEACHRMSG_VIEW)
     Call<MdlTeacherMsgViewRes> callTeacherMsgView(@Field(AppConstants.KEY_DEVICE_INFO) String deviceInfo,
-                                                  @Field(AppConstants.KEY_USER_ID) String userId,
-                                                  @Field(AppConstants.KEY_TM_ID) String tmId);
+                                                  @Field(AppConstants.KEY_USER_ID) int userId,
+                                                  @Field(AppConstants.KEY_TM_ID) int tmId);
 }

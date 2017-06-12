@@ -55,8 +55,13 @@
             android:theme="@style/MDTheme.Blue.NavigationNoActionBar" />
         <activity
             android:name=".ActvtyPreviewImage"
+            android:label="@string/preview_sml"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ActvtyNewsDetails"
+            android:label="@string/news_dtls_sml"
             android:screenOrientation="portrait"
-            android:label="@string/preview_sml"/>
+            android:theme="@style/MDTheme.Blue" />
         <activity
             android:name=".ActvtyInDevlpmnt"
             android:screenOrientation="portrait"
@@ -76,10 +81,9 @@
         <!-- [START fcm_default_icon] -->
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
              See README(https://goo.gl/l4GJaQ) for more. -->
-
-        <!--<meta-data
+        <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification" />-->
+            android:resource="@drawable/ic_notification" />
 
         <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more. -->

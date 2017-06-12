@@ -25,6 +25,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -88,6 +91,8 @@ public class FrgmntNews extends Fragment {
 
         View rootView = inflater.inflate(R.layout.lo_frgmnt_news, container, false);
         ButterKnife.bind(this, rootView);
+
+        setHasOptionsMenu(true);
 
         session = new UserSessionManager(getActivity());
 
@@ -192,5 +197,38 @@ public class FrgmntNews extends Fragment {
                 Snackbar.make(mCrdntrlyot, mServerPrblmMsg, Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_refresh, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+
+                if(mPrgrsbrMain.getVisibility() != View.VISIBLE) {
+
+                    if (GeneralFunctions.isNetConnected(getActivity())) {
+
+                        mAdapter.resetLoadMore();
+                        mArrylstMdlTeacherMsg = new ArrayList<>();
+                        mAdapter.setFilter(mArrylstMdlTeacherMsg);
+                        mNewsMsgLastId = 0;
+                        mApiKeyword = "";
+
+                        getTeacherMsgsAPI();
+                    } else
+                        Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

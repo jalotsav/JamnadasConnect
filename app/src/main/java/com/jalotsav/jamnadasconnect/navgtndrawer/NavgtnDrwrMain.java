@@ -88,7 +88,27 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
             // Select First option on Launch
 //            mNavgtnVw.getMenu().getItem(0).setChecked(true);
 //            onNavigationItemSelected(mNavgtnVw.getMenu().getItem(0));
-            onNavigationItemSelected(mNavgtnVw.getMenu().getItem(0));
+            int navDrwrPostn = getIntent().getIntExtra(AppConstants.PUT_EXTRA_NAVDRWER_POSTN, AppConstants.NAVDRWER_DASHBOARD);
+            onNavigationItemSelected(getNavDrwrPostnMenuItem(navDrwrPostn));
+        }
+    }
+
+    // Get MenuItem from NavDrawer Position, which is get from getIntent()
+    private MenuItem getNavDrwrPostnMenuItem(int navDrwrPostn) {
+
+        switch (navDrwrPostn) {
+            case AppConstants.NAVDRWER_DASHBOARD:
+
+                return mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_dashboard);
+            case AppConstants.NAVDRWER_BOOK_REQUEST:
+
+                return mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_book_corectn);
+            case AppConstants.NAVDRWER_NEWS:
+
+                return mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_news);
+            default:
+
+                return mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_dashboard);
         }
     }
 

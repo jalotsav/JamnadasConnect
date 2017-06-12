@@ -41,8 +41,10 @@ public class ActvtyMain extends Activity {
             @Override
             public void run() {
 
+                int navDrwrPostn = getIntent().getIntExtra(AppConstants.PUT_EXTRA_NAVDRWER_POSTN, AppConstants.NAVDRWER_DASHBOARD);
+                startActivity(new Intent(ActvtyMain.this, NavgtnDrwrMain.class)
+                        .putExtra(AppConstants.PUT_EXTRA_NAVDRWER_POSTN, navDrwrPostn));
                 finish();
-                startActivity(new Intent(ActvtyMain.this, NavgtnDrwrMain.class));
             }
         }, 3000);
     }
