@@ -145,6 +145,7 @@ public class FrgmntNews extends Fragment {
             public void onResponse(Call<MdlTeacherMsgListRes> call, Response<MdlTeacherMsgListRes> response) {
 
                 mPrgrsbrMain.setVisibility(View.GONE);
+                mAdapter.setLoaded();
                 /*if(mNewsMsgLastId == 0)
                     mPrgrsbrMain.setVisibility(View.GONE);
                 else
@@ -156,7 +157,12 @@ public class FrgmntNews extends Fragment {
 
                     if(objMdlTeacherViewRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
 
-                        if(mNewsMsgLastId == 0) {
+                        for(MdlTeacherMsg objMdlTeacherMsg : objMdlTeacherViewRes.getObjMdlTeacherMsg()) {
+                            mAdapter.addItem(objMdlTeacherMsg);
+                        }
+                        if(mAdapter.getItemCount() > 0)
+                            mNewsMsgLastId = mAdapter.getAllItems().get(mAdapter.getItemCount() - 1).getTmId();
+                        /*if(mNewsMsgLastId == 0) {
 
                             mArrylstMdlTeacherMsg = new ArrayList<>();
                             mArrylstMdlTeacherMsg.addAll(objMdlTeacherViewRes.getObjMdlTeacherMsg());
@@ -171,13 +177,9 @@ public class FrgmntNews extends Fragment {
                             }
                             if(mAdapter.getItemCount() > 0)
                                 mNewsMsgLastId = mAdapter.getAllItems().get(mAdapter.getItemCount() - 1).getTmId();
-                            mAdapter.setLoaded();
-                        }
-                    } else {
-
-                        mAdapter.setLoaded();
+                        }*/
+                    } else
                         Snackbar.make(mCrdntrlyot, objMdlTeacherViewRes.getMessage(), Snackbar.LENGTH_LONG).show();
-                    }
                 } catch (Exception e) {
 
                     e.printStackTrace();
