@@ -38,6 +38,7 @@
     <string name="invalid_email">Invalid email</string>
     <string name="mobileno_verfd_sucsfly">Mobile number verified successfully</string>
     <string name="mobileno_not_verfd">Mobile number not verified</string>
+    <string name="exist_sml">exist</string>
     <string name="sucsfly_regstr_sml">Successfully registration.</string>
 
     <!-- Mobile Verification -->
@@ -57,6 +58,7 @@
     <string name="allow_permtn_sms">To verify mobile number, you must have to allow SMS permission</string>
     <string name="vrfymobile_sms_msg">One Time Password for your %1$s registration  is %2$d. Please use this password to complete your Registration.</string>
     <string name="vrfymobile_sms_startformt_msg">One Time Password for your %1$s</string>
+    <string name="is_sml">is</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

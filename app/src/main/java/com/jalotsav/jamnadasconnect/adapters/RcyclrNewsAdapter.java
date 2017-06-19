@@ -55,7 +55,7 @@ public class RcyclrNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private ArrayList<Integer> mArrylstPrmryclrs;
     private OnLoadMoreListener mOnLoadMoreListener;
     private boolean isLoading;
-    private int visibleThreshold = 2, previousTotal = 0, firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
+    private int visibleThreshold = 3/*, previousTotal = 0, firstVisibleItem, visibleItemCount*/, totalItemCount, lastVisibleItem;
 
     public RcyclrNewsAdapter(Context context, RecyclerViewEmptySupport recyclerView, ArrayList<MdlTeacherMsg> arrylstMdlTeacherMsg, Drawable drwblDefaultNtfctn) {
 
@@ -86,6 +86,7 @@ public class RcyclrNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 }
 
+                // Other Method for detect RecyclerView end reached
                 /*visibleItemCount = recyclerView.getChildCount();
                 totalItemCount = mLinearLayoutManager.getItemCount();
                 firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
@@ -239,8 +240,8 @@ public class RcyclrNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void resetLoadMore() {
 
         isLoading = false;
-        visibleThreshold = 2;
-        previousTotal = 0;
+        visibleThreshold = 3;
+//        previousTotal = 0;
     }
 
     // Get All Items

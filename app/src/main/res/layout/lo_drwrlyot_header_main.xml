@@ -38,13 +38,13 @@
         android:paddingRight="@dimen/_16jdp"
         android:paddingTop="@dimen/_16jdp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgvw_drwrlyot_header_profile"
             android:layout_width="@dimen/_50jdp"
             android:layout_height="@dimen/_50jdp"
-            android:contentDescription="@string/imgcd_image"
-            android:tint="@color/white"
-            app:srcCompat="@drawable/ic_account_circle_black_56dp" />
+            android:src="@drawable/img_teacher_profile_flat"
+            app:border_color="@android:color/white"
+            app:border_width="@dimen/_1jdp" />
 
         <TextView
             android:id="@+id/tv_drwrlyot_header_fullname"

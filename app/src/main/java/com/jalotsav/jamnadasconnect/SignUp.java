@@ -25,7 +25,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,8 +45,6 @@ import com.jalotsav.jamnadasconnect.retrofitapi.APIGeneral;
 import com.jalotsav.jamnadasconnect.retrofitapi.APIRetroBuilder;
 import com.jalotsav.jamnadasconnect.retrofitapi.APITeacher;
 import com.jalotsav.jamnadasconnect.utils.ValidationUtils;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -72,23 +69,15 @@ public class SignUp extends AppCompatActivity {
     @BindView(R.id.txtinputlyot_signup_firstname) TextInputLayout mTxtinptlyotFirstName;
     @BindView(R.id.txtinputlyot_signup_lastname) TextInputLayout mTxtinptlyotLastName;
     @BindView(R.id.txtinputlyot_signup_schoolname) TextInputLayout mTxtinptlyotSchoolName;
-    /*@BindView(R.id.txtinputlyot_signup_stream) TextInputLayout mTxtinptlyotStream;
-    @BindView(R.id.txtinputlyot_signup_standr) TextInputLayout mTxtinptlyotStandr;
-    @BindView(R.id.txtinputlyot_signup_subject) TextInputLayout mTxtinptlyotSubject;*/
     @BindView(R.id.txtinputlyot_signup_city) TextInputLayout mTxtinptlyotCity;
     @BindView(R.id.txtinputlyot_signup_mobileno) TextInputLayout mTxtinptlyotMobile;
-//    @BindView(R.id.txtinputlyot_signup_email) TextInputLayout mTxtinptlyotEmail;
     @BindView(R.id.txtinputlyot_signup_password) TextInputLayout mTxtinptlyotPaswrd;
 
     @BindView(R.id.txtinptet_signup_firstname) TextInputEditText mTxtinptEtFirstName;
     @BindView(R.id.txtinptet_signup_lastname) TextInputEditText mTxtinptEtLastName;
     @BindView(R.id.txtinptet_signup_schoolname) TextInputEditText mTxtinptEtSchoolName;
-    /*@BindView(R.id.txtinptet_signup_stream) TextInputEditText mTxtinptEtStream;
-    @BindView(R.id.txtinptet_signup_standr) TextInputEditText mTxtinptEtStandr;
-    @BindView(R.id.txtinptet_signup_subject) TextInputEditText mTxtinptEtSubject;*/
     @BindView(R.id.txtinptet_signup_city) TextInputEditText mTxtinptEtCity;
     @BindView(R.id.txtinptet_signup_mobileno) TextInputEditText mTxtinptEtMobile;
-//    @BindView(R.id.txtinptet_signup_email) TextInputEditText mTxtinptEtEmail;
     @BindView(R.id.txtinptet_signup_password) TextInputEditText mTxtinptEtPaswrd;
 
     @BindView(R.id.prgrsbr_signup) ProgressBar mPrgrsbrMain;
@@ -99,17 +88,15 @@ public class SignUp extends AppCompatActivity {
     @BindString(R.string.entr_firstname_sml) String mEntrFirstName;
     @BindString(R.string.entr_lastname_sml) String mEntrLastName;
     @BindString(R.string.entr_schoolname_sml) String mEntrSchoolName;
-    /*@BindString(R.string.entr_stream_sml) String mEntrStream;
-    @BindString(R.string.entr_standr_sml) String mEntrStandr;
-    @BindString(R.string.entr_subject_sml) String mEntrSubject;*/
     @BindString(R.string.entr_city_sml) String mEntrCity;
     @BindString(R.string.mobileno_verfd_sucsfly) String mMobileVerifedMsg;
-    @BindString(R.string.mobileno_not_verfd) String mMobileNotVerifedMsg;
+    @BindString(R.string.mobileno_not_verfd) String mMobileNotVerifiedMsg;
+    @BindString(R.string.exist_sml) String mExistStr;
     @BindString(R.string.sucsfly_regstr_sml) String mSucsflyRegstrnMsg;
 
     String mFirstNameVal, mLastNameVal, mEmailVal = "", mMobileVal, mSchoolNameVal, mStreamVal = "", mStandrVal = "", mSubjectVal = "", mCityVal;
     UserSessionManager session;
-    boolean isVerifyMobileCall = false;
+    boolean isMobileVerified = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,9 +117,12 @@ public class SignUp extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.appcmptbtn_signup:
 
-                if(GeneralFunctions.isNetConnected(this))
-                    checkAllValidation();
-                else Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
+                if(mPrgrsbrMain.getVisibility() != View.VISIBLE) {
+                    if (GeneralFunctions.isNetConnected(this))
+                        checkAllValidation();
+                    else
+                        Snackbar.make(mCrdntrlyot, mNoInternetConnMsg, Snackbar.LENGTH_LONG).show();
+                }
                 break;
         }
     }
@@ -149,36 +139,17 @@ public class SignUp extends AppCompatActivity {
         if (!ValidationUtils.validateEmpty(this, mTxtinptlyotSchoolName, mTxtinptEtSchoolName, mEntrSchoolName)) // SchoolName
             return;
 
-        /*if (!ValidationUtils.validateEmpty(this, mTxtinptlyotStream, mTxtinptEtStream, mEntrStream)) // Stream
-            return;
-
-        if (!ValidationUtils.validateEmpty(this, mTxtinptlyotStandr, mTxtinptEtStandr, mEntrStandr)) // Standard
-            return;
-
-        if(!validateStandard())
-            return;
-
-        if (!ValidationUtils.validateEmpty(this, mTxtinptlyotSubject, mTxtinptEtSubject, mEntrSubject)) // Subject
-            return;*/
-
         if (!ValidationUtils.validateEmpty(this, mTxtinptlyotCity, mTxtinptEtCity, mEntrCity)) // City
             return;
 
         if (!ValidationUtils.validateMobile(this, mTxtinptlyotMobile, mTxtinptEtMobile)) // Mobile
             return;
 
-        /*if(!TextUtils.isEmpty(mTxtinptEtEmail.getText().toString().trim())) { // Email
-            if (!ValidationUtils.validateEmailFormat(this, mTxtinptlyotEmail, mTxtinptEtEmail)) {
-                return;
-            }
-        }*/
-
         if (!ValidationUtils.validatePassword(this, mTxtinptlyotPaswrd, mTxtinptEtPaswrd)) // Password
             return;
 
-        if(!isVerifyMobileCall) {
+        if(!isMobileVerified) {
 
-            isVerifyMobileCall = true;
             Intent intntVerifyMobileNo = new Intent(this, VerifyMobileNo.class);
             intntVerifyMobileNo.putExtra(AppConstants.KEY_MOBILE, mTxtinptEtMobile.getText().toString().trim());
             startActivityForResult(intntVerifyMobileNo, AppConstants.REQUEST_VERFCTN_MOBILENO);
@@ -186,7 +157,7 @@ public class SignUp extends AppCompatActivity {
 
             /*
             * For resolve below issue
-              * Due to some server reason after sucess of callSignupAPI(), next API callTeacherEditAPI()
+              * Due to some server reason after success of callSignupAPI(), next API callTeacherEditAPI()
               * not properly call, When user try to SignUp again it's give "Mobile no Exit" error message.
               *
             * */
@@ -197,22 +168,6 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
-    // Check Standard input digits validation for field
-    /*private boolean validateStandard() {
-
-        int standrVal = Integer.parseInt(mTxtinptEtStandr.getText().toString().trim());
-        if (standrVal >0 && standrVal <=12) {
-            mTxtinptlyotStandr.setError(null);
-            mTxtinptlyotStandr.setErrorEnabled(false);
-            return true;
-        } else {
-            mTxtinptlyotStandr.setErrorEnabled(true);
-            mTxtinptlyotStandr.setError(getString(R.string.invalid_standr));
-            ValidationUtils.requestFocus(this, mTxtinptEtStandr);
-            return false;
-        }
-    }*/
-
     // Call Retrofit API
     private void callSignupAPI() {
 
@@ -222,28 +177,22 @@ public class SignUp extends AppCompatActivity {
         mLastNameVal = mTxtinptEtLastName.getText().toString().trim();
         mLastNameVal = Character.toUpperCase(mLastNameVal.charAt(0)) + mLastNameVal.substring(1); // First Character Uppercase
         mSchoolNameVal = mTxtinptEtSchoolName.getText().toString().trim();
-        /*mStreamVal = mTxtinptEtStream.getText().toString().trim();
-        mStandrVal = mTxtinptEtStandr.getText().toString().trim();
-        mSubjectVal = mTxtinptEtSubject.getText().toString().trim();*/
         mCityVal = mTxtinptEtCity.getText().toString().trim();
         mCityVal = Character.toUpperCase(mCityVal.charAt(0)) + mCityVal.substring(1); // First Character Uppercase
         mMobileVal = mTxtinptEtMobile.getText().toString().trim();
-//        mEmailVal = mTxtinptEtEmail.getText().toString().trim();
         String passwordVal = mTxtinptEtPaswrd.getText().toString().trim();
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(true).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
         Call<MdlRegistrationRes> callMdlRegstrtnRes = objApiGeneral.callRegistration(
                 mFirstNameVal, mLastNameVal, mMobileVal, mEmailVal, passwordVal, GeneralFunctions.getDeviceInfo(this));
         callMdlRegstrtnRes.enqueue(new Callback<MdlRegistrationRes>() {
             @Override
             public void onResponse(Call<MdlRegistrationRes> call, Response<MdlRegistrationRes> response) {
 
-//                mPrgrsbrMain.setVisibility(View.GONE);
+                mPrgrsbrMain.setVisibility(View.GONE);
                 try {
                     MdlRegistrationRes objMdlRegstrRes = response.body();
                     if(objMdlRegstrRes.getSuccess().equalsIgnoreCase(AppConstants.VALUES_TRUE)) {
-
-    //                    Toast.makeText(SignUp.this, objMdlRegstrRes.getMessage(), Toast.LENGTH_SHORT).show();
 
                         session.setUserId(objMdlRegstrRes.getUser_id());
                         session.setFirstName(mFirstNameVal);
@@ -254,14 +203,14 @@ public class SignUp extends AppCompatActivity {
                         callTeacherEditAPI();
                     } else {
 
-                        mPrgrsbrMain.setVisibility(View.GONE);
                         Snackbar.make(mCrdntrlyot, objMdlRegstrRes.getMessage(), Snackbar.LENGTH_LONG).show();
+                        if(objMdlRegstrRes.getMessage().contains(mExistStr))
+                            isMobileVerified = false;
                     }
                 } catch (Exception e) {
 
                     e.printStackTrace();
                     LogHelper.printLog(AppConstants.LOGTYPE_ERROR, TAG, e.getMessage());
-                    mPrgrsbrMain.setVisibility(View.GONE);
                     Snackbar.make(mCrdntrlyot, mInternalPrblmMsg, Snackbar.LENGTH_LONG).show();
                 }
             }
@@ -329,12 +278,19 @@ public class SignUp extends AppCompatActivity {
 
         if(requestCode == AppConstants.REQUEST_VERFCTN_MOBILENO) {
 
-            if(resultCode == RESULT_OK)
-                Snackbar.make(mCrdntrlyot, mMobileVerifedMsg, Snackbar.LENGTH_SHORT).show();
-            else
-                Snackbar.make(mCrdntrlyot, mMobileNotVerifedMsg, Snackbar.LENGTH_SHORT).show();
+            if(resultCode == RESULT_OK) {
 
-            callSignupAPI();
+                isMobileVerified = true;
+                Snackbar.make(mCrdntrlyot, mMobileVerifedMsg, Snackbar.LENGTH_SHORT).show();
+                if(session.getUserId() > 0)
+                    callTeacherEditAPI();
+                else
+                    callSignupAPI();
+            } else {
+
+                isMobileVerified = false;
+                Snackbar.make(mCrdntrlyot, mMobileNotVerifiedMsg, Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
 

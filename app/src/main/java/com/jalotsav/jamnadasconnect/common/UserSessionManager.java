@@ -110,6 +110,18 @@ public class UserSessionManager implements AppConstants {
         editor.commit();
     }
 
+    // Get-Set ProfilePicturePath to SharedPreferences
+    public String getProfilePicturePath() {
+
+        return pref.getString(KEY_PROFILE_PICTURE, "");
+    }
+
+    public void setProfilePicturePath(String profilePicturePath) {
+
+        editor.putString(KEY_PROFILE_PICTURE, profilePicturePath);
+        editor.commit();
+    }
+
     /**
      * Check login method will check user login status
      * If false it will redirect user to login page

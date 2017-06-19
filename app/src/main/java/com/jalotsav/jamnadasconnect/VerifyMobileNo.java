@@ -72,6 +72,7 @@ public class VerifyMobileNo extends AppCompatActivity {
     @BindString(R.string.app_name) String mAppName;
     @BindString(R.string.no_detect_any_mobileno) String mNoDetectMobileNoMsg;
     @BindString(R.string.allow_permtn_sms) String mAllowSMSPermsnMsg;
+    @BindString(R.string.is_sml) String mIsStr;
     @BindString(R.string.sending_sms_fail) String mSendngSmsFailMsg;
     @BindString(R.string.entr_verfctn_code) String mEntrVrfctnCodeMsg;
     @BindString(R.string.invalid_verfctn_code) String mInvalidVrfctnCodeMsg;
@@ -158,11 +159,6 @@ public class VerifyMobileNo extends AppCompatActivity {
              * One Time Password for your "APP_NAME" registration is "OTP_CODE_GENRTD".
              * Please use this password to complete your Registration.
              * */
-            /*String smsMessage = "One Time Password for your "
-                    + getResources().getString(R.string.app_name)
-                    + " registration is "
-                    + OTP_CODE_GENRTD
-                    + ".Please use this password to complete your Registration.";*/
             String smsMessage = getString(R.string.vrfymobile_sms_msg, mAppName, OTP_CODE_GENRTD);
 
             SmsManager smsManager = SmsManager.getDefault();
@@ -265,20 +261,21 @@ public class VerifyMobileNo extends AppCompatActivity {
 
                     Object[] pdusObj = (Object[]) bundle.get("pdus");
 
-                    for (Object objPdusObj : pdusObj) {
+                    if (pdusObj != null) {
+                        for (Object objPdusObj : pdusObj) {
 
-                        SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) objPdusObj);
-//						String phoneNumber = currentMessage.getDisplayOriginatingAddress();
-                        String smsCurrentMessage = currentMessage.getDisplayMessageBody();
+                            SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) objPdusObj);
+    //						String phoneNumber = currentMessage.getDisplayOriginatingAddress();
+                            String smsCurrentMessage = currentMessage.getDisplayMessageBody();
 
-                        /*String smsMessageStartFormat = "One Time Password for your " + getResources().getString(R.string.app_name);*/
-                        String smsMessageStartFormat = context.getResources().getString(R.string.vrfymobile_sms_startformt_msg, mAppName);
-                        if (smsCurrentMessage.contains(smsMessageStartFormat)) {
+                            String smsMessageStartFormat = context.getResources().getString(R.string.vrfymobile_sms_startformt_msg, mAppName);
+                            if (smsCurrentMessage.contains(smsMessageStartFormat)) {
 
-                            String otpCodeRecvdSMS = smsCurrentMessage.split("is ", 2)[1].substring(0, 6);
-                            mTxtinptEtVrfctnCode.setText(otpCodeRecvdSMS.trim());
+                                String otpCodeRecvdSMS = smsCurrentMessage.split(mIsStr.concat(" "), 2)[1].substring(0, 6);
+                                mTxtinptEtVrfctnCode.setText(otpCodeRecvdSMS.trim());
 
-                            matchOTPCode();
+                                matchOTPCode();
+                            }
                         }
                     }
                 }

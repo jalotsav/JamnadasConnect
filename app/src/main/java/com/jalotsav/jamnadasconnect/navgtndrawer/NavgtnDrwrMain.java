@@ -17,6 +17,7 @@
 package com.jalotsav.jamnadasconnect.navgtndrawer;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,12 +33,15 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jalotsav.jamnadasconnect.R;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
+import com.squareup.picasso.Picasso;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -51,7 +55,10 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
     @BindView(R.id.drwrlyot_nvgtndrwr_main) DrawerLayout mDrwrlyot;
     @BindView(R.id.navgtnvw_nvgtndrwr_main) NavigationView mNavgtnVw;
 
+    @BindDrawable(R.drawable.img_teacher_profile_flat) Drawable mDrwblDefaultPicture;
+
     TextView mTvFullName, mTvEmailMobile;
+    ImageView mImgvwProfilePicture;
     MenuItem mMenuItemDashboard, mMenuItemSpecmnCopy, mMenuItemBookCorctn, mMenuItemSugstn, mMenuItemNews, mMenuItemMyProfile;
 
     UserSessionManager session;
@@ -78,12 +85,18 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
             View mVwHeaderlyot = mNavgtnVw.getHeaderView(0);
             mTvFullName = (TextView) mVwHeaderlyot.findViewById(R.id.tv_drwrlyot_header_fullname);
             mTvEmailMobile = (TextView) mVwHeaderlyot.findViewById(R.id.tv_drwrlyot_header_emailmobile);
+            mImgvwProfilePicture = (ImageView) mVwHeaderlyot.findViewById(R.id.imgvw_drwrlyot_header_profile);
 
             mTvFullName.setText(session.getFirstName().concat(" ").concat(session.getLastName()));
             if(!TextUtils.isEmpty(session.getMobile()))
                 mTvEmailMobile.setText(session.getMobile());
             else
                 mTvEmailMobile.setText(session.getEmail());
+            if(!TextUtils.isEmpty(session.getProfilePicturePath()))
+            Picasso.with(this)
+                    .load(session.getProfilePicturePath())
+                    .placeholder(mDrwblDefaultPicture)
+                    .into(mImgvwProfilePicture);
 
             // Select First option on Launch
 //            mNavgtnVw.getMenu().getItem(0).setChecked(true);

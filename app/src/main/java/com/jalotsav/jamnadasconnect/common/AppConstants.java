@@ -155,7 +155,7 @@ public interface AppConstants {
     // Request Keys
     int REQUEST_VERFCTN_MOBILENO = 101;
     int REQUEST_APP_PERMISSION = 102;
-    int REQUEST_SPLASHACTIVITY = 103;
+    int REQUEST_SPLASH_ACTIVITY = 103;
     int REQUEST_PICK_IMAGE = 104;
     int REQUEST_OPEN_CAMERA = 105;
 

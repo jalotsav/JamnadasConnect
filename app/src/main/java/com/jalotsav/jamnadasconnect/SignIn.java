@@ -133,6 +133,7 @@ public class SignIn extends AppCompatActivity {
                             session.setLastName(objTeacherBasic.getLastName());
                             session.setMobile(objTeacherBasic.getMobile());
                             session.setEmail(objTeacherBasic.getEmail());
+                            session.setProfilePicturePath(objTeacherBasic.getProfilePicture());
                         }
                         finish();
                         startActivity(new Intent(SignIn.this, NavgtnDrwrMain.class));
