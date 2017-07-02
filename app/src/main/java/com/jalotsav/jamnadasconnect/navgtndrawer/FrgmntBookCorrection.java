@@ -262,7 +262,7 @@ public class FrgmntBookCorrection extends Fragment {
     // Call Retrofit API
     private void getStreams() {
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APIGeneral.class);
         Call<MdlGetStreamsRes> callMdlGetStreamsRes = objApiGeneral.callGetStreams();
         callMdlGetStreamsRes.enqueue(new Callback<MdlGetStreamsRes>() {
             @Override
@@ -299,7 +299,7 @@ public class FrgmntBookCorrection extends Fragment {
     // Call Retrofit API
     private void getStandards() {
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APIGeneral.class);
         Call<MdlGetStandardsRes> callMdlGetStandardsRes = objApiGeneral.callGetStandards();
         callMdlGetStandardsRes.enqueue(new Callback<MdlGetStandardsRes>() {
             @Override
@@ -675,7 +675,7 @@ public class FrgmntBookCorrection extends Fragment {
         if(!mPrgrsDialog.isShowing())
             mPrgrsDialog.show();
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(true).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(getActivity(), true).create(APIGeneral.class);
         Call<MdlUploadChunkImageRes> callResponseBody = objApiGeneral.callUploadChunkImage(AppConstants.CHUNK_MODULE_CORRECTION,
                 mSendingImageChunk, mChunkResFileName, mLastChunk, mIsAttachImage ? AppConstants.EXTENSION_JPG : AppConstants.EXTENSION_MP3);
         callResponseBody.enqueue(new Callback<MdlUploadChunkImageRes>() {
@@ -741,7 +741,7 @@ public class FrgmntBookCorrection extends Fragment {
             attchmentsNames = TextUtils.join(",", mArrylstUploadedImageNames);
         else attchmentsNames = "";
 
-        APIBookCorrection objApiBookCorrctn = APIRetroBuilder.getRetroBuilder(false).create(APIBookCorrection.class);
+        APIBookCorrection objApiBookCorrctn = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APIBookCorrection.class);
         Call<MdlBookCorrectionAddRes> callMdlBookReqstAddRes = objApiBookCorrctn.callBookCorrectnAdd(
                 GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId(), mBookNameVal,
                 mSpnrStream.getSelectedItem().toString(), mSpnrStandr.getSelectedItem().toString(), attchmentsNames);

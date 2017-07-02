@@ -111,7 +111,7 @@ public class ActvtyNewsDetails extends AppCompatActivity {
 
         mPrgrsbrMain.setVisibility(View.VISIBLE);
 
-        APINews objApiNews = APIRetroBuilder.getRetroBuilder(false).create(APINews.class);
+        APINews objApiNews = APIRetroBuilder.getRetroBuilder(this, false).create(APINews.class);
         Call<MdlTeacherMsgViewRes> callMdlTeacherMsgViewRes = objApiNews.callTeacherMsgView(
                 GeneralFunctions.getDeviceInfo(this), session.getUserId(), mSlctdTmId);
         callMdlTeacherMsgViewRes.enqueue(new Callback<MdlTeacherMsgViewRes>() {

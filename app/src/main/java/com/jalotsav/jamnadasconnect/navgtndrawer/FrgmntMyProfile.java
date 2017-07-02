@@ -346,7 +346,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     private void callGetTeacherDetailsAPI() {
 
         mPrgrsbrMain.setVisibility(View.VISIBLE);
-        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(false).create(APITeacher.class);
+        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APITeacher.class);
         Call<MdlTeacherViewRes> callMdlTeacherViewRes = objApiTeacher.callTeacherView(
                 GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId());
         callMdlTeacherViewRes.enqueue(new Callback<MdlTeacherViewRes>() {
@@ -435,7 +435,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     // Call Retrofit API
     private void callGetStreamsAPI() {
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APIGeneral.class);
         Call<MdlGetStreamsRes> callMdlGetStreamsRes = objApiGeneral.callGetStreams();
         callMdlGetStreamsRes.enqueue(new Callback<MdlGetStreamsRes>() {
             @Override
@@ -467,7 +467,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
     // Call Retrofit API
     private void callGetStandardsAPI() {
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APIGeneral.class);
         Call<MdlGetStandardsRes> callMdlGetStandardsRes = objApiGeneral.callGetStandards();
         callMdlGetStandardsRes.enqueue(new Callback<MdlGetStandardsRes>() {
             @Override
@@ -899,7 +899,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         if(!mPrgrsDialog.isShowing())
             mPrgrsDialog.show();
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(true).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(getActivity(), true).create(APIGeneral.class);
         Call<MdlUploadChunkImageRes> callResponseBody = objApiGeneral.callUploadChunkImage(AppConstants.CHUNK_MODULE_PROFILE,
                 mSendingImageChunk, mChunkResFileName, mLastChunk, AppConstants.EXTENSION_JPG);
         callResponseBody.enqueue(new Callback<MdlUploadChunkImageRes>() {
@@ -989,7 +989,7 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
             attchmentsNames = "";
         else attchmentsNames = mArrylstUploadedImageNames.get(0);
 
-        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(false).create(APITeacher.class);
+        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APITeacher.class);
         Call<MdlTeacherEditRes> callMdlTeacherEditRes = objApiTeacher.callTeacherEdit(GeneralFunctions.getDeviceInfo(getActivity()),
                 session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, mBirthDayVal,
                 mExprncVal, mAreaOfIntrstVal, mEductnlQualfctnVal, mAchievmntsVal,

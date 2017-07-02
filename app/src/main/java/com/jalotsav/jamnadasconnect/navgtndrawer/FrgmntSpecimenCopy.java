@@ -139,7 +139,7 @@ public class FrgmntSpecimenCopy extends Fragment {
         mPrgrsDialog.setCancelable(false);
         mPrgrsDialog.show();
 
-        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(false).create(APITeacher.class);
+        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APITeacher.class);
         Call<MdlTeacherDataAvialbltyRes> callMdlTeacherDataAvailbltyRes = objApiTeacher.callTeacherDataAvailability(
                 GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId());
         callMdlTeacherDataAvailbltyRes.enqueue(new Callback<MdlTeacherDataAvialbltyRes>() {
@@ -177,7 +177,7 @@ public class FrgmntSpecimenCopy extends Fragment {
     // Call Retrofit API
     private void getStreams() {
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APIGeneral.class);
         Call<MdlGetStreamsRes> callMdlGetStreamsRes = objApiGeneral.callGetStreams();
         callMdlGetStreamsRes.enqueue(new Callback<MdlGetStreamsRes>() {
             @Override
@@ -214,7 +214,7 @@ public class FrgmntSpecimenCopy extends Fragment {
     // Call Retrofit API
     private void getStandards() {
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APIGeneral.class);
         Call<MdlGetStandardsRes> callMdlGetStandardsRes = objApiGeneral.callGetStandards();
         callMdlGetStandardsRes.enqueue(new Callback<MdlGetStandardsRes>() {
             @Override
@@ -346,7 +346,7 @@ public class FrgmntSpecimenCopy extends Fragment {
         mPrgrsbrMain.setVisibility(View.VISIBLE);
         mBookNameVal = mTxtinptEtBookName.getText().toString().trim();
 
-        APIBookRequest objApiBookReqst = APIRetroBuilder.getRetroBuilder(false).create(APIBookRequest.class);
+        APIBookRequest objApiBookReqst = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APIBookRequest.class);
         Call<MdlBookReqstAddRes> callMdlBookReqstAddRes = objApiBookReqst.callBookReqstAdd(GeneralFunctions.getDeviceInfo(getActivity()),
                 session.getUserId(), mBookNameVal, mSpnrStream.getSelectedItem().toString(), mSpnrStandr.getSelectedItem().toString());
         callMdlBookReqstAddRes.enqueue(new Callback<MdlBookReqstAddRes>() {

@@ -16,8 +16,11 @@
 
 package com.jalotsav.jamnadasconnect.retrofitapi;
 
+import android.content.Context;
+
 import com.jalotsav.jamnadasconnect.BuildConfig;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
+import com.jalotsav.jamnadasconnect.common.UserSessionManager;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,10 +37,11 @@ public class APIRetroBuilder {
 
     private static Retrofit OBJ_RETROFIT = null;
 
-    public static Retrofit getRetroBuilder(boolean enableConnectTimeout) {
+    public static Retrofit getRetroBuilder(Context context, boolean enableConnectTimeout) {
 
         if (OBJ_RETROFIT == null) {
 
+            UserSessionManager session = new UserSessionManager(context);
             if (BuildConfig.BUILD_TYPE.equals(AppConstants.DEBUG_BUILD_TYPE)) {
 
                 HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -50,14 +54,14 @@ public class APIRetroBuilder {
                 }
 
                 OBJ_RETROFIT = new Retrofit.Builder()
-                        .baseUrl(AppConstants.API_ROOT_URL)
+                        .baseUrl(session.getApiRootUrl())
                         .client(clientBuilder.build())
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
             } else {
 
                 OBJ_RETROFIT = new Retrofit.Builder()
-                        .baseUrl(AppConstants.API_ROOT_URL)
+                        .baseUrl(session.getApiRootUrl())
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
             }

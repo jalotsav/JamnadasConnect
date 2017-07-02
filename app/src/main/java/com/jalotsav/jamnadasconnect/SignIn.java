@@ -77,6 +77,7 @@ public class SignIn extends AppCompatActivity {
         ButterKnife.bind(this);
 
         session = new UserSessionManager(this);
+        session.setIsTempLogout(false);
     }
 
     @OnClick({R.id.appcmptbtn_signin, R.id.appcmptbtn_signin_signup})
@@ -115,7 +116,7 @@ public class SignIn extends AppCompatActivity {
         String mobileVal = mTxtinptEtMobile.getText().toString().trim();
         String passwordVal = mTxtinptEtPaswrd.getText().toString().trim();
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(this, false).create(APIGeneral.class);
         Call<MdlLoginRes> callMdlLoginRes = objApiGeneral.callLogin(mobileVal, passwordVal, GeneralFunctions.getDeviceInfo(this));
         callMdlLoginRes.enqueue(new Callback<MdlLoginRes>() {
             @Override

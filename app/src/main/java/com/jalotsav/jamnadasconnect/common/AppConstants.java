@@ -37,7 +37,6 @@ public interface AppConstants {
     int LOGTYPE_ERROR = 5;
 
     // API URLs
-    String API_ROOT_URL = "http://www.jamnadas.com/c-jamnadas-admin/api/";
     String API_GNRL_LOGIN = "general/login";
     String API_GNRL_REGISTRATION = "general/registration";
     String API_GNRL_UPLOAD_CHUNK_IMAGE = "general/api_upload_chunk_image";
@@ -53,6 +52,7 @@ public interface AppConstants {
     String API_TEACHRMSG_TEACHRMSG_VIEW = "teacher_message/api_teacher_message_view";
 
     // Web-Service Keys
+    String KEY_API_ROOT_URL = "api_root_url";
     String KEY_EMAIL_MOB = "email_mob";
     String KEY_PASSWORD = "password";
     String KEY_DEVICE_INFO = "device_info";
@@ -144,6 +144,9 @@ public interface AppConstants {
     int IMAGE_PATH_TYPE_FILE = 11;
     int IMAGE_PATH_TYPE_SERVER = 12;
 
+    // Remote Config keys
+    String FIRECONFIG_API_ROOT_URL = "api_root_url";
+
     // Navigation Drawer MenuItem position check for direct open that fragment
     int NAVDRWER_DASHBOARD = 21;
     int NAVDRWER_BOOK_REQUEST = 22;
@@ -186,6 +189,7 @@ public interface AppConstants {
     String EXTENSION_JPG = "jpg";
     String EXTENSION_3GPP = "3gpp";
     String EXTENSION_MP3 = "mp3";
+    String KEY_IS_TEMP_LOGOUT = "is_temp_logout";
 
     // Push Notification
     int NOTIFICATION_BUILDER_ID_SINGLE = 1;

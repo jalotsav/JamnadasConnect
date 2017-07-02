@@ -495,7 +495,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
         if(!mPrgrsDialog.isShowing())
             mPrgrsDialog.show();
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(true).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(getActivity(), true).create(APIGeneral.class);
         Call<MdlUploadChunkImageRes> callResponseBody = objApiGeneral.callUploadChunkImage(AppConstants.CHUNK_MODULE_SUGGESTION,
                 mSendingImageChunk, mChunkResFileName, mLastChunk, mIsAttachImage ? AppConstants.EXTENSION_JPG : AppConstants.EXTENSION_MP3);
         callResponseBody.enqueue(new Callback<MdlUploadChunkImageRes>() {
@@ -562,7 +562,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
             attchmentsNames = TextUtils.join(",", mArrylstUploadedImageNames);
         else attchmentsNames = "";
 
-        APITeacherSuggestions objApiTeachrSugstns = APIRetroBuilder.getRetroBuilder(false).create(APITeacherSuggestions.class);
+        APITeacherSuggestions objApiTeachrSugstns = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APITeacherSuggestions.class);
         Call<MdlTeachrSugstnsAddRes> callMdlTeachrSugstnsAddRes = objApiTeachrSugstns.callTeachSugstnsAdd(
                 GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId(), mTitleVal, mDescrptnVal, attchmentsNames);
         callMdlTeachrSugstnsAddRes.enqueue(new Callback<MdlTeachrSugstnsAddRes>() {

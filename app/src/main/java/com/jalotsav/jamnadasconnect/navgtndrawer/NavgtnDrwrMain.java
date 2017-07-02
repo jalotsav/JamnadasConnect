@@ -31,11 +31,18 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.jalotsav.jamnadasconnect.BuildConfig;
 import com.jalotsav.jamnadasconnect.R;
 import com.jalotsav.jamnadasconnect.common.AppConstants;
 import com.jalotsav.jamnadasconnect.common.UserSessionManager;
@@ -64,6 +71,8 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
     UserSessionManager session;
     Bundle mBundle;
 
+    FirebaseRemoteConfig mFireRemoteConfig;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +82,19 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
         setSupportActionBar(mToolbar);
 
         session = new UserSessionManager(this);
+
+        if(session.isTempLogout())
+            session.logoutUser();
+
+        // Remote Config Init
+        mFireRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings mConfigSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        mFireRemoteConfig.setConfigSettings(mConfigSettings);
+        mFireRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+        session.setApiRootUrl(mFireRemoteConfig.getString(AppConstants.FIRECONFIG_API_ROOT_URL));
+
         if(session.checkLogin()) {
 
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -98,12 +120,34 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
                     .placeholder(mDrwblDefaultPicture)
                     .into(mImgvwProfilePicture);
 
+            // Fetch remote config.
+            fetchConfig();
+
             // Select First option on Launch
 //            mNavgtnVw.getMenu().getItem(0).setChecked(true);
 //            onNavigationItemSelected(mNavgtnVw.getMenu().getItem(0));
             int navDrwrPostn = getIntent().getIntExtra(AppConstants.PUT_EXTRA_NAVDRWER_POSTN, AppConstants.NAVDRWER_DASHBOARD);
             onNavigationItemSelected(getNavDrwrPostnMenuItem(navDrwrPostn));
         }
+    }
+
+    // Fetch Remote Config for get API Root URL
+    private void fetchConfig() {
+
+        long cacheExpiration = 3600; // 1 hour in seconds
+        if (mFireRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled())
+            cacheExpiration = 0;
+
+        mFireRemoteConfig.fetch(cacheExpiration).addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if (task.isSuccessful())
+                    mFireRemoteConfig.activateFetched();
+
+                session.setApiRootUrl(mFireRemoteConfig.getString(AppConstants.FIRECONFIG_API_ROOT_URL));
+            }
+        });
     }
 
     // Get MenuItem from NavDrawer Position, which is get from getIntent()

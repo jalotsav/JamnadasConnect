@@ -182,7 +182,7 @@ public class SignUp extends AppCompatActivity {
         mMobileVal = mTxtinptEtMobile.getText().toString().trim();
         String passwordVal = mTxtinptEtPaswrd.getText().toString().trim();
 
-        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(false).create(APIGeneral.class);
+        APIGeneral objApiGeneral = APIRetroBuilder.getRetroBuilder(this, false).create(APIGeneral.class);
         Call<MdlRegistrationRes> callMdlRegstrtnRes = objApiGeneral.callRegistration(
                 mFirstNameVal, mLastNameVal, mMobileVal, mEmailVal, passwordVal, GeneralFunctions.getDeviceInfo(this));
         callMdlRegstrtnRes.enqueue(new Callback<MdlRegistrationRes>() {
@@ -238,7 +238,7 @@ public class SignUp extends AppCompatActivity {
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         String workJSONData = gson.toJson(arrylstTeacherWork);
 
-        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(true).create(APITeacher.class);
+        APITeacher objApiTeacher = APIRetroBuilder.getRetroBuilder(this, true).create(APITeacher.class);
         Call<MdlTeacherEditRes> callMdlTeacherEditRes = objApiTeacher.callTeacherEdit(GeneralFunctions.getDeviceInfo(this),
                 session.getUserId(), mFirstNameVal, "", mLastNameVal, mEmailVal, mMobileVal, "", "", "", "", "", "", "", mCityVal, "", "", "", "", workJSONData, "");
         callMdlTeacherEditRes.enqueue(new Callback<MdlTeacherEditRes>() {

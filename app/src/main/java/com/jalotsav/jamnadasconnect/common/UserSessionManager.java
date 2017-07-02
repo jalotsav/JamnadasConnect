@@ -62,6 +62,18 @@ public class UserSessionManager implements AppConstants {
         editor.commit();
     }
 
+    // Get-Set APIRootUrl to SharedPreferences
+    public String getApiRootUrl() {
+
+        return pref.getString(KEY_API_ROOT_URL, "");
+    }
+
+    public void setApiRootUrl(String apiRootUrl) {
+
+        editor.putString(KEY_API_ROOT_URL, apiRootUrl);
+        editor.commit();
+    }
+
     // Get-Set FirstName to SharedPreferences
     public String getFirstName() {
 
@@ -119,6 +131,18 @@ public class UserSessionManager implements AppConstants {
     public void setProfilePicturePath(String profilePicturePath) {
 
         editor.putString(KEY_PROFILE_PICTURE, profilePicturePath);
+        editor.commit();
+    }
+
+    // Get-Set ProfilePicturePath to SharedPreferences
+    public boolean isTempLogout() {
+
+        return pref.getBoolean(KEY_IS_TEMP_LOGOUT, true);
+    }
+
+    public void setIsTempLogout(boolean isTempLogout) {
+
+        editor.putBoolean(KEY_IS_TEMP_LOGOUT, isTempLogout);
         editor.commit();
     }
 

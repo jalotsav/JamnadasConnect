@@ -137,7 +137,7 @@ public class FrgmntNews extends Fragment {
         else
             mAdapter.addItem(null);*/ // Add loading item
 
-        APINews objApiNews = APIRetroBuilder.getRetroBuilder(false).create(APINews.class);
+        APINews objApiNews = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APINews.class);
         Call<MdlTeacherMsgListRes> callMdlTeacherViewRes = objApiNews.callTeacherMsgList(
                 GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId(), mNewsMsgLastId, mApiKeyword);
         callMdlTeacherViewRes.enqueue(new Callback<MdlTeacherMsgListRes>() {
