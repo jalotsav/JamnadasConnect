@@ -77,7 +77,6 @@ public class SignIn extends AppCompatActivity {
         ButterKnife.bind(this);
 
         session = new UserSessionManager(this);
-        session.setIsTempLogout(false);
     }
 
     @OnClick({R.id.appcmptbtn_signin, R.id.appcmptbtn_signin_signup})

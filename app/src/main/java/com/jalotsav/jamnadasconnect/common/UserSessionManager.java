@@ -134,18 +134,6 @@ public class UserSessionManager implements AppConstants {
         editor.commit();
     }
 
-    // Get-Set ProfilePicturePath to SharedPreferences
-    public boolean isTempLogout() {
-
-        return pref.getBoolean(KEY_IS_TEMP_LOGOUT, true);
-    }
-
-    public void setIsTempLogout(boolean isTempLogout) {
-
-        editor.putBoolean(KEY_IS_TEMP_LOGOUT, isTempLogout);
-        editor.commit();
-    }
-
     /**
      * Check login method will check user login status
      * If false it will redirect user to login page

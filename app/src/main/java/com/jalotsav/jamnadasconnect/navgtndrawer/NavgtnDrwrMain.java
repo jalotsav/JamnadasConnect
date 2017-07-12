@@ -83,9 +83,6 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
 
         session = new UserSessionManager(this);
 
-        if(session.isTempLogout())
-            session.logoutUser();
-
         // Remote Config Init
         mFireRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings mConfigSettings = new FirebaseRemoteConfigSettings.Builder()

@@ -86,6 +86,8 @@
     <string name="news_appear_here">News appear here</string>
         <!--News Details-->
         <string name="news_dtls_sml">News Details</string>
+        <string name="title_sml">Title</string>
+        <string name="entr_title_sml">Enter title</string>
 
     <!--My Profile-->
     <string name="basic_dtls_sml">Basic Details</string>
@@ -120,7 +122,7 @@
     <string name="medium_sml">Medium</string>
     <string name="select_standard_sml">Select standard</string>
     <string name="standr_sml">Standard</string>
-    <string name="subject_sml">Subjects</string>
+    <string name="subject_sml">Subject</string>
     <string name="entr_subject_sml">Enter Subject</string>
     <string name="allow_permtn_myprofile">To add a profile picture, you must have to allow permissions</string>
     <string name="plz_add_work_dtls">Please add Work details</string>
@@ -147,8 +149,6 @@
     <string name="recrdng_attached_sml">1 recording attached.</string>
 
     <!--Teacher Suggestions-->
-    <string name="title_sml">Title</string>
-    <string name="entr_title_sml">Enter title</string>
     <string name="descrptn_sml">Description</string>
     <string name="entr_descrptn_sml">Enter description</string>
 

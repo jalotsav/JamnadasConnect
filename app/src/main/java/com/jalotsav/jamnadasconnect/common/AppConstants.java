@@ -189,7 +189,6 @@ public interface AppConstants {
     String EXTENSION_JPG = "jpg";
     String EXTENSION_3GPP = "3gpp";
     String EXTENSION_MP3 = "mp3";
-    String KEY_IS_TEMP_LOGOUT = "is_temp_logout";
 
     // Push Notification
     int NOTIFICATION_BUILDER_ID_SINGLE = 1;

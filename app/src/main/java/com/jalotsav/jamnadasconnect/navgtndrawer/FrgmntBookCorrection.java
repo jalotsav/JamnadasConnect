@@ -111,7 +111,9 @@ public class FrgmntBookCorrection extends Fragment {
 
     @BindView(R.id.cordntrlyot_frgmnt_bookcorctn) CoordinatorLayout mCrdntrlyot;
     @BindView(R.id.txtinputlyot_frgmnt_bookcorctn_bookname) TextInputLayout mTxtinptlyotBookName;
+    @BindView(R.id.txtinputlyot_frgmnt_bookcorctn_subject) TextInputLayout mTxtinptlyotSubject;
     @BindView(R.id.txtinptet_frgmnt_bookcorctn_bookname) TextInputEditText mTxtinptEtBookName;
+    @BindView(R.id.txtinptet_frgmnt_bookcorctn_subject) TextInputEditText mTxtinptEtSubject;
     @BindView(R.id.spnr_frgmnt_bookcorctn_stream) Spinner mSpnrStream;
     @BindView(R.id.spnr_frgmnt_bookcorctn_standr) Spinner mSpnrStandr;
     @BindView(R.id.imgvw_frgmnt_bookcorctn_backsteppr) ImageView mImgvwBackSteppr;
@@ -150,6 +152,7 @@ public class FrgmntBookCorrection extends Fragment {
     @BindString(R.string.attchd_imgs_appear_here) String mAttchdImgsAppearHere;
     @BindString(R.string.cant_add_morethan_10_items) String mCantAddMoreThan10Items;
     @BindString(R.string.entr_book_name_sml) String mEntrBookName;
+    @BindString(R.string.entr_subject_sml) String mEntrSubject;
     @BindString(R.string.select_medium_sml) String mSelctStream;
     @BindString(R.string.select_standard_sml) String mSelctStandr;
 
@@ -161,7 +164,7 @@ public class FrgmntBookCorrection extends Fragment {
     UserSessionManager session;
     ProgressDialog mPrgrsDialog;
     boolean mIsAttachImage, mIsWithAttachement, mIsImageProcessing, mIsCounterRunning, mIsMediaPlaying;
-    String mBookNameVal, mChunkResFileName = "", mChunkResImageName = "", mFirstChunk = "0", mLastChunk = "0", mSendingImageChunk;
+    String mBookNameVal, mSubjectVal, mChunkResFileName = "", mChunkResImageName = "", mFirstChunk = "0", mLastChunk = "0", mSendingImageChunk;
     ArrayAdapter<String> mArryadptrStream, mArryadptrStandr;
     ArrayList<String> mArrylstStreams, mArrylstStandrs;
     RecyclerView.LayoutManager mLayoutManager;
@@ -568,6 +571,9 @@ public class FrgmntBookCorrection extends Fragment {
         if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotBookName, mTxtinptEtBookName, mEntrBookName)) // Book Name
             return;
 
+        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotSubject, mTxtinptEtSubject, mEntrSubject)) // Subject
+            return;
+
         if(!validateStream())
             return;
 
@@ -736,6 +742,7 @@ public class FrgmntBookCorrection extends Fragment {
 
         mPrgrsbrMain.setVisibility(View.VISIBLE);
         mBookNameVal = mTxtinptEtBookName.getText().toString().trim();
+        mSubjectVal = mTxtinptEtSubject.getText().toString().trim();
         String attchmentsNames;
         if(mAdapter.getItemCount() > 0)
             attchmentsNames = TextUtils.join(",", mArrylstUploadedImageNames);
@@ -744,7 +751,7 @@ public class FrgmntBookCorrection extends Fragment {
         APIBookCorrection objApiBookCorrctn = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APIBookCorrection.class);
         Call<MdlBookCorrectionAddRes> callMdlBookReqstAddRes = objApiBookCorrctn.callBookCorrectnAdd(
                 GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId(), mBookNameVal,
-                mSpnrStream.getSelectedItem().toString(), mSpnrStandr.getSelectedItem().toString(), attchmentsNames);
+                mSpnrStream.getSelectedItem().toString(), mSpnrStandr.getSelectedItem().toString(), attchmentsNames, mSubjectVal);
         callMdlBookReqstAddRes.enqueue(new Callback<MdlBookCorrectionAddRes>() {
             @Override
             public void onResponse(Call<MdlBookCorrectionAddRes> call, Response<MdlBookCorrectionAddRes> response) {
@@ -758,6 +765,7 @@ public class FrgmntBookCorrection extends Fragment {
                         GeneralFunctions.showToastSingle(getActivity(), objMdlBookCorrctnAddRes.getMessage(), Toast.LENGTH_LONG);
 
                         mTxtinptEtBookName.setText("");
+                        mTxtinptEtSubject.setText("");
                         mSpnrStream.setSelection(0);
                         mSpnrStandr.setSelection(0);
 

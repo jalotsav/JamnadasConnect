@@ -37,5 +37,6 @@ public interface APIBookCorrection {
                                                    @Field(AppConstants.KEY_BOOK_NAME) String bookName,
                                                    @Field(AppConstants.KEY_STREAM) String stream,
                                                    @Field(AppConstants.KEY_CLASS) String standard,
-                                                   @Field(AppConstants.KEY_ATTACHMENTS) String attachments);
+                                                   @Field(AppConstants.KEY_ATTACHMENTS) String attachments,
+                                                   @Field(AppConstants.KEY_SUBJECT) String subject);
 }

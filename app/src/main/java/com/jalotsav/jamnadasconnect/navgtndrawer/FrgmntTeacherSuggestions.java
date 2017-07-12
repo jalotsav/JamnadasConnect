@@ -104,9 +104,9 @@ public class FrgmntTeacherSuggestions extends Fragment {
     private static final String TAG = FrgmntTeacherSuggestions.class.getSimpleName();
 
     @BindView(R.id.cordntrlyot_frgmnt_teachrsugstns) CoordinatorLayout mCrdntrlyot;
-    @BindView(R.id.txtinputlyot_frgmnt_teachrsugstns_title) TextInputLayout mTxtinptlyotTitle;
+    @BindView(R.id.txtinputlyot_frgmnt_teachrsugstns_subject) TextInputLayout mTxtinptlyotSubject;
     @BindView(R.id.txtinputlyot_frgmnt_teachrsugstns_descrptn) TextInputLayout mTxtinptlyotDescrptn;
-    @BindView(R.id.txtinptet_frgmnt_teachrsugstns_title) TextInputEditText mTxtinptEtTitle;
+    @BindView(R.id.txtinptet_frgmnt_teachrsugstns_subject) TextInputEditText mTxtinptEtSubject;
     @BindView(R.id.txtinptet_frgmnt_teachrsugstns_descrptn) TextInputEditText mTxtinptEtDescrptn;
     @BindView(R.id.imgvw_frgmnt_teachrsugstns_backsteppr) ImageView mImgvwBackSteppr;
     @BindView(R.id.vwswtchr_frgmnt_teachrsugstns_steppr) ViewSwitcher mVwswtchrSteppr;
@@ -140,7 +140,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
     @BindString(R.string.refresh_sml) String mRefreshStr;
     @BindString(R.string.attchd_imgs_appear_here) String mAttchdImgsAppearHere;
     @BindString(R.string.cant_add_morethan_10_items) String mCantAddMoreThan10Items;
-    @BindString(R.string.entr_title_sml) String mEntrTitle;
+    @BindString(R.string.entr_subject_sml) String mEntrSubject;
     @BindString(R.string.entr_descrptn_sml) String mEntrDescrptn;
 
     @BindDrawable(R.drawable.ic_pictures_flat_128dp) Drawable mDrwblDefaultPicture;
@@ -151,7 +151,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
     UserSessionManager session;
     ProgressDialog mPrgrsDialog;
     boolean mIsAttachImage, mIsWithAttachement, mIsImageProcessing, mIsCounterRunning, mIsMediaPlaying;
-    String mTitleVal, mDescrptnVal, mChunkResFileName = "", mChunkResImageName = "", mFirstChunk = "0", mLastChunk = "0", mSendingImageChunk;
+    String mSubjectVal, mDescrptnVal, mChunkResFileName = "", mChunkResImageName = "", mFirstChunk = "0", mLastChunk = "0", mSendingImageChunk;
     RecyclerView.LayoutManager mLayoutManager;
     RcyclrAttchdImgsAdapter mAdapter;
     Uri mImageUri;
@@ -433,7 +433,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
     // Check all validation of fields and call API
     private void checkAllValidation() {
 
-        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotTitle, mTxtinptEtTitle, mEntrTitle)) // Title
+        if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotSubject, mTxtinptEtSubject, mEntrSubject)) // Subject
             return;
 
         if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotDescrptn, mTxtinptEtDescrptn, mEntrDescrptn)) // Description
@@ -555,7 +555,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
     private void callTeacherSuggestionAddAPI() {
 
         mPrgrsbrMain.setVisibility(View.VISIBLE);
-        mTitleVal = mTxtinptEtTitle.getText().toString().trim();
+        mSubjectVal = mTxtinptEtSubject.getText().toString().trim();
         mDescrptnVal = mTxtinptEtDescrptn.getText().toString().trim();
         String attchmentsNames;
         if(mAdapter.getItemCount() > 0)
@@ -564,7 +564,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
 
         APITeacherSuggestions objApiTeachrSugstns = APIRetroBuilder.getRetroBuilder(getActivity(), false).create(APITeacherSuggestions.class);
         Call<MdlTeachrSugstnsAddRes> callMdlTeachrSugstnsAddRes = objApiTeachrSugstns.callTeachSugstnsAdd(
-                GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId(), mTitleVal, mDescrptnVal, attchmentsNames);
+                GeneralFunctions.getDeviceInfo(getActivity()), session.getUserId(), mSubjectVal, mDescrptnVal, attchmentsNames);
         callMdlTeachrSugstnsAddRes.enqueue(new Callback<MdlTeachrSugstnsAddRes>() {
             @Override
             public void onResponse(Call<MdlTeachrSugstnsAddRes> call, Response<MdlTeachrSugstnsAddRes> response) {
@@ -577,7 +577,7 @@ public class FrgmntTeacherSuggestions extends Fragment {
                         GeneralFunctions.hideSoftKeyboard(getActivity());
                         GeneralFunctions.showToastSingle(getActivity(), objMdlTeachrSugstnsAddRes.getMessage(), Toast.LENGTH_LONG);
 
-                        mTxtinptEtTitle.setText("");
+                        mTxtinptEtSubject.setText("");
                         mTxtinptEtDescrptn.setText("");
 
                         clearAttachmentUI();
