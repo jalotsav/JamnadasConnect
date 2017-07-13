@@ -109,7 +109,7 @@ public class RcyclrWorkDtlsAdapter extends RecyclerView.Adapter<RcyclrWorkDtlsAd
     }
 
     // Remove item at given position
-    private void removeAt(int position) {
+    public void removeAt(int position) {
 
         MdlTeacherWork objMdlTeacherWork = mArrylstMdlTeacherWork.get(position);
         if(objMdlTeacherWork.getTiId() != 0)

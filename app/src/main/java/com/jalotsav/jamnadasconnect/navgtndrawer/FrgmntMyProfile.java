@@ -412,6 +412,12 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
                         mAdapter = new RcyclrWorkDtlsAdapter(getActivity(), FrgmntMyProfile.this, mArrylstMdlTeacherWork);
                         mRecyclerView.setAdapter(mAdapter);
 
+                        if(TextUtils.isEmpty(mArrylstMdlTeacherWork.get(0).getTicStd())
+                                || TextUtils.isEmpty(mArrylstMdlTeacherWork.get(0).getTicStream())
+                                || TextUtils.isEmpty(mArrylstMdlTeacherWork.get(0).getTicSubject())) {
+                            mAdapter.removeAt(0);
+                        }
+
                         updateAddWorkDetailsButton();
                     } else
                         Snackbar.make(mCrdntrlyot, objMdlTeacherViewRes.getMessage(), Snackbar.LENGTH_LONG).show();
@@ -737,6 +743,9 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
         if(!validateBirthday())
             return;
 
+        if(!validateWorkDetails())
+            return;
+
         if(!TextUtils.isEmpty(mTxtinptEtEmail.getText().toString().trim())) { // Email
             if (!ValidationUtils.validateEmailFormat(getActivity(), mTxtinptlyotEmail, mTxtinptEtEmail)) {
                 return;
@@ -759,9 +768,6 @@ public class FrgmntMyProfile extends Fragment implements AppBarLayout.OnOffsetCh
             return;
 
         if(!validatePincode())
-            return;
-
-        if(!validateWorkDetails())
             return;
 
         /*if (!ValidationUtils.validateEmpty(getActivity(), mTxtinptlyotExprnc, mTxtinptEtExprnc, mEntrExprnc)) // Experience

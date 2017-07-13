@@ -149,8 +149,9 @@ public interface AppConstants {
 
     // Navigation Drawer MenuItem position check for direct open that fragment
     int NAVDRWER_DASHBOARD = 21;
-    int NAVDRWER_BOOK_REQUEST = 22;
-    int NAVDRWER_NEWS = 23;
+    int NAVDRWER_SPECIMEN_COPY = 22;
+    int NAVDRWER_BOOK_CORRECTION = 23;
+    int NAVDRWER_NEWS = 24;
 
     // Come From Values
     int COME_FROM_SPECIMEN_COPY = 31;

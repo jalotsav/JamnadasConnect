@@ -31,12 +31,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -154,7 +152,10 @@ public class NavgtnDrwrMain extends AppCompatActivity implements NavigationView.
             case AppConstants.NAVDRWER_DASHBOARD:
 
                 return mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_dashboard);
-            case AppConstants.NAVDRWER_BOOK_REQUEST:
+            case AppConstants.NAVDRWER_SPECIMEN_COPY:
+
+                return mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_specimen_copy);
+            case AppConstants.NAVDRWER_BOOK_CORRECTION:
 
                 return mNavgtnVw.getMenu().findItem(R.id.action_nvgtndrwr_book_corectn);
             case AppConstants.NAVDRWER_NEWS:

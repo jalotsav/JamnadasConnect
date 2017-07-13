@@ -73,8 +73,8 @@ public class FireMessagingService extends FirebaseMessagingService implements Ap
         int navDrwrPostn;
         if(TextUtils.isEmpty(notifctnModule))
             navDrwrPostn = NAVDRWER_DASHBOARD;
-        else if (notifctnModule.equalsIgnoreCase(AppConstants.KEY_PUSHNOTFCTN_MODULE_BOOK_REQUEST))
-            navDrwrPostn = NAVDRWER_BOOK_REQUEST;
+        /*else if (notifctnModule.equalsIgnoreCase(AppConstants.KEY_PUSHNOTFCTN_MODULE_BOOK_REQUEST))
+            navDrwrPostn = NAVDRWER_BOOK_CORRECTION;*/
         else if (notifctnModule.equalsIgnoreCase(AppConstants.KEY_PUSHNOTFCTN_MODULE_NEWS))
             navDrwrPostn = NAVDRWER_NEWS;
         else
